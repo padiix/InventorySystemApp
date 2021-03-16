@@ -5,7 +5,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="InventorySystem.Views.LoginPage"
-             Shell.NavBarHasShadow="False"
              Shell.NavBarIsVisible="False"
              Shell.PresentationMode="Modal">
     <ContentPage.Content>
@@ -15,7 +14,7 @@
                 <StackLayout>
                     <Entry Placeholder="Login" FontSize="Medium"/>
                     <Entry Placeholder="Password" FontSize="Medium" IsPassword="True"/>
-                    <Button VerticalOptions="Center" Text="Login" Clicked="Login_Clicked" Command="{Binding LoginCommand}"/>
+                    <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}"/>
                 </StackLayout>
             </Frame>
         </StackLayout>

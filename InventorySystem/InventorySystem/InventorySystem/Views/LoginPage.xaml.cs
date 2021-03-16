@@ -17,23 +17,5 @@ namespace InventorySystem.Views
             InitializeComponent();
             this.BindingContext = new LoginViewModel();
         }
-
-        protected override bool OnBackButtonPressed()
-        {
-            Device.BeginInvokeOnMainThread(async () =>
-            {
-                var result = await this.DisplayAlert("Are you sure ?", "Do you want to quit the application?", "Yes", "No");
-                if (result)
-                {
-                    Application.Current.Quit();
-                }
-            });   
-            return true;
-        }
-
-        private void Login_Clicked(object sender, EventArgs e)
-        {
-            //MainTabBar
-        }
     }
 }

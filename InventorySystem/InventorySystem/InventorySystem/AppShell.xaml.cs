@@ -12,6 +12,7 @@ namespace InventorySystem
         {
             InitializeComponent();
             Init();
+            Routing.RegisterRoute(nameof(BarcodeScanner), typeof(BarcodeScanner));
         }
 
         private void Init()
