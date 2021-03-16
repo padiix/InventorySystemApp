@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "29FJtD00mUOH2NExhjVA7o1exWgU6MRtO1jWcrHB0ehPwkhNo24jR+cq7OdvDWD5dblQEy0JUnaMx1KV7LYIZw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\chudy\\Documents\\InventorySystem_App\\InventorySystem\\InventorySystem\\InventorySystem\\InventorySystem.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\chudy\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\chudy\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
+    "C:\\Users\\chudy\\.nuget\\packages\\refractored.mvvmhelpers\\1.6.2\\refractored.mvvmhelpers.1.6.2.nupkg.sha512",
+    "C:\\Users\\chudy\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
+    "C:\\Users\\chudy\\.nuget\\packages\\system.valuetuple\\4.5.0\\system.valuetuple.4.5.0.nupkg.sha512",
+    "G:\\Microsoft\\Xamarin\\NuGet\\xamarin.essentials\\1.5.3.2\\xamarin.essentials.1.5.3.2.nupkg.sha512",
+    "G:\\Microsoft\\Xamarin\\NuGet\\xamarin.forms\\4.8.0.1451\\xamarin.forms.4.8.0.1451.nupkg.sha512"
+  ],
+  "logs": []
+}
