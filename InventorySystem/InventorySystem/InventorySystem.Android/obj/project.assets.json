@@ -2020,27 +2020,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\chudy\\.nuget\\packages\\": {},
-    "G:\\Programy\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\aleks\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\chudy\\Documents\\InventorySystem_App\\InventorySystem\\InventorySystem\\InventorySystem.Android\\InventorySystem.Android.csproj",
+      "projectUniqueName": "C:\\Workspaces\\C#\\workspace\\InventorySystem\\InventorySystem\\InventorySystem\\InventorySystem.Android\\InventorySystem.Android.csproj",
       "projectName": "InventorySystem.Android",
-      "projectPath": "C:\\Users\\chudy\\Documents\\InventorySystem_App\\InventorySystem\\InventorySystem\\InventorySystem.Android\\InventorySystem.Android.csproj",
-      "packagesPath": "C:\\Users\\chudy\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\chudy\\Documents\\InventorySystem_App\\InventorySystem\\InventorySystem\\InventorySystem.Android\\obj\\",
+      "projectPath": "C:\\Workspaces\\C#\\workspace\\InventorySystem\\InventorySystem\\InventorySystem\\InventorySystem.Android\\InventorySystem.Android.csproj",
+      "packagesPath": "C:\\Users\\aleks\\.nuget\\packages\\",
+      "outputPath": "C:\\Workspaces\\C#\\workspace\\InventorySystem\\InventorySystem\\InventorySystem\\InventorySystem.Android\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [
-        "G:\\Programy\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        "C:\\Microsoft\\Xamarin\\NuGet\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\chudy\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\aleks\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
@@ -2054,8 +2051,8 @@
       "frameworks": {
         "monoandroid90": {
           "projectReferences": {
-            "C:\\Users\\chudy\\Documents\\InventorySystem_App\\InventorySystem\\InventorySystem\\InventorySystem\\InventorySystem.csproj": {
-              "projectPath": "C:\\Users\\chudy\\Documents\\InventorySystem_App\\InventorySystem\\InventorySystem\\InventorySystem\\InventorySystem.csproj"
+            "C:\\Workspaces\\C#\\workspace\\InventorySystem\\InventorySystem\\InventorySystem\\InventorySystem\\InventorySystem.csproj": {
+              "projectPath": "C:\\Workspaces\\C#\\workspace\\InventorySystem\\InventorySystem\\InventorySystem\\InventorySystem\\InventorySystem.csproj"
             }
           }
         }
