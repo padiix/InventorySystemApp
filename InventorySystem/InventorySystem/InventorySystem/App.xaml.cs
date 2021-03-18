@@ -12,11 +12,21 @@ namespace InventorySystem
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
+            var isLogged = Xamarin.Essentials.SecureStorage.GetAsync("isLogged").Result;
+            if (isLogged == "1")
+            {
+                MainPage = new AppShell();
+            }
+            else
+            {
+                MainPage = new LoginPage();
+            }
         }
 
         protected override void OnStart()
         {
+         
+
         }
 
         protected override void OnSleep()
