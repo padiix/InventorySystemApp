@@ -16,6 +16,7 @@ namespace InventorySystem.Views
         {
             InitializeComponent();
             this.BindingContext = new LoginViewModel();
+            Shell.SetTabBarIsVisible(this, false);
         }
     }
 }
