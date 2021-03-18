@@ -11,15 +11,7 @@ namespace InventorySystem
         public AppShell()
         {
             InitializeComponent();
-            Init();
             Routing.RegisterRoute(nameof(BarcodeScanner), typeof(BarcodeScanner));
-        }
-
-        private void Init()
-        {
-            MainTabBar.CurrentItem = LoginPage;
-
-      
         }
     }
 }
