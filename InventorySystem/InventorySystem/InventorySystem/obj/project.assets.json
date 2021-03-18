@@ -104,11 +104,12 @@
       ]
     },
     "NETStandard.Library/2.0.3": {
-      "sha512": "r5PSCLCHLSdi6UBL8upkuVj0vINbYe9biPWspiuxIvGJl+cEK08YJz52/Lpc9IzrWb2EFJHa5DjQSzZuOYTq6A==",
+      "sha512": "st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
       "type": "package",
       "path": "netstandard.library/2.0.3",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "build/netstandard2.0/NETStandard.Library.targets",
@@ -717,25 +718,26 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\aleks\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\chudy\\.nuget\\packages\\": {},
+    "G:\\Programy\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Workspaces\\C#\\workspace\\InventorySystem\\InventorySystem\\InventorySystem\\InventorySystem\\InventorySystem.csproj",
+      "projectUniqueName": "C:\\Users\\chudy\\Documents\\InventorySystem_App\\InventorySystem\\InventorySystem\\InventorySystem\\InventorySystem.csproj",
       "projectName": "InventorySystem",
-      "projectPath": "C:\\Workspaces\\C#\\workspace\\InventorySystem\\InventorySystem\\InventorySystem\\InventorySystem\\InventorySystem.csproj",
-      "packagesPath": "C:\\Users\\aleks\\.nuget\\packages\\",
-      "outputPath": "C:\\Workspaces\\C#\\workspace\\InventorySystem\\InventorySystem\\InventorySystem\\InventorySystem\\obj\\",
+      "projectPath": "C:\\Users\\chudy\\Documents\\InventorySystem_App\\InventorySystem\\InventorySystem\\InventorySystem\\InventorySystem.csproj",
+      "packagesPath": "C:\\Users\\chudy\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\chudy\\Documents\\InventorySystem_App\\InventorySystem\\InventorySystem\\InventorySystem\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "G:\\Programy\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\aleks\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\chudy\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
@@ -791,7 +793,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }

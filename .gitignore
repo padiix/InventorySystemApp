@@ -191,9 +191,5 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+.vscode/settings.json
 
-<<<<<<< HEAD
-.vscode/settings.json
-=======
-.vscode/settings.json
->>>>>>> nwrxi
