@@ -29,12 +29,7 @@
         </ResourceDictionary>
     </Shell.Resources>
 
-
-    <!-- TODO: Check why the TabBar is visible in Login Page--> 
-    <TabBar x:Name="MainTabBar">
-        <Tab x:Name="LoginPage"  IsVisible="False">
-            <ShellContent Title="Login" Route="LoginPage" ContentTemplate="{DataTemplate local:LoginPage}" />
-        </Tab>
+    <TabBar>
         <ShellContent Title="Main" Icon="icon_about.png" Route="MainPage" ContentTemplate="{DataTemplate local:MainPage}"/>
         <ShellContent Title="Barcode Scanner" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:BarcodeScanner}"/>
     </TabBar>
