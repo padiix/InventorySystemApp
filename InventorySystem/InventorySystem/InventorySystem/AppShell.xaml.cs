@@ -18,6 +18,8 @@ namespace InventorySystem
         private void Init()
         {
             MainTabBar.CurrentItem = LoginPage;
+
+      
         }
     }
 }
