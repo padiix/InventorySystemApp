@@ -992,3 +992,6 @@ C:\Workspaces\C#\workspace\InventorySystem\InventorySystem\InventorySystem\Inven
 C:\Workspaces\C#\workspace\InventorySystem\InventorySystem\InventorySystem\InventorySystem.Android\obj\Debug\90\stamp\_GenerateJavaStubs.stamp
 C:\Workspaces\C#\workspace\InventorySystem\InventorySystem\InventorySystem\InventorySystem.Android\obj\Debug\90\stamp\_GeneratePackageManagerJava.stamp
 C:\Workspaces\C#\workspace\InventorySystem\InventorySystem\InventorySystem\InventorySystem.Android\obj\Debug\90\stamp\_ResolveLibraryProjectImports.stamp
+C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\InventorySystem.Android\obj\Debug\90\MonoAndroid,Version=v9.0.AssemblyAttributes.cs
+C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\InventorySystem.Android\obj\Debug\90\build.props
+C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\InventorySystem.Android\obj\Debug\90\adb.props
