@@ -47,3 +47,4 @@ C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\Inv
 C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\InventorySystem\obj\Debug\netstandard2.0\InventorySystem.dll
 C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\InventorySystem\obj\Debug\netstandard2.0\ref\InventorySystem.dll
 C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\InventorySystem\obj\Debug\netstandard2.0\InventorySystem.pdb
+C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\InventorySystem\obj\Debug\netstandard2.0\Views\OApce.xaml.g.cs

@@ -8,16 +8,26 @@ namespace InventorySystem.ViewModels
 {
     public class MainPageViewModel : BaseViewModel
     {
-        public MainPageViewModel()
+        private string _welcomeMessage;
+        public string WelcomeMessage
         {
-            Title = "About";
-
- 
-            OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://aka.ms/xamarin-quickstart"));
+            get { return _welcomeMessage; }
+            set 
+            {
+                _welcomeMessage = value;
+                OnPropertyChanged(nameof(WelcomeMessage)); // Informuj, że była zmiana na tej właściwości
+            }
         }
 
-        
+        public MainPageViewModel()
+        {
+            Title = "Strona główna";
 
-        public ICommand OpenWebCommand { get; }
+            WelcomeMessage = "Witaj, " + "nazwa użytkownika" + "!"; // It will be shown at your label
+
+            //OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://aka.ms/xamarin-quickstart"));
+        }
+
+        //public ICommand OpenWebCommand { get; }
     }
 }
