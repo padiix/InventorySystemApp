@@ -1,4 +1,4 @@
-﻿
+
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZXing;
@@ -18,7 +18,7 @@ namespace InventorySystem.Views
         {
             Device.BeginInvokeOnMainThread(async () =>
             {
-                await Application.Current.MainPage.DisplayAlert("Alert", "your message", "OK");
+                await Application.Current.MainPage.DisplayAlert("Your barcode", result.Text, "Thanks");
             });
         }
     }
