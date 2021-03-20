@@ -23,10 +23,9 @@ namespace InventorySystem
             }
         }
 
+
         protected override void OnStart()
         {
-         
-
         }
 
         protected override void OnSleep()
