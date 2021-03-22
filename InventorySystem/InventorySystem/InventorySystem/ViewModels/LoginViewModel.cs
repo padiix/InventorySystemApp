@@ -1,4 +1,5 @@
-﻿using InventorySystem.Views;
+﻿using InventorySystem.Services;
+using InventorySystem.Views;
 using MvvmHelpers;
 using System;
 using System.Collections.Generic;
@@ -18,10 +19,17 @@ namespace InventorySystem.ViewModels
 
         private async void OnLoginClicked(object obj)
         {
-            // Prefixing with `//` switches to a different navigation stack instead of pushing to the active one
             await Xamarin.Essentials.SecureStorage.SetAsync("isLogged", "1");
             Application.Current.MainPage = new AppShell();
-            await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+            if (Settings.FirstRun)
+            {
+                Settings.FirstRun = false;
+                await Shell.Current.GoToAsync($"//{nameof(AboutApp)}");
+            }
+            else
+            {
+                await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+            }
         }
     }
 }

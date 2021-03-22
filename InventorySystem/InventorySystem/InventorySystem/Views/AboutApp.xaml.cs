@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace InventorySystem.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class OApce : ContentPage
+    public partial class AboutApp : ContentPage
     {
-        public OApce()
+        public AboutApp()
         {
             InitializeComponent();
         }

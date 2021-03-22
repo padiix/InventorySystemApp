@@ -13,6 +13,7 @@ namespace InventorySystem
             InitializeComponent();
 
             var isLogged = Xamarin.Essentials.SecureStorage.GetAsync("isLogged").Result;
+
             if (isLogged == "1")
             {
                 MainPage = new AppShell();

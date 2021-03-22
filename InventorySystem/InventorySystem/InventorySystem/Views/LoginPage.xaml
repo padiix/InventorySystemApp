@@ -4,9 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="InventorySystem.Views.LoginPage"
-             Shell.NavBarIsVisible="False"
-             Shell.PresentationMode="Modal">
+             x:Class="InventorySystem.Views.LoginPage">
     <ContentPage.Content>
         <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
             <Label Text="Inventory System" HorizontalOptions="Center" Padding="0,0,0,100" FontSize="Title"/>

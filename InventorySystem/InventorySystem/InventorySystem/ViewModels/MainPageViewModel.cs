@@ -25,9 +25,6 @@ namespace InventorySystem.ViewModels
 
             WelcomeMessage = "Witaj, " + "nazwa użytkownika" + "!"; // It will be shown at your label
 
-            //OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://aka.ms/xamarin-quickstart"));
         }
-
-        //public ICommand OpenWebCommand { get; }
     }
 }
