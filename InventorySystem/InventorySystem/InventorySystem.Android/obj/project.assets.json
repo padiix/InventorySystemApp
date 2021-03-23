@@ -11,10 +11,13 @@
           "lib/MonoAndroid403/FastAndroidCamera.dll": {}
         }
       },
-      "LiveXAML/2.1.73": {
+      "Newtonsoft.Json/12.0.3": {
         "type": "package",
-        "build": {
-          "build/netstandard2.0/_._": {}
+        "compile": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
       "Refractored.MvvmHelpers/1.6.2": {
@@ -1149,7 +1152,7 @@
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
-          "LiveXAML": "2.1.73",
+          "Newtonsoft.Json": "12.0.3",
           "Refractored.MvvmHelpers": "1.6.2",
           "Xamarin.Essentials": "1.6.1",
           "Xamarin.Forms": "5.0.0.2012",
@@ -1182,25 +1185,35 @@
         "src/FastJavaByteArrayEnumerator.cs"
       ]
     },
-    "LiveXAML/2.1.73": {
-      "sha512": "WuyZAgaVvGIN4MoOR5VK3X8PFiCv3swffxzMd6Nf7cJIf32zCjbTgrkasY5K8NSNZ2U4y2nFgLAZ4oeqUvueEA==",
+    "Newtonsoft.Json/12.0.3": {
+      "sha512": "6mgjfnRB4jKMlzHSl+VD+oUc1IebOZabkbyWj2RiTgWwYPPuaK1H97G1sHqGwPlS5npiF5Q0OrxN1wni2n5QWg==",
       "type": "package",
-      "path": "livexaml/2.1.73",
+      "path": "newtonsoft.json/12.0.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "build/netstandard2.0/LiveXAML.targets",
-        "build/netstandard2.0/XamarinLive.Build.dll",
-        "build/netstandard2.0/XamarinLive.Common.dll",
-        "build/netstandard2.0/minified.cs",
-        "build/netstandard2.0/minified.tpl.cs",
-        "build/portable-win+net45+wp80+win81+wpa81/LiveXAML.targets",
-        "build/portable-win+net45+wp80+win81+wpa81/XamarinLive.Build.dll",
-        "build/portable-win+net45+wp80+win81+wpa81/XamarinLive.Common.dll",
-        "build/portable-win+net45+wp80+win81+wpa81/minified.cs",
-        "build/portable-win+net45+wp80+win81+wpa81/minified.tpl.cs",
-        "livexaml.2.1.73.nupkg.sha512",
-        "livexaml.nuspec"
+        "LICENSE.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.xml",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml",
+        "newtonsoft.json.12.0.3.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
       ]
     },
     "Refractored.MvvmHelpers/1.6.2": {
@@ -2559,6 +2572,7 @@
   "projectFileDependencyGroups": {
     "MonoAndroid,Version=v10.0": [
       "InventorySystem >= 1.0.0",
+      "Newtonsoft.Json >= 12.0.3",
       "Xamarin.Essentials >= 1.6.1",
       "Xamarin.Forms >= 5.0.0.2012"
     ]
@@ -2608,6 +2622,10 @@
     "frameworks": {
       "monoandroid10.0": {
         "dependencies": {
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[12.0.3, )"
+          },
           "Xamarin.Essentials": {
             "target": "Package",
             "version": "[1.6.1, )"
