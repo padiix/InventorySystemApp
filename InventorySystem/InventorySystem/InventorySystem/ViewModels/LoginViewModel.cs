@@ -1,4 +1,4 @@
-﻿using InventorySystem.Services;
+using InventorySystem.Services;
 using InventorySystem.Views;
 using MvvmHelpers;
 using System;
@@ -10,6 +10,27 @@ namespace InventorySystem.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
+        private string _login;
+        private string _password;
+
+        public string Login
+        {
+            get => _login;
+            set
+            {
+                _login = value;
+            }
+        }
+
+        public string Password
+        {
+            get => _password;
+            set
+            {
+                _password = value;
+            }
+        }
+
         public Command LoginCommand { get; }
 
         public LoginViewModel()

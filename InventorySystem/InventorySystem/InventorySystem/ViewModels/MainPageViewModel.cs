@@ -11,7 +11,7 @@ namespace InventorySystem.ViewModels
         private string _welcomeMessage;
         public string WelcomeMessage
         {
-            get { return _welcomeMessage; }
+            get => _welcomeMessage;
             set 
             {
                 _welcomeMessage = value;
