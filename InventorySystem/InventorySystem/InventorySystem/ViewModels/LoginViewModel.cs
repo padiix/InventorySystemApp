@@ -10,6 +10,9 @@ namespace InventorySystem.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
+        public string Login { get; set; }
+        public string Password { get; set; }
+
         public Command LoginCommand { get; }
 
         public LoginViewModel()
@@ -19,7 +22,12 @@ namespace InventorySystem.ViewModels
 
         private async void OnLoginClicked(object obj)
         {
-            await Xamarin.Essentials.SecureStorage.SetAsync("isLogged", "1");
+            //Need to create connectivity with API first, then we can work from there.
+            //await Xamarin.Essentials.SecureStorage.SetAsync("user-name", Login);
+            //Login = "";
+            //await Xamarin.Essentials.SecureStorage.SetAsync("password", Password);
+            //Password = "";
+
             Application.Current.MainPage = new AppShell();
             if (Settings.FirstRun)
             {
