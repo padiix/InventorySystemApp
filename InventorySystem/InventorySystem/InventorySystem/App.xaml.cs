@@ -1,5 +1,6 @@
 ﻿using InventorySystem.Views;
 using System;
+using InventorySystem.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -12,9 +13,7 @@ namespace InventorySystem
         {
             InitializeComponent();
 
-            var isLogged = Xamarin.Essentials.SecureStorage.GetAsync("isLogged").Result;
-
-            if (isLogged == "1")
+            if (Settings.RememberMe == true)
             {
                 MainPage = new AppShell();
             }
