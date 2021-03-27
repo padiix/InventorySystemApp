@@ -1,4 +1,5 @@
-﻿using InventorySystem.Services;
+﻿using InventorySystem.Interfaces;
+using InventorySystem.Services;
 using InventorySystem.Views;
 using MvvmHelpers;
 using System;
@@ -22,6 +23,11 @@ namespace InventorySystem.ViewModels
 
         private async void OnLoginClicked(object obj)
         {
+            if (Login == null || Password == null)
+            {
+                DependencyService.Get<IMessage>().ShortAlert("Uzupełnij pole \"login\" lub \"hasło\"");
+                return;
+            }
             //Need to create connectivity with API first, then we can work from there.
             //await Xamarin.Essentials.SecureStorage.SetAsync("user-name", Login);
             //Login = "";
