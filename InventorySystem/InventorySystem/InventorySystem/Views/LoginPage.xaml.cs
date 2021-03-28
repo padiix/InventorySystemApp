@@ -17,6 +17,7 @@ namespace InventorySystem.Views
         {
             InitializeComponent();
             this.BindingContext = new LoginViewModel();
+            Shell.SetNavBarIsVisible(this, false);
         }
 
         private void RememberMeChkbox_OnCheckedChanged(object sender, CheckedChangedEventArgs e)
@@ -30,6 +31,16 @@ namespace InventorySystem.Views
                 Settings.RememberMe = false;
             }
                 
+        }
+
+        private void Login_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            LoginViewModel.Login = e.NewTextValue;
+        }
+
+        private void Password_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            LoginViewModel.Password = e.NewTextValue;
         }
     }
 }

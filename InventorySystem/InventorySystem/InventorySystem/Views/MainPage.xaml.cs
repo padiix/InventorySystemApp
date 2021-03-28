@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using InventorySystem.Models;
 using InventorySystem.Services;
+using InventorySystem.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,13 +15,16 @@ namespace InventorySystem.Views
             InitializeComponent();
         }
 
-        private async void MenuItem_OnClicked(object sender, EventArgs e)
+        private void MenuItem_OnClicked(object sender, EventArgs e)
         {
             Settings.RememberMe = false;
-            await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
-            //After implementation of the API TODO: Assure to clear the username and password from data.
-            //await Xamarin.Essentials.SecureStorage.SetAsync("user-name", "");
-            //await Xamarin.Essentials.SecureStorage.SetAsync("password", "");
+
+            LoginViewModel.Login = "";
+            LoginViewModel.Password = "";
+
+            Xamarin.Essentials.SecureStorage.Remove("token");
+
+            MessagingCenter.Send<object>(this,App.EVENT_LAUNCH_LOGIN_PAGE);
         }
     }
 }

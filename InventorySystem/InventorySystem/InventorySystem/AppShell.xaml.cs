@@ -11,7 +11,6 @@ namespace InventorySystem
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(BarcodeScanner), typeof(BarcodeScanner));
         }
     }
 }
