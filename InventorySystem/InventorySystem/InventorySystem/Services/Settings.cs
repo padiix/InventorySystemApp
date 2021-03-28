@@ -12,5 +12,11 @@ namespace InventorySystem.Services
             get => Preferences.Get(nameof(FirstRun), true);
             set => Preferences.Set(nameof(FirstRun), value);
         }
+
+        public static bool RememberMe
+        {
+            get => Preferences.Get(nameof(RememberMe), false);
+            set => Preferences.Set(nameof(RememberMe), value);
+        }
     }
 }

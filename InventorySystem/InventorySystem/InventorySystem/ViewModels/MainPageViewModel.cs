@@ -23,7 +23,7 @@ namespace InventorySystem.ViewModels
         {
             Title = "Strona główna";
 
-            WelcomeMessage = "Witaj, " + "nazwa użytkownika" + "!"; // It will be shown at your label
+            WelcomeMessage = "Witaj, " + "nazwa użytkownika" + "!"; // Wiadomość w tej zmiennej będzie pokazana na górze ekranu.
 
         }
     }

@@ -1,3 +1,4 @@
+using InventorySystem.Interfaces;
 using InventorySystem.Services;
 using InventorySystem.Views;
 using MvvmHelpers;
@@ -10,26 +11,8 @@ namespace InventorySystem.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-        private string _login;
-        private string _password;
-
-        public string Login
-        {
-            get => _login;
-            set
-            {
-                _login = value;
-            }
-        }
-
-        public string Password
-        {
-            get => _password;
-            set
-            {
-                _password = value;
-            }
-        }
+        public string Login { get; set; }
+        public string Password { get; set; }
 
         public Command LoginCommand { get; }
 
@@ -40,7 +23,17 @@ namespace InventorySystem.ViewModels
 
         private async void OnLoginClicked(object obj)
         {
-            await Xamarin.Essentials.SecureStorage.SetAsync("isLogged", "1");
+            if (Login == null || Password == null)
+            {
+                DependencyService.Get<IMessage>().ShortAlert("Uzupe³nij pole \"login\" lub \"has³o\"");
+                return;
+            }
+            //Need to create connectivity with API first, then we can work from there.
+            //await Xamarin.Essentials.SecureStorage.SetAsync("user-name", Login);
+            //Login = "";
+            //await Xamarin.Essentials.SecureStorage.SetAsync("password", Password);
+            //Password = "";
+
             Application.Current.MainPage = new AppShell();
             if (Settings.FirstRun)
             {
