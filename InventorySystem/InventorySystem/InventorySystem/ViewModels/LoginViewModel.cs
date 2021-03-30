@@ -72,9 +72,13 @@ namespace InventorySystem.ViewModels
                 {
                     var token = Xamarin.Essentials.SecureStorage.GetAsync(RestService.Token);
 
-                    if (token == null) return;
-                    Application.Current.MainPage = new AppShell();
+                    if (token == null)
+                    {
+                        DependencyService.Get<IMessage>().LongAlert("Brak tokena uwierzytelniającego.");
+                        return;
+                    }
 
+                    Application.Current.MainPage = new AppShell();
                     if (Settings.FirstRun)
                     {
                         Settings.FirstRun = false;
@@ -87,7 +91,7 @@ namespace InventorySystem.ViewModels
                 }
                 else
                 {
-                    DependencyService.Get<IMessage>().LongAlert("Weryfikacja nieudana");
+                    DependencyService.Get<IMessage>().LongAlert("Weryfikacja zakończona niepowodzeniem.");
                     return;
                 }
             }

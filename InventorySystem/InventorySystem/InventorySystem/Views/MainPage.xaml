@@ -5,31 +5,49 @@
              xmlns:vm="clr-namespace:InventorySystem.ViewModels"
              Shell.TabBarIsVisible="True"
              Title="{Binding Title}">
+    
     <ContentPage.BindingContext>
         <vm:MainPageViewModel />
     </ContentPage.BindingContext>
     
     <ContentPage.Resources>
         <ResourceDictionary>
+            
             <Color x:Key="Accent">LightGray</Color>
+
         </ResourceDictionary>
     </ContentPage.Resources>
     
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Log out" Clicked="MenuItem_OnClicked"/>
+        
+        <ToolbarItem Text="Log out" 
+                     Clicked="MenuItem_OnClicked"/>
+
     </ContentPage.ToolbarItems>
 
     <Grid>
         <Grid.RowDefinitions>
+            
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+
         </Grid.RowDefinitions>
-        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="Center" Padding="0,30,0,30">
-            <Label Text="{Binding WelcomeMessage}" FontSize="Title"/>
+        
+        <StackLayout VerticalOptions="FillAndExpand" 
+                     HorizontalOptions="Center" 
+                     Padding="0,30,0,30">
+            
+            <Label Text="{Binding WelcomeMessage}" 
+                   FontSize="Title"/>
+
         </StackLayout>
-        <StackLayout Grid.Row="1" Padding="20,15">
+        
+        <StackLayout Grid.Row="1" 
+                     Padding="20,15">
+            
             <Label Text="Ostatnio zmodyfikowane przedmioty:"/>
             <ListView VerticalScrollBarVisibility="Always" BackgroundColor="GhostWhite"/>
+
         </StackLayout>
     </Grid>
 
