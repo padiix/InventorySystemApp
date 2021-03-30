@@ -1,45 +1,95 @@
-﻿using InventorySystem.Interfaces;
-using InventorySystem.Services;
-using InventorySystem.Views;
-using MvvmHelpers;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using InventorySystem.Interfaces;
 using InventorySystem.Models;
+using InventorySystem.Services;
+using MvvmHelpers;
 using Xamarin.Forms;
 
 namespace InventorySystem.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-        public static string Login;
-        public static string Password;
+        private string _email;
+        private string _password;
+        private bool _isEmailValid;
+        private bool _isPasswordValid;
+
+        public bool IsEmailValid
+        {
+            get => _isEmailValid;
+            set
+            {
+                _isEmailValid = value;
+                OnPropertyChanged(nameof(IsEmailValid));
+            }
+        }
+        public bool IsPasswordValid
+        {
+            get => _isPasswordValid;
+            set
+            {
+                _isPasswordValid = value;
+                OnPropertyChanged(nameof(IsPasswordValid));
+            }
+        }
+        public string Email
+        {
+            get => _email;
+            set
+            {
+                _email = value;
+                Models.Login.Email = value;
+                OnPropertyChanged(Email);
+            }
+        }
+        public string Password
+        {
+            get => _password;
+            set
+            {
+                _password = value;
+                Models.Login.Password = value;
+                OnPropertyChanged(Password);
+            }
+        }
 
         public Command LoginCommand { get; }
 
         public LoginViewModel()
         {
-            LoginCommand = new Command(OnLoginClicked);
+            LoginCommand = new Command(async () => await OnLoginClicked());
         }
 
-        private async void OnLoginClicked(object obj)
+
+        private async Task OnLoginClicked()
         {
-            if (Login == null || Password == null)
+            if (IsEmailValid && IsPasswordValid)
             {
-                DependencyService.Get<IMessage>().ShortAlert("Uzupełnij pole \"login\" lub \"hasło\"");
-                return;
-            }
+                var restService = new RestService();
+                if (await restService.VerifyLogin())
+                {
+                    var token = Xamarin.Essentials.SecureStorage.GetAsync(RestService.Token);
 
-            Application.Current.MainPage = new AppShell();
+                    if (token == null) return;
+                    Application.Current.MainPage = new AppShell();
 
-            if (Settings.FirstRun)
-            {
-                Settings.FirstRun = false;
-                await Shell.Current.GoToAsync($"//about");
-            }
-            else
-            {
-                await Shell.Current.GoToAsync("//main");
+                    if (Settings.FirstRun)
+                    {
+                        Settings.FirstRun = false;
+                        await Shell.Current.GoToAsync($"//about");
+                    }
+                    else
+                    {
+                        await Shell.Current.GoToAsync("//main");
+                    }
+                }
+                else
+                {
+                    DependencyService.Get<IMessage>().LongAlert("Weryfikacja nieudana");
+                    return;
+                }
             }
         }
     }

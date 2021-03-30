@@ -1,6 +1,7 @@
 ﻿using MvvmHelpers;
 using System;
 using System.Windows.Input;
+using InventorySystem.Models;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -23,7 +24,7 @@ namespace InventorySystem.ViewModels
         {
             Title = "Strona główna";
 
-            WelcomeMessage = "Witaj, " + "nazwa użytkownika" + "!"; // Wiadomość w tej zmiennej będzie pokazana na górze ekranu.
+            WelcomeMessage = "Witaj, " + PublicUserViewModel.FirstName + "!"; // Wiadomość w tej zmiennej będzie pokazana na górze ekranu.
 
         }
     }

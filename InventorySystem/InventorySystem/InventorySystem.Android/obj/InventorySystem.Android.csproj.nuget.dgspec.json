@@ -48,6 +48,10 @@
               "target": "Package",
               "version": "[12.0.3, )"
             },
+            "Xamarin.CommunityToolkit": {
+              "target": "Package",
+              "version": "[1.1.0, )"
+            },
             "Xamarin.Essentials": {
               "target": "Package",
               "version": "[1.6.1, )"
@@ -115,6 +119,14 @@
             "Refractored.MvvmHelpers": {
               "target": "Package",
               "version": "[1.6.2, )"
+            },
+            "System.ComponentModel.Annotations": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Xamarin.CommunityToolkit": {
+              "target": "Package",
+              "version": "[1.1.0, )"
             },
             "Xamarin.Essentials": {
               "target": "Package",
