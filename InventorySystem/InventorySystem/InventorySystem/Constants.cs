@@ -6,7 +6,8 @@ namespace InventorySystem
 {
     public static class Constants
     {
-        public const string AccountEndpoint = "https://localhost:58230/api/account";
-        public const string ItemsEndpoint = "https://localhost:58230/api/items";
+        //TODO: Change the "10.0.2.2" part to working address, as this one is a loopback to dev machine localhost
+        public const string AccountEndpoint = "http://10.0.2.2:5000/api/account";
+        public const string ItemsEndpoint = "http://10.0.2.2:5000/api/items";
     }
 }

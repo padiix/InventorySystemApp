@@ -19,10 +19,10 @@ namespace InventorySystem.Views
         {
             Settings.RememberMe = false;
 
-            LoginViewModel.Login = "";
-            LoginViewModel.Password = "";
+            Login.Email = "";
+            Login.Password = "";
 
-            Xamarin.Essentials.SecureStorage.Remove("token");
+            Xamarin.Essentials.SecureStorage.Remove(RestService.Token);
 
             MessagingCenter.Send<object>(this,App.EVENT_LAUNCH_LOGIN_PAGE);
         }
