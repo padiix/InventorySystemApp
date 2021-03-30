@@ -18,6 +18,7 @@ namespace InventorySystem.Views
         {
             InitializeComponent();
             this.BindingContext = new LoginViewModel();
+	        //TODO: Make sure that line below is working at all times.
             Shell.SetNavBarIsVisible(this, false);
         }
 
@@ -36,13 +37,20 @@ namespace InventorySystem.Views
 
         private void CheckPasswordValidity()
         {
-            if (PasswordValidationBehavior.Errors != null)
+            if (!PasswordValidationBehavior.IsValid)
             {
                 PasswordError.IsVisible = true;
+                
+                var errorBuilder = new StringBuilder();
                 foreach (var error in PasswordValidationBehavior.Errors)
                 {
-                    PasswordError.Text += error.ToString() + "\n";
+                    if (error is string)
+                    {
+                        errorBuilder.Append((string) error.ToString());
+                    }
                 }
+                
+                PasswordError.Text = errorBuilder.ToString();
             }
         }
 
