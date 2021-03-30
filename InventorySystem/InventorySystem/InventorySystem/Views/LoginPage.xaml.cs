@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using InventorySystem.Services;
+using Xamarin.CommunityToolkit.Behaviors;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -33,14 +34,27 @@ namespace InventorySystem.Views
                 
         }
 
-        private void Login_OnTextChanged(object sender, TextChangedEventArgs e)
+        private void CheckPasswordValidity()
         {
-            LoginViewModel.Login = e.NewTextValue;
+            if (PasswordValidationBehavior.Errors != null)
+            {
+                PasswordError.IsVisible = true;
+                foreach (var error in PasswordValidationBehavior.Errors)
+                {
+                    PasswordError.Text += error.ToString() + "\n";
+                }
+            }
         }
 
-        private void Password_OnTextChanged(object sender, TextChangedEventArgs e)
+        private void PasswordEntry_OnUnfocused(object sender, FocusEventArgs e)
         {
-            LoginViewModel.Password = e.NewTextValue;
+            CheckPasswordValidity();
+        }
+
+        private void PasswordEntry_OnFocused(object sender, FocusEventArgs e)
+        {
+            PasswordError.IsVisible = false;
+            PasswordError.Text = "";
         }
     }
 }

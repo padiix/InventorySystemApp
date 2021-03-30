@@ -3,16 +3,43 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:viewmodels="clr-namespace:InventorySystem.ViewModels" 
+             xmlns:viewmodels="clr-namespace:InventorySystem.ViewModels"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:DataType="viewmodels:LoginViewModel"
              x:Class="InventorySystem.Views.LoginPage">
+    <ContentPage.Resources>
+        <Style x:Key="Style_Invalid" TargetType="Entry">
+            <Setter Property="TextColor" Value="Red"/>
+        </Style>
+        <ResourceDictionary>
+            <xct:InvertedBoolConverter x:Key="InvertedBoolConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
             <Label Text="Inventory System" HorizontalOptions="Center" Padding="0,0,0,100" FontSize="Title"/>
             <Frame BackgroundColor="SeaShell" CornerRadius="7">
                 <StackLayout>
-                    <Entry x:Name="Login" Placeholder="Login" FontSize="Medium" IsSpellCheckEnabled="False" TextChanged="Login_OnTextChanged"/>
-                    <Entry x:Name="Password" Placeholder="Password" FontSize="Medium" IsPassword="True" TextChanged="Password_OnTextChanged"/>
+                    <Entry x:Name="EmailEntry" Placeholder="Login" FontSize="Medium" IsSpellCheckEnabled="False" Text="{Binding Email, Mode=TwoWay}">
+                        <Entry.Behaviors>
+                            <xct:EmailValidationBehavior InvalidStyle="{StaticResource Style_Invalid}" 
+                                                         Flags="ValidateOnUnfocusing" 
+                                                         IsValid="{Binding IsEmailValid}"/>
+                        </Entry.Behaviors>
+                    </Entry>
+                    <Label Text="Email is not valid" IsVisible="{Binding IsEmailValid, Converter={StaticResource InvertedBoolConverter}}" TextColor="Red"/>
+                    <Entry x:Name="PasswordEntry" Placeholder="Password" FontSize="Medium" IsPassword="True" Text="{Binding Password, Mode=TwoWay}" Unfocused="PasswordEntry_OnUnfocused" Focused="PasswordEntry_OnFocused">
+                        <Entry.Behaviors>
+                            <xct:MultiValidationBehavior x:Name="PasswordValidationBehavior" IsValid="{Binding IsPasswordValid}">
+                                <xct:TextValidationBehavior MinimumLength="6" xct:MultiValidationBehavior.Error="Password must be at least 6 characters." Flags="ValidateOnUnfocusing"/>
+                                <xct:CharactersValidationBehavior RegexPattern="[A-Z]" xct:MultiValidationBehavior.Error="Password must contain at least 1 uppercase character." Flags="ValidateOnUnfocusing"/>
+                                <xct:CharactersValidationBehavior RegexPattern="[a-z]" xct:MultiValidationBehavior.Error="Password must contain at least 1 lowercase character." Flags="ValidateOnUnfocusing"/>
+                                <xct:CharactersValidationBehavior RegexPattern="[0-9]" xct:MultiValidationBehavior.Error="Password must contain at least 1 number." Flags="ValidateOnUnfocusing"/>
+                                <xct:CharactersValidationBehavior RegexPattern="[^a-zA-Z0-9]" xct:MultiValidationBehavior.Error="Password must contain at least 1 non alphanumeric character." Flags="ValidateOnUnfocusing"/>
+                            </xct:MultiValidationBehavior>
+                        </Entry.Behaviors>
+                    </Entry>
+                    <Label x:Name="PasswordError" IsVisible="False" TextColor="Red"/>
                     <FlexLayout AlignItems="Center" JustifyContent="End">
                         <Label Text="Remember me"/>
                         <CheckBox x:Name="RememberMeChkbox" IsChecked="False" CheckedChanged="RememberMeChkbox_OnCheckedChanged"/>
