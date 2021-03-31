@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InventorySystem.Models.CustomValidators;
 using InventorySystem.Services;
 using Xamarin.CommunityToolkit.Behaviors;
 using Xamarin.Forms;
@@ -18,8 +19,7 @@ namespace InventorySystem.Views
         {
             InitializeComponent();
             this.BindingContext = new LoginViewModel();
-	        //TODO: Make sure that line below is working at all times.
-            Shell.SetNavBarIsVisible(this, false);
+            NavigationPage.SetHasNavigationBar(this, false);
         }
 
         private void RememberMeChkbox_OnCheckedChanged(object sender, CheckedChangedEventArgs e)
@@ -42,11 +42,12 @@ namespace InventorySystem.Views
                 PasswordError.IsVisible = true;
                 
                 var errorBuilder = new StringBuilder();
+                errorBuilder.Append("Password must have:\n");
                 foreach (var error in PasswordValidationBehavior.Errors)
                 {
                     if (error is string)
                     {
-                        errorBuilder.Append((string) error.ToString());
+                        errorBuilder.Append((string) error.ToString() + "\n");
                     }
                 }
                 
