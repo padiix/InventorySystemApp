@@ -27,7 +27,7 @@ namespace InventorySystem.Services
         {
             _client = new HttpClient();
 
-            //TODO: Implement connectivity with the API
+            //TODO: Implement all of the methods for working with API
         }
 
         public async Task<bool> VerifyLogin()

@@ -65,35 +65,33 @@ namespace InventorySystem.ViewModels
 
         private async Task OnLoginClicked()
         {
-            if (IsEmailValid && IsPasswordValid)
+            if (IsEmailValid == false || IsPasswordValid == false) return;
+            var restService = new RestService();
+            if (await restService.VerifyLogin())
             {
-                var restService = new RestService();
-                if (await restService.VerifyLogin())
+                var token = Xamarin.Essentials.SecureStorage.GetAsync(RestService.Token);
+
+                if (token == null)
                 {
-                    var token = Xamarin.Essentials.SecureStorage.GetAsync(RestService.Token);
+                    DependencyService.Get<IMessage>().LongAlert("Brak tokena uwierzytelniającego.");
+                    return;
+                }
 
-                    if (token == null)
-                    {
-                        DependencyService.Get<IMessage>().LongAlert("Brak tokena uwierzytelniającego.");
-                        return;
-                    }
-
-                    Application.Current.MainPage = new AppShell();
-                    if (Settings.FirstRun)
-                    {
-                        Settings.FirstRun = false;
-                        await Shell.Current.GoToAsync($"//about");
-                    }
-                    else
-                    {
-                        await Shell.Current.GoToAsync("//main");
-                    }
+                Application.Current.MainPage = new AppShell();
+                if (Settings.FirstRun)
+                {
+                    Settings.FirstRun = false;
+                    await Shell.Current.GoToAsync($"//about");
                 }
                 else
                 {
-                    DependencyService.Get<IMessage>().LongAlert("Weryfikacja zakończona niepowodzeniem.");
-                    return;
+                    await Shell.Current.GoToAsync("//main");
                 }
+            }
+            else
+            {
+                DependencyService.Get<IMessage>().LongAlert("Weryfikacja zakończona niepowodzeniem.");
+                return;
             }
         }
     }

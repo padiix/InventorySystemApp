@@ -4,7 +4,8 @@
              xmlns:viewmodels="clr-namespace:InventorySystem.ViewModels"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:DataType="viewmodels:LoginViewModel"
-             x:Class="InventorySystem.Views.LoginPage">
+             x:Class="InventorySystem.Views.LoginPage"
+             Shell.NavBarIsVisible="False">
     
     <ContentPage.Resources>
         
@@ -42,7 +43,8 @@
                     
                     <Label Text="Email is not valid" 
                            IsVisible="{Binding IsEmailValid, Converter={StaticResource InvertedBoolConverter}}" 
-                           TextColor="Red"/>
+                           TextColor="Red"
+                           FontSize="Caption"/>
                     
                     <Entry x:Name="PasswordEntry" 
                            Placeholder="Password" 
@@ -57,19 +59,19 @@
                                                          IsValid="{Binding IsPasswordValid}">
                                 
                                 <xct:TextValidationBehavior MinimumLength="6" 
-                                                            xct:MultiValidationBehavior.Error="Password must be at least 6 characters." 
+                                                            xct:MultiValidationBehavior.Error="* at least 6 characters." 
                                                             Flags="ValidateOnUnfocusing"/>
                                 <xct:CharactersValidationBehavior RegexPattern="[A-Z]" 
-                                                                  xct:MultiValidationBehavior.Error="Password must contain at least 1 uppercase character." 
+                                                                  xct:MultiValidationBehavior.Error="* at least 1 uppercase character." 
                                                                   Flags="ValidateOnUnfocusing"/>
                                 <xct:CharactersValidationBehavior RegexPattern="[a-z]" 
-                                                                  xct:MultiValidationBehavior.Error="Password must contain at least 1 lowercase character." 
+                                                                  xct:MultiValidationBehavior.Error="* at least 1 lowercase character." 
                                                                   Flags="ValidateOnUnfocusing"/>
                                 <xct:CharactersValidationBehavior RegexPattern="[0-9]" 
-                                                                  xct:MultiValidationBehavior.Error="Password must contain at least 1 number." 
+                                                                  xct:MultiValidationBehavior.Error="* at least 1 number." 
                                                                   Flags="ValidateOnUnfocusing"/>
                                 <xct:CharactersValidationBehavior RegexPattern="[^a-zA-Z0-9]" 
-                                                                  xct:MultiValidationBehavior.Error="Password must contain at least 1 non alphanumeric character." 
+                                                                  xct:MultiValidationBehavior.Error="* at least 1 non alphanumeric character." 
                                                                   Flags="ValidateOnUnfocusing"/>
 
                             </xct:MultiValidationBehavior>
@@ -79,7 +81,8 @@
                     
                     <Label x:Name="PasswordError" 
                            IsVisible="False" 
-                           TextColor="Red"/>
+                           TextColor="Red"
+                           FontSize="Caption"/>
                     
                     <FlexLayout AlignItems="Center" 
                                 JustifyContent="End">
