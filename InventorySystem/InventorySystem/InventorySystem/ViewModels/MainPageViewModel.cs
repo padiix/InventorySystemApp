@@ -1,5 +1,9 @@
 ﻿using MvvmHelpers;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
 using System.Windows.Input;
 using InventorySystem.Models;
 using Xamarin.Essentials;
@@ -9,11 +13,27 @@ namespace InventorySystem.ViewModels
 {
     public class MainPageViewModel : BaseViewModel
     {
+        private static readonly Guid _itemGuid1 = new Guid("ce91ee2a-64ee-40ae-a839-ceb7194d2850");
+        private static readonly Guid _itemGuid2 = new Guid("93aed42e-8b10-4d38-a01c-fb2d8ff5b487");
+        private static readonly Guid _itemGuid3 = new Guid("ac2a4217-f458-4fa6-b00f-9429a7561e2d");
+        private static readonly Guid _userGuid1 = Guid.NewGuid();
+        private static readonly Guid _userGuid2 = Guid.NewGuid();
+        private static readonly User _user1 = new User() { Id = _userGuid1, FirstName = "John", LastName = "Doe", Email = "joed@test.com" };
+        private static readonly User _user2 = new User() { Id = _userGuid2, FirstName = "Alex", LastName = "Frown", Email = "alexf@test.com" };
+        private readonly Item _item1 = new Item() { Id = _itemGuid1, Barcode = "barcode_example1", Name = "Item1", DateAdded = DateTime.Today, /*UserId = "1",*/ User = _user1 };
+        private readonly Item _item2 = new Item() { Id = _itemGuid2, Barcode = "barcode_example2", Name = "Item2", DateAdded = DateTime.Parse("08/18/2018 07:32:23"), /*UserId = "1",*/ User = _user1 };
+        private readonly Item _item3 = new Item() { Id = _itemGuid3, Barcode = "barcode_example3", Name = "Item3", DateAdded = DateTime.Parse("05/23/2020 15:15:16"), /*UserId = "2",*/ User = _user2 };
+
+        private readonly List<Item> _sourceItems;
+        public ObservableCollection<Item> UserItems { get; set; }
+
         private string _welcomeMessage;
+
+
         public string WelcomeMessage
         {
             get => _welcomeMessage;
-            set 
+            set
             {
                 _welcomeMessage = value;
                 OnPropertyChanged(nameof(WelcomeMessage)); // Informuj, że była zmiana na tej właściwości
@@ -24,8 +44,26 @@ namespace InventorySystem.ViewModels
         {
             Title = "Strona główna";
 
-            WelcomeMessage = "Witaj, " + PublicUserViewModel.FirstName + "!"; // Wiadomość w tej zmiennej będzie pokazana na górze ekranu.
+            WelcomeMessage = "Witaj, " + StaticValues.FirstName + "!"; // Wiadomość w tej zmiennej będzie pokazana na górze ekranu.
 
+            _sourceItems = new List<Item> { _item1, _item2, _item3 };
+            InitCollectionView();
+        }
+
+        private void InitCollectionView()
+        {
+            UserItems = new ObservableCollection<Item>(_sourceItems);
+
+            var currentUserItems = _sourceItems.Where(item => item.User.Id.ToString().Contains(StaticValues.UserId)).ToList();
+
+            foreach (var item in currentUserItems)
+            {
+                if (!currentUserItems.Contains(item))
+                    UserItems.Remove(item);
+
+                else if (!UserItems.Contains(item))
+                    UserItems.Add(item);
+            }
         }
     }
 }

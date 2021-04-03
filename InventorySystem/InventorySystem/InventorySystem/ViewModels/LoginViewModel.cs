@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using System;
 using System.Threading.Tasks;
 using InventorySystem.Interfaces;
 using InventorySystem.Models;
@@ -40,7 +39,6 @@ namespace InventorySystem.ViewModels
             set
             {
                 _email = value;
-                Models.Login.Email = value;
                 OnPropertyChanged(Email);
             }
         }
@@ -50,7 +48,6 @@ namespace InventorySystem.ViewModels
             set
             {
                 _password = value;
-                Models.Login.Password = value;
                 OnPropertyChanged(Password);
             }
         }
@@ -62,36 +59,48 @@ namespace InventorySystem.ViewModels
             LoginCommand = new Command(async () => await OnLoginClicked());
         }
 
+        public bool IsEmailAndPasswordValid()
+        {
+            if (string.IsNullOrWhiteSpace(Email)) return false;
+            return !string.IsNullOrWhiteSpace(Password);
+        }
 
         private async Task OnLoginClicked()
         {
-            if (IsEmailValid == false || IsPasswordValid == false) return;
-            var restService = new RestService();
-            if (await restService.VerifyLogin())
+            if (IsEmailAndPasswordValid())
             {
-                var token = Xamarin.Essentials.SecureStorage.GetAsync(RestService.Token);
-
-                if (token == null)
+                var restService = new RestService();
+                if (await restService.VerifyLogin(Email, Password))
                 {
-                    DependencyService.Get<IMessage>().LongAlert("Brak tokena uwierzytelniającego.");
-                    return;
-                }
+                    var token = Xamarin.Essentials.SecureStorage.GetAsync(RestService.Token);
 
-                Application.Current.MainPage = new AppShell();
-                if (Settings.FirstRun)
-                {
-                    Settings.FirstRun = false;
-                    await Shell.Current.GoToAsync($"//about");
+                    if (token == null)
+                    {
+                        DependencyService.Get<IMessage>().LongAlert("Brak tokena uwierzytelniającego.");
+                        return;
+                    }
+
+                    Application.Current.MainPage = new AppShell();
+                    if (Settings.FirstRun)
+                    {
+                        Settings.FirstRun = false;
+                        await Shell.Current.GoToAsync("//about");
+                    }
+                    else
+                    {
+                        await Shell.Current.GoToAsync("//main");
+                    }
+
                 }
                 else
                 {
-                    await Shell.Current.GoToAsync("//main");
+                    DependencyService.Get<IMessage>().LongAlert("Weryfikacja zakończona niepowodzeniem.");
+                    return;
                 }
             }
             else
             {
-                DependencyService.Get<IMessage>().LongAlert("Weryfikacja zakończona niepowodzeniem.");
-                return;
+                DependencyService.Get<IMessage>().LongAlert("Uzupełnij pola Email oraz Password!");
             }
         }
     }

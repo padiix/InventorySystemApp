@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -18,23 +19,26 @@ namespace InventorySystem.Services
     class RestService : IRestService
     {
 
-        public Item Items { get; set; }
-        readonly HttpClient _client;
-        private PublicUserViewModel _publicUser;
+        public List<Item> Items { get; set; }
+        private readonly HttpClient _client;
+        private UserData _userData;
         public const string Token = "token";
 
         public RestService()
         {
             _client = new HttpClient();
-
+            Items = new List<Item>();
             //TODO: Implement all of the methods for working with API
         }
 
-        public async Task<bool> VerifyLogin()
+        public async Task<bool> VerifyLogin(string email, string password)
         {
-            var uri = new Uri(Constants.AccountEndpoint + "/login");
-            var valuesLogin = new Login();
-
+            var uri = new Uri(Constants.AccountLogin);
+            var valuesLogin = new Login()
+            {
+                Email = email,
+                Password = password
+            };
 
             try
             {
@@ -48,8 +52,20 @@ namespace InventorySystem.Services
                 if (resp.IsSuccessStatusCode)
                 {
                     var jsonAsStringAsync = await resp.Content.ReadAsStringAsync();
-                    _publicUser = JsonConvert.DeserializeObject<PublicUserViewModel>(jsonAsStringAsync);
-                    await Xamarin.Essentials.SecureStorage.SetAsync(RestService.Token, _publicUser.Token);
+                    _userData = JsonConvert.DeserializeObject<UserData>(jsonAsStringAsync);
+
+                    await Xamarin.Essentials.SecureStorage.SetAsync(Token, _userData.Token);
+
+                    StaticValues.UserId = _userData.Id.ToString();
+                    StaticValues.FirstName = _userData.FirstName;
+                    StaticValues.LastName = _userData.LastName;
+                    StaticValues.Username = _userData.Username;
+                    StaticValues.Email = _userData.Email;
+
+                    if (!Settings.RememberMe) return true;
+
+                    await Application.Current.SavePropertiesAsync();
+
                     return true;
                 }
                 else
@@ -66,7 +82,7 @@ namespace InventorySystem.Services
             }
         }
 
-        public async Task<Item> GetItems()
+        public async Task<List<Item>> GetItems()
         {
             var uri = new Uri(Constants.ItemsEndpoint);
 
@@ -79,8 +95,8 @@ namespace InventorySystem.Services
                 if (resp.IsSuccessStatusCode)
                 {
                     var jsonAsStringAsync = await resp.Content.ReadAsStringAsync();
-                    Items = JsonConvert.DeserializeObject<Item>(jsonAsStringAsync);
-                    await Xamarin.Essentials.SecureStorage.SetAsync(RestService.Token, _publicUser.Token);
+                    Items = JsonConvert.DeserializeObject<List<Item>>(jsonAsStringAsync);
+                    
                     return Items;
                 }
                 else

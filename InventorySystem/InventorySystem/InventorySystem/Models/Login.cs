@@ -11,9 +11,9 @@ namespace InventorySystem.Models
     {
         [Required, EmailAddress]
         [JsonProperty("email")]
-        public static string Email { get; set; }
+        public string Email { get; set; }
         [Required, Password]
         [JsonProperty("password")]
-        public static string Password { get; set; }
+        public string Password { get; set; }
     }
 }
