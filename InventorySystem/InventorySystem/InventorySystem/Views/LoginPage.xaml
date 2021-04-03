@@ -6,17 +6,17 @@
              x:DataType="viewmodels:LoginViewModel"
              x:Class="InventorySystem.Views.LoginPage"
              Shell.NavBarIsVisible="False">
-    
+
     <ContentPage.Resources>
-        
+
         <ResourceDictionary>
-            
+
             <xct:InvertedBoolConverter x:Key="InvertedBoolConverter"/>
 
         </ResourceDictionary>
 
     </ContentPage.Resources>
-    
+
     <ContentPage.Content>
         <StackLayout Padding="10,0,10,0" 
                      VerticalOptions="Center">
@@ -27,25 +27,25 @@
             <Frame BackgroundColor="SeaShell" 
                    CornerRadius="7">
                 <StackLayout>
-                    
+
                     <Entry x:Name="EmailEntry" 
-                           Placeholder="Login" 
+                           Placeholder="Email" 
                            FontSize="Medium" 
                            IsSpellCheckEnabled="False" 
                            Text="{Binding Email, Mode=TwoWay}">
                         <Entry.Behaviors>
-                            
+
                             <xct:EmailValidationBehavior Flags="ValidateOnUnfocusing" 
                                                          IsValid="{Binding IsEmailValid}"/>
 
                         </Entry.Behaviors>
                     </Entry>
-                    
-                    <Label Text="Email is not valid" 
+
+                    <Label Text="Email jest niepoprawny" 
                            IsVisible="{Binding IsEmailValid, Converter={StaticResource InvertedBoolConverter}}" 
                            TextColor="Red"
                            FontSize="Caption"/>
-                    
+
                     <Entry x:Name="PasswordEntry" 
                            Placeholder="Password" 
                            FontSize="Medium" 
@@ -54,47 +54,47 @@
                            Unfocused="PasswordEntry_OnUnfocused" 
                            Focused="PasswordEntry_OnFocused">
                         <Entry.Behaviors>
-                            
+
                             <xct:MultiValidationBehavior x:Name="PasswordValidationBehavior" 
-                                                         IsValid="{Binding IsPasswordValid}">
-                                
+                                                         IsValid="{Binding IsPasswordValid}"
+                                                         Flags="ValidateOnUnfocusing">
+
                                 <xct:TextValidationBehavior MinimumLength="6" 
-                                                            xct:MultiValidationBehavior.Error="* at least 6 characters." 
-                                                            Flags="ValidateOnUnfocusing"/>
+                                                            xct:MultiValidationBehavior.Error="* conajmniej 6 znaków" />
+
                                 <xct:CharactersValidationBehavior RegexPattern="[A-Z]" 
-                                                                  xct:MultiValidationBehavior.Error="* at least 1 uppercase character." 
-                                                                  Flags="ValidateOnUnfocusing"/>
+                                                                  xct:MultiValidationBehavior.Error="* conamjniej 1. dużą literę"/>
+
                                 <xct:CharactersValidationBehavior RegexPattern="[a-z]" 
-                                                                  xct:MultiValidationBehavior.Error="* at least 1 lowercase character." 
-                                                                  Flags="ValidateOnUnfocusing"/>
+                                                                  xct:MultiValidationBehavior.Error="* conajmniej 1. małą literę"/>
+
                                 <xct:CharactersValidationBehavior RegexPattern="[0-9]" 
-                                                                  xct:MultiValidationBehavior.Error="* at least 1 number." 
-                                                                  Flags="ValidateOnUnfocusing"/>
+                                                                  xct:MultiValidationBehavior.Error="* conajmniej 1. cyfrę"/>
+
                                 <xct:CharactersValidationBehavior RegexPattern="[^a-zA-Z0-9]" 
-                                                                  xct:MultiValidationBehavior.Error="* at least 1 non alphanumeric character." 
-                                                                  Flags="ValidateOnUnfocusing"/>
+                                                                  xct:MultiValidationBehavior.Error="* conajmniej 1. znak specjalny" />
 
                             </xct:MultiValidationBehavior>
 
                         </Entry.Behaviors>
                     </Entry>
-                    
+
                     <Label x:Name="PasswordError" 
                            IsVisible="False" 
                            TextColor="Red"
                            FontSize="Caption"/>
-                    
+
                     <FlexLayout AlignItems="Center" 
                                 JustifyContent="End">
-                        
+
                         <Label Text="Remember me"/>
-                        
+
                         <CheckBox x:Name="RememberMeChkbox" 
                                   IsChecked="False" 
                                   CheckedChanged="RememberMeChkbox_OnCheckedChanged"/>
 
                     </FlexLayout>
-                    
+
                     <Button VerticalOptions="Center" 
                             Text="Login" 
                             Command="{Binding LoginCommand}"/>

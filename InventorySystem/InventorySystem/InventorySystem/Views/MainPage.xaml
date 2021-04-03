@@ -20,8 +20,11 @@
     
     <ContentPage.ToolbarItems>
         
+        <ToolbarItem Text="Account"
+                     Clicked="Account_OnClicked"/>
+
         <ToolbarItem Text="Log out" 
-                     Clicked="MenuItem_OnClicked"/>
+                     Clicked="Logout_OnClicked"/>
 
     </ContentPage.ToolbarItems>
 
@@ -44,9 +47,58 @@
         
         <StackLayout Grid.Row="1" 
                      Padding="20,15">
+            <Label Padding="10,0,0,5"
+                   Text="Ostatnio zmodyfikowane przedmioty:"
+                   FontSize="18"/>
+
+            <SearchBar Scale="0.9"
+                       Placeholder="Nazwa przedmiotu"
+                       TextChanged="SearchBar_OnTextChanged"/>
             
-            <Label Text="Ostatnio zmodyfikowane przedmioty:"/>
-            <ListView VerticalScrollBarVisibility="Always" BackgroundColor="GhostWhite"/>
+
+            <CollectionView ItemsSource="{Binding UserItems}"
+                            BackgroundColor="GhostWhite"> 
+                
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="10">
+
+                            <Label Text="{Binding Name}"
+                                   TextColor="Black"
+                                   HorizontalTextAlignment="Center"
+                                   TextTransform="Uppercase"
+                                   FontSize="Title"/>
+
+                            <FlexLayout AlignItems="Center">
+                                <Label Text="Barcode:  "
+                                       FontSize="Subtitle"/>
+                                <Label Text ="{Binding Barcode}"
+                                       FontSize="18"/>
+                            </FlexLayout>
+
+                            <FlexLayout AlignItems="Center">
+                                <Label Text="Last modification:  "
+                                       FontSize="Subtitle"/>
+                                <Label Text="{Binding DateAdded}"
+                                       FontSize="18"/>
+                            </FlexLayout>
+
+                            <FlexLayout AlignItems="Center">
+                                <Label Text="Modified by:"
+                                       FontSize="Subtitle"/>
+                                <Label Padding="4,0,0,0"
+                                   Text="{Binding User.FirstName}"
+                                   FontSize="18"/>
+                                <Label Padding="3,0,0,0"
+                                   Text="{Binding User.LastName}"
+                                   FontSize="18"/>
+                            </FlexLayout>
+
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
 
         </StackLayout>
     </Grid>
