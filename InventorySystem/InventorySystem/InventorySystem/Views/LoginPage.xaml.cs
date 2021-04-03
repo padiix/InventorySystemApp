@@ -22,37 +22,28 @@ namespace InventorySystem.Views
             NavigationPage.SetHasNavigationBar(this, false);
         }
 
-        private void RememberMeChkbox_OnCheckedChanged(object sender, CheckedChangedEventArgs e)
+        private async void RememberMeChkbox_OnCheckedChanged(object sender, CheckedChangedEventArgs e)
         {
-            if (RememberMeChkbox.IsChecked == true)
-            {
-                Settings.RememberMe = true;
-            }
-            else
-            {
-                Settings.RememberMe = false;
-            }
-                
+            Settings.RememberMe = (RememberMeChkbox.IsChecked == true);
+            await Application.Current.SavePropertiesAsync();
         }
 
         private void CheckPasswordValidity()
         {
-            if (!PasswordValidationBehavior.IsValid)
+            if (PasswordValidationBehavior.IsValid) return;
+            PasswordError.IsVisible = true;
+                
+            var errorBuilder = new StringBuilder();
+            errorBuilder.Append("Hasło musi mieć:\n");
+            foreach (var error in PasswordValidationBehavior.Errors)
             {
-                PasswordError.IsVisible = true;
-                
-                var errorBuilder = new StringBuilder();
-                errorBuilder.Append("Password must have:\n");
-                foreach (var error in PasswordValidationBehavior.Errors)
+                if (error is string)
                 {
-                    if (error is string)
-                    {
-                        errorBuilder.Append((string) error.ToString() + "\n");
-                    }
+                    errorBuilder.Append((string) error.ToString() + "\n");
                 }
-                
-                PasswordError.Text = errorBuilder.ToString();
             }
+                
+            PasswordError.Text = errorBuilder.ToString();
         }
 
         private void PasswordEntry_OnUnfocused(object sender, FocusEventArgs e)
@@ -63,7 +54,6 @@ namespace InventorySystem.Views
         private void PasswordEntry_OnFocused(object sender, FocusEventArgs e)
         {
             PasswordError.IsVisible = false;
-            PasswordError.Text = "";
         }
     }
 }
