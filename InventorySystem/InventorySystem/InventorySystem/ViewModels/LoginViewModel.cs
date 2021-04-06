@@ -53,10 +53,17 @@ namespace InventorySystem.ViewModels
         }
 
         public Command LoginCommand { get; }
+        public Command RegisterCommand { get; }
 
         public LoginViewModel()
         {
             LoginCommand = new Command(async () => await OnLoginClicked());
+            RegisterCommand = new Command(OnRegisterClicked);
+        }
+
+        private static async void OnRegisterClicked()
+        {
+            await Shell.Current.GoToAsync("//register");
         }
 
         public bool IsEmailAndPasswordValid()

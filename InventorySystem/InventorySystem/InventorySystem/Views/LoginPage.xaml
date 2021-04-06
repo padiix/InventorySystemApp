@@ -32,7 +32,7 @@
                            Placeholder="Email" 
                            FontSize="Medium" 
                            IsSpellCheckEnabled="False" 
-                           Text="{Binding Email, Mode=TwoWay}">
+                           Text="{Binding Email}">
                         <Entry.Behaviors>
 
                             <xct:EmailValidationBehavior Flags="ValidateOnUnfocusing" 
@@ -44,13 +44,14 @@
                     <Label Text="Email jest niepoprawny" 
                            IsVisible="{Binding IsEmailValid, Converter={StaticResource InvertedBoolConverter}}" 
                            TextColor="Red"
-                           FontSize="Caption"/>
+                           FontSize="Caption"
+                           FontAttributes="Bold"/>
 
                     <Entry x:Name="PasswordEntry" 
                            Placeholder="Password" 
                            FontSize="Medium" 
                            IsPassword="True" 
-                           Text="{Binding Password, Mode=TwoWay}" 
+                           Text="{Binding Password}" 
                            Unfocused="PasswordEntry_OnUnfocused" 
                            Focused="PasswordEntry_OnFocused">
                         <Entry.Behaviors>
@@ -82,7 +83,8 @@
                     <Label x:Name="PasswordError" 
                            IsVisible="False" 
                            TextColor="Red"
-                           FontSize="Caption"/>
+                           FontSize="Caption"
+                           FontAttributes="Bold"/>
 
                     <FlexLayout AlignItems="Center" 
                                 JustifyContent="End">
@@ -98,6 +100,10 @@
                     <Button VerticalOptions="Center" 
                             Text="Login" 
                             Command="{Binding LoginCommand}"/>
+
+                    <Button VerticalOptions="Center"
+                            Text="Rejestracja"
+                            Command="{Binding RegisterCommand}"/>
 
                 </StackLayout>
             </Frame>

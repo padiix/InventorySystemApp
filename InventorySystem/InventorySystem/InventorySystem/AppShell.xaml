@@ -47,7 +47,7 @@
 
     <TabBar Route="main">
 
-        <ShellContent Title="Główna" 
+        <ShellContent Title="Strona główna" 
                       ContentTemplate="{DataTemplate local:MainPage}"/>
         <ShellContent Title="Skaner Kodów Kreskowych" 
                       Route="scanner" 
@@ -64,6 +64,8 @@
 
         <ShellContent Route="login" 
                       ContentTemplate="{DataTemplate local:LoginPage}" />
+        <ShellContent Route="register"
+                      ContentTemplate="{DataTemplate local:RegisterPage}"/>
 
     </ShellItem>
 </Shell>

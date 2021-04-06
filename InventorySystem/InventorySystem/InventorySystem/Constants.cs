@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using InventorySystem.Models;
-
-namespace InventorySystem
+﻿namespace InventorySystem
 {
     public static class Constants
     {

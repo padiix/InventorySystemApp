@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:viewmodels="clr-namespace:InventorySystem.ViewModels"
+             x:DataType="viewmodels:RegisterViewModel"
+             x:Class="InventorySystem.Views.RegisterPage"
+             >
+
+    <ContentPage.Resources>
+
+        <ResourceDictionary>
+
+            <xct:InvertedBoolConverter x:Key="InvertedBoolConverter"/>
+
+        </ResourceDictionary>
+
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout Padding="0,10"
+                     HorizontalOptions="Center">
+            
+            <Label Text="Rejestracja"
+                   FontSize="Title"
+                   TextTransform="Uppercase"/>
+
+            <StackLayout Padding="0,10">
+
+                <Label Text="Imię:"/>
+                <Entry Text="{Binding Firstname}"
+                       Placeholder="np. Jan"
+                       FontSize="Medium"/>
+
+                <Label Text="Nazwisko:"></Label>
+                <Entry Text="{Binding Lastname}"
+                       Placeholder="np. Kowalski"
+                       FontSize="Medium"/>
+
+            </StackLayout>
+            <StackLayout Padding="0,10">
+
+                <Label Text="Nazwa użytkownika:"/>
+                <Entry Text="{Binding Username}"
+                       Placeholder="np. jkowalski97"
+                       FontSize="Medium"/>
+
+                <Label Text="E-mail:"/>
+                <Entry x:Name="EmailEntry" 
+                       Placeholder="np. JanKowalski@gmail.com" 
+                       FontSize="Medium" 
+                       IsSpellCheckEnabled="False" 
+                       Text="{Binding Email}">
+                    <Entry.Behaviors>
+
+                        <xct:EmailValidationBehavior Flags="ValidateOnUnfocusing" 
+                                                     IsValid="{Binding IsEmailValid}"/>
+
+                    </Entry.Behaviors>
+                </Entry>
+                <Label Text="Email jest niepoprawny" 
+                       IsVisible="{Binding IsEmailValid, Converter={StaticResource InvertedBoolConverter}}" 
+                       TextColor="Red"
+                       FontSize="Caption"
+                       FontAttributes="Bold"/>
+                
+                <Label Text="Hasło:"/>
+                <Entry x:Name="PasswordEntry" 
+                           Placeholder="Password" 
+                           FontSize="Medium" 
+                           IsPassword="True" 
+                           Text="{Binding Password}" 
+                           Unfocused="PasswordEntry_OnUnfocused" 
+                           Focused="PasswordEntry_OnFocused">
+                        <Entry.Behaviors>
+
+                            <xct:MultiValidationBehavior x:Name="PasswordValidationBehavior" 
+                                                         IsValid="{Binding IsPasswordValid}"
+                                                         Flags="ValidateOnUnfocusing">
+
+                                <xct:TextValidationBehavior MinimumLength="6" 
+                                                            xct:MultiValidationBehavior.Error="* conajmniej 6 znaków" />
+
+                                <xct:CharactersValidationBehavior RegexPattern="[A-Z]" 
+                                                                  xct:MultiValidationBehavior.Error="* conamjniej 1. dużą literę"/>
+
+                                <xct:CharactersValidationBehavior RegexPattern="[a-z]" 
+                                                                  xct:MultiValidationBehavior.Error="* conajmniej 1. małą literę"/>
+
+                                <xct:CharactersValidationBehavior RegexPattern="[0-9]" 
+                                                                  xct:MultiValidationBehavior.Error="* conajmniej 1. cyfrę"/>
+
+                                <xct:CharactersValidationBehavior RegexPattern="[^a-zA-Z0-9]" 
+                                                                  xct:MultiValidationBehavior.Error="* conajmniej 1. znak specjalny" />
+
+                            </xct:MultiValidationBehavior>
+
+                        </Entry.Behaviors>
+                    </Entry>
+
+                    <Label x:Name="PasswordError" 
+                           IsVisible="False" 
+                           TextColor="Red"
+                           FontSize="Caption"
+                           FontAttributes="Bold"/>
+
+            </StackLayout>
+
+            <Button Text="Zarejestruj"
+                    Padding="0,10"/>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

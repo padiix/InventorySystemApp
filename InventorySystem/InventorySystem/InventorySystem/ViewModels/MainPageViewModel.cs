@@ -2,11 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
-using System.Windows.Input;
+using System.Threading.Tasks;
+using InventorySystem.Interfaces;
 using InventorySystem.Models;
-using Xamarin.Essentials;
+using InventorySystem.Services;
 using Xamarin.Forms;
 
 namespace InventorySystem.ViewModels
@@ -28,8 +28,6 @@ namespace InventorySystem.ViewModels
         public ObservableCollection<Item> UserItems { get; set; }
 
         private string _welcomeMessage;
-
-
         public string WelcomeMessage
         {
             get => _welcomeMessage;
@@ -40,21 +38,40 @@ namespace InventorySystem.ViewModels
             }
         }
 
+        private readonly RestService _restClient;
+
+        public Command RefreshCommand { get; }
+
         public MainPageViewModel()
         {
-            Title = "Strona główna";
+            _restClient = new RestService();
 
-            WelcomeMessage = "Witaj, " + StaticValues.FirstName + "!"; // Wiadomość w tej zmiennej będzie pokazana na górze ekranu.
+            RefreshCommand = new Command(async () => await GetConnection());
+            Title = "Strona główna";
+            SetWelcomeMessage();
 
             _sourceItems = new List<Item> { _item1, _item2, _item3 };
-            InitCollectionView();
+            InitCollectionViewWithFilter();
         }
 
-        private void InitCollectionView()
+        public async Task GetConnection()
         {
-            UserItems = new ObservableCollection<Item>(_sourceItems);
-
-            var currentUserItems = _sourceItems.Where(item => item.User.Id.ToString().Contains(StaticValues.UserId)).ToList();
+            if (await _restClient.GetCurrentUser())
+            {
+                DependencyService.Get<IMessage>().ShortAlert("Połączenie nawiązane pomyślnie.");
+                MessagingCenter.Send<object>(this,"EVENT_CONNECTED_TO_API");
+                return;
+            }
+            DependencyService.Get<IMessage>().ShortAlert("Błąd połączenia.");
+        }
+        private void SetWelcomeMessage()
+        {
+            WelcomeMessage = "Witaj, " + StaticValues.FirstName + "!"; // Wiadomość w tej zmiennej będzie pokazana na górze ekranu.
+        }
+        private void InitCollectionViewWithFilter()
+        {
+            var currentUserItems = _sourceItems.Where(item => item.User.FirstName.ToString().Contains("John")/*item => item.User.Id.ToString().Contains(StaticValues.UserId)*/).ToList();
+            UserItems = new ObservableCollection<Item>(currentUserItems);
 
             foreach (var item in currentUserItems)
             {
