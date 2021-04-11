@@ -5,7 +5,7 @@
              xmlns:viewmodels="clr-namespace:InventorySystem.ViewModels"
              x:DataType="viewmodels:RegisterViewModel"
              x:Class="InventorySystem.Views.RegisterPage"
-             NavigationPage.HasNavigationBar="false">
+             >
 
     <ContentPage.Resources>
 
@@ -107,6 +107,8 @@
 
             </StackLayout>
 
+            <Button Text="Zarejestruj"
+                    Padding="0,10"/>
             <StackLayout Orientation="Horizontal"
                          HorizontalOptions="Center"
                          Padding="0,50">
@@ -120,6 +122,9 @@
                         Command="{Binding ReturnCommand}"/>
 
             </StackLayout>
+            <Button Text="Zarejestruj"
+                    Padding="0,10"
+                    Command="{Binding RegisterCommand}"/>
 
         </StackLayout>
     </ContentPage.Content>

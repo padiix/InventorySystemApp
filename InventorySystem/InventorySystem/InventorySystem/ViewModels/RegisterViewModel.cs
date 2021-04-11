@@ -131,6 +131,5 @@ namespace InventorySystem.ViewModels
         {
             await Shell.Current.GoToAsync("//login");
         }
-
     }
 }
