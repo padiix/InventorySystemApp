@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using InventorySystem.Interfaces;
 using InventorySystem.Models;
@@ -58,15 +58,16 @@ namespace InventorySystem.ViewModels
         public LoginViewModel()
         {
             LoginCommand = new Command(async () => await OnLoginClicked());
-            RegisterCommand = new Command(OnRegisterClicked);
+            RegisterCommand = new Command(async() => await OnRegisterClicked());
         }
 
-        private static async void OnRegisterClicked()
+        private static async Task OnRegisterClicked()
         {
+            Application.Current.MainPage = new AppShell();
             await Shell.Current.GoToAsync("//register");
         }
 
-        public bool IsEmailAndPasswordValid()
+        public bool IsEmailAndPasswordNotNull()
         {
             if (string.IsNullOrWhiteSpace(Email)) return false;
             return !string.IsNullOrWhiteSpace(Password);
@@ -74,7 +75,7 @@ namespace InventorySystem.ViewModels
 
         private async Task OnLoginClicked()
         {
-            if (IsEmailAndPasswordValid())
+            if (IsEmailAndPasswordNotNull())
             {
                 var restService = new RestService();
                 if (await restService.VerifyLogin(Email, Password))
@@ -83,11 +84,12 @@ namespace InventorySystem.ViewModels
 
                     if (token == null)
                     {
-                        DependencyService.Get<IMessage>().LongAlert("Brak tokena uwierzytelniającego.");
+                        DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
                         return;
                     }
 
                     Application.Current.MainPage = new AppShell();
+
                     if (Settings.FirstRun)
                     {
                         Settings.FirstRun = false;
@@ -101,13 +103,13 @@ namespace InventorySystem.ViewModels
                 }
                 else
                 {
-                    DependencyService.Get<IMessage>().LongAlert("Weryfikacja zakończona niepowodzeniem.");
+                    DependencyService.Get<IMessage>().LongAlert(Constants.ConnectionError);
                     return;
                 }
             }
             else
             {
-                DependencyService.Get<IMessage>().LongAlert("Uzupełnij pola Email oraz Password!");
+                DependencyService.Get<IMessage>().LongAlert(Constants.EmailAndPasswordFillInError);
             }
         }
     }

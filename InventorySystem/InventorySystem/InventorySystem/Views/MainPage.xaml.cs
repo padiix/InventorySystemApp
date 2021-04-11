@@ -9,7 +9,7 @@ namespace InventorySystem.Views
 {
     public partial class MainPage : ContentPage
     {
-        private const string EVENT_CONNECTED_TO_API = "EVENT_CONNECTED_TO_API";
+        public const string EVENT_CONNECTED_TO_API = "EVENT_CONNECTED_TO_API";
 
         private readonly RestService _restClient = new RestService();
 
@@ -31,12 +31,14 @@ namespace InventorySystem.Views
             if (await _restClient.GetCurrentUser())
             {
                 DisconnectedMessage.IsVisible = false;
+                MessagingCenter.Send<object>(this, MainPageViewModel.EVENT_SET_WELCOME_MESSAGE);
             }
             else
             {
                 DisconnectedMessage.IsVisible = true;
             }
         }
+        
 
         private async void Logout_OnClicked(object sender, EventArgs e)
         {
@@ -51,7 +53,7 @@ namespace InventorySystem.Views
 
             Xamarin.Essentials.SecureStorage.Remove(RestService.Token);
 
-            MessagingCenter.Send<object>(this, App.EVENT_LAUNCH_LOGIN_PAGE);
+            MessagingCenter.Send<object>(this, App.EVENT_NAVIGATE_TO_LOGIN_PAGE);
         }
 
         private void Account_OnClicked(object sender, EventArgs e)

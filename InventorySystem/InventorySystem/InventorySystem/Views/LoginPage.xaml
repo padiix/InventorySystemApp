@@ -64,16 +64,16 @@
                                                             xct:MultiValidationBehavior.Error="* conajmniej 6 znaków" />
 
                                 <xct:CharactersValidationBehavior RegexPattern="[A-Z]" 
-                                                                  xct:MultiValidationBehavior.Error="* conamjniej 1. dużą literę"/>
+                                                                  xct:MultiValidationBehavior.Error="* conamjniej 1 dużą literę"/>
 
                                 <xct:CharactersValidationBehavior RegexPattern="[a-z]" 
-                                                                  xct:MultiValidationBehavior.Error="* conajmniej 1. małą literę"/>
+                                                                  xct:MultiValidationBehavior.Error="* conajmniej 1 małą literę"/>
 
                                 <xct:CharactersValidationBehavior RegexPattern="[0-9]" 
-                                                                  xct:MultiValidationBehavior.Error="* conajmniej 1. cyfrę"/>
+                                                                  xct:MultiValidationBehavior.Error="* conajmniej 1 cyfrę"/>
 
                                 <xct:CharactersValidationBehavior RegexPattern="[^a-zA-Z0-9]" 
-                                                                  xct:MultiValidationBehavior.Error="* conajmniej 1. znak specjalny" />
+                                                                  xct:MultiValidationBehavior.Error="* conajmniej 1 znak specjalny" />
 
                             </xct:MultiValidationBehavior>
 
@@ -102,7 +102,7 @@
                             Command="{Binding LoginCommand}"/>
 
                     <Button VerticalOptions="Center"
-                            Text="Rejestracja"
+                            Text="Zarejestruj się"
                             Command="{Binding RegisterCommand}"/>
 
                 </StackLayout>

@@ -48,15 +48,18 @@
 
         <StackLayout VerticalOptions="FillAndExpand" 
                      HorizontalOptions="Center" 
-                     Padding="0,20,0,30">
+                     Padding="0,20,0,20">
 
             <Label Text="{Binding WelcomeMessage}" 
                    FontSize="Title"/>
 
+            <!--<Label Text="Co dzisiaj chcesz zrobić ?"/>-->
+
         </StackLayout>
 
         <StackLayout Grid.Row="1" 
-                     Padding="20,15">
+                     Padding="10,20">
+
             <Label Padding="10,0,0,5"
                    Text="Ostatnio dodane przedmioty:"
                    FontSize="18"/>
@@ -73,7 +76,7 @@
                     <DataTemplate>
                         <StackLayout Orientation="Horizontal">
 
-                            <StackLayout Padding="10">
+                            <StackLayout Padding="5,20,10,0">
 
                                 <Label Text="{Binding Name}"
                                    TextColor="Black"
@@ -120,9 +123,13 @@
 
                             </StackLayout>
                             
-                            <StackLayout VerticalOptions="Center">
+                            <StackLayout VerticalOptions="End">
+
                                 <Label Text="Dostępne opcje:"/>
+
+                                <!--TODO: Dodać odpowiedni scope'ing na poszczególne dane-->
                                 <Button Text="Modyfikuj"/>
+
                             </StackLayout>
 
                         </StackLayout>

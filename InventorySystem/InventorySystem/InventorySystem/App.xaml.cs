@@ -8,15 +8,15 @@ namespace InventorySystem
 {
     public partial class App : Application
     {
-        public const string EVENT_LAUNCH_MAIN_PAGE = "EVENT_LAUNCH_MAIN_PAGE";
-        public const string EVENT_LAUNCH_LOGIN_PAGE = "EVENT_LAUNCH_LOGIN_PAGE";
+        public const string EVENT_NAVIGATE_TO_MAIN_PAGE = "EVENT_NAVIGATE_TO_MAIN_PAGE";
+        public const string EVENT_NAVIGATE_TO_LOGIN_PAGE = "EVENT_NAVIGATE_TO_LOGIN_PAGE";
 
         public App()
         {
             InitializeComponent();
 
-            MessagingCenter.Subscribe<object>(this, EVENT_LAUNCH_LOGIN_PAGE, SetRootToLoginPage);
-            MessagingCenter.Subscribe<object>(this, EVENT_LAUNCH_MAIN_PAGE, SetRootToMainPage);
+            MessagingCenter.Subscribe<object>(this, EVENT_NAVIGATE_TO_LOGIN_PAGE, NavigateToLoginPage);
+            MessagingCenter.Subscribe<object>(this, EVENT_NAVIGATE_TO_MAIN_PAGE, NavigateToMainPage);
 
             if (Settings.RememberMe == true)
             {
@@ -30,12 +30,12 @@ namespace InventorySystem
             }
         }
 
-        public async void SetRootToLoginPage(object sender)
+        public async void NavigateToLoginPage(object sender)
         {
             await Shell.Current.GoToAsync("//login");
         }
         
-        public async void SetRootToMainPage(object sender)
+        public async void NavigateToMainPage(object sender)
         {
             await Shell.Current.GoToAsync("//main");
         }

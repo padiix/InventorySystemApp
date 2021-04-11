@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using InventorySystem.Interfaces;
 using InventorySystem.Models;
 using InventorySystem.Services;
+using InventorySystem.Views;
 using Xamarin.Forms;
 
 namespace InventorySystem.ViewModels
@@ -38,17 +39,20 @@ namespace InventorySystem.ViewModels
             }
         }
 
+        public const string EVENT_SET_WELCOME_MESSAGE = "EVENT_SET_WELCOME_MESSAGE";
+
         private readonly RestService _restClient;
 
         public Command RefreshCommand { get; }
 
         public MainPageViewModel()
         {
+            MessagingCenter.Subscribe<object>(this, EVENT_SET_WELCOME_MESSAGE, SetWelcomeMessage);
+            
             _restClient = new RestService();
 
             RefreshCommand = new Command(async () => await GetConnection());
             Title = "Strona główna";
-            SetWelcomeMessage();
 
             _sourceItems = new List<Item> { _item1, _item2, _item3 };
             InitCollectionViewWithFilter();
@@ -59,12 +63,12 @@ namespace InventorySystem.ViewModels
             if (await _restClient.GetCurrentUser())
             {
                 DependencyService.Get<IMessage>().ShortAlert("Połączenie nawiązane pomyślnie.");
-                MessagingCenter.Send<object>(this,"EVENT_CONNECTED_TO_API");
+                MessagingCenter.Send<object>(this,MainPage.EVENT_CONNECTED_TO_API);
                 return;
             }
             DependencyService.Get<IMessage>().ShortAlert("Błąd połączenia.");
         }
-        private void SetWelcomeMessage()
+        private void SetWelcomeMessage(object sender)
         {
             WelcomeMessage = "Witaj, " + StaticValues.FirstName + "!"; // Wiadomość w tej zmiennej będzie pokazana na górze ekranu.
         }

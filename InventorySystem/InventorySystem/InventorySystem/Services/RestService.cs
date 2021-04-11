@@ -1,4 +1,4 @@
-﻿using InventorySystem.Interfaces;
+using InventorySystem.Interfaces;
 using InventorySystem.Models;
 using Newtonsoft.Json;
 using System;
@@ -14,11 +14,13 @@ namespace InventorySystem.Services
 {
     public class RestService : IRestService
     {
+        public const string Token = "token";
+
+        private readonly HttpClient _client;
+        
         public Item Item { get; set; }
         public List<Item> Items { get; set; }
-        private readonly HttpClient _client;
         private UserData _userData;
-        public const string Token = "token";
 
         public RestService()
         {
@@ -48,7 +50,7 @@ namespace InventorySystem.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                DependencyService.Get<IMessage>().LongAlert($"Error: {ex.Message}");
+                //DependencyService.Get<IMessage>().LongAlert($"Error: {ex.Message}");
                 return false;
             }
 
@@ -68,7 +70,6 @@ namespace InventorySystem.Services
             return false;
         }
 
-        //TODO: Check if Register works properly
         public async Task<bool> Register(string username, string firstname, string lastname, string email, string password)
         {
             var uri = new Uri(Constants.AccountRegister);
@@ -97,6 +98,12 @@ namespace InventorySystem.Services
             }
 
             if (!responseMessage.IsSuccessStatusCode) return false;
+
+            var jsonAsStringAsync = await responseMessage.Content.ReadAsStringAsync();
+            _userData = JsonConvert.DeserializeObject<UserData>(jsonAsStringAsync);
+
+            await Xamarin.Essentials.SecureStorage.SetAsync(Token, _userData.Token);
+
             return true;
         }
 
@@ -104,10 +111,17 @@ namespace InventorySystem.Services
         {
             var token = await Xamarin.Essentials.SecureStorage.GetAsync(Token);
 
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return false;
+            }
+
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(Constants.AccountEndpoint)))
             {
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
                 HttpResponseMessage response;
+
                 try
                 {
                     response = await _client.SendAsync(requestMessage);
@@ -115,7 +129,7 @@ namespace InventorySystem.Services
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex);
-                    DependencyService.Get<IMessage>().LongAlert($"Error: {ex.Message}");
+                    //DependencyService.Get<IMessage>().LongAlert($"Error: {ex.Message}");
                     return false;
                 }
 
@@ -130,12 +144,7 @@ namespace InventorySystem.Services
                     StaticValues.Username = _userData.Username;
                     StaticValues.Email = _userData.Email;
 
-                    if (Settings.RememberMe)
-                    {
-                        await Application.Current.SavePropertiesAsync();
-                        return true;
-                    }
-
+                    await Application.Current.SavePropertiesAsync();
                     return true;
                 }
 
