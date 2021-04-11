@@ -34,15 +34,18 @@ namespace InventorySystem.Views
             PasswordError.IsVisible = true;
                 
             var errorBuilder = new StringBuilder();
+
             errorBuilder.Append("Hasło musi mieć:\n");
-            foreach (var error in PasswordValidationBehavior.Errors)
-            {
-                if (error is string)
+
+            if (PasswordValidationBehavior.Errors != null)
+                foreach (var error in PasswordValidationBehavior.Errors)
                 {
-                    errorBuilder.Append((string) error.ToString() + "\n");
+                    if (error is string)
+                    {
+                        errorBuilder.Append((string) error.ToString() + "\n");
+                    }
                 }
-            }
-                
+
             PasswordError.Text = errorBuilder.ToString();
         }
 

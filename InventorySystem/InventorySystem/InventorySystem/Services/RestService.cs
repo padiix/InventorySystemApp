@@ -115,7 +115,7 @@ namespace InventorySystem.Services
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex);
-                    DependencyService.Get<IMessage>().LongAlert($"Error: {ex.Message}");
+                    //DependencyService.Get<IMessage>().LongAlert($"Error: {ex.Message}");
                     return false;
                 }
 

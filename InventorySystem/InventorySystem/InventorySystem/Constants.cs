@@ -9,5 +9,10 @@
         //Endpoints for specific things
         public const string AccountLogin = AccountEndpoint + "/login";
         public const string AccountRegister = AccountEndpoint + "/register";
+
+        public const string FillInFieldsError = "Pewne pola nie są wypełnione, proszę, uzupełnij je!";
+        public const string ConnectionError = "Wystąpił błąd podczas łączenia się z API";
+        public const string NoTokenError = "Brak tokena uwierzytelniającego.";
+        public const string EmailAndPasswordFillInError = "Uzupełnij pola \"Email\" oraz \"Hasło\" !";
     }
 }

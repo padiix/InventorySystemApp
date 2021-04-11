@@ -5,7 +5,7 @@
              xmlns:viewmodels="clr-namespace:InventorySystem.ViewModels"
              x:DataType="viewmodels:RegisterViewModel"
              x:Class="InventorySystem.Views.RegisterPage"
-             >
+             NavigationPage.HasNavigationBar="false">
 
     <ContentPage.Resources>
 
@@ -18,10 +18,11 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <StackLayout Padding="0,10"
+        <StackLayout Padding="0,50"
                      HorizontalOptions="Center">
             
             <Label Text="Rejestracja"
+                   HorizontalTextAlignment="Center"
                    FontSize="Title"
                    TextTransform="Uppercase"/>
 
@@ -58,6 +59,7 @@
 
                     </Entry.Behaviors>
                 </Entry>
+
                 <Label Text="Email jest niepoprawny" 
                        IsVisible="{Binding IsEmailValid, Converter={StaticResource InvertedBoolConverter}}" 
                        TextColor="Red"
@@ -65,9 +67,8 @@
                        FontAttributes="Bold"/>
                 
                 <Label Text="Hasło:"/>
-                <Entry x:Name="PasswordEntry" 
-                           Placeholder="Password" 
-                           FontSize="Medium" 
+                <Entry x:Name="PasswordEntry"
+                       FontSize="Medium" 
                            IsPassword="True" 
                            Text="{Binding Password}" 
                            Unfocused="PasswordEntry_OnUnfocused" 
@@ -107,7 +108,8 @@
             </StackLayout>
 
             <Button Text="Zarejestruj"
-                    Padding="0,10"/>
+                    Padding="0,10"
+                    Command="{Binding RegisterCommand}"/>
 
         </StackLayout>
     </ContentPage.Content>

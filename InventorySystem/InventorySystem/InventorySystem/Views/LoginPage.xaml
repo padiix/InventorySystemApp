@@ -102,7 +102,7 @@
                             Command="{Binding LoginCommand}"/>
 
                     <Button VerticalOptions="Center"
-                            Text="Rejestracja"
+                            Text="Zarejestruj się"
                             Command="{Binding RegisterCommand}"/>
 
                 </StackLayout>
