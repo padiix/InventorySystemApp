@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using InventorySystem.Models;
 
@@ -13,5 +14,6 @@ namespace InventorySystem.Interfaces
         Task<Item> GetSpecificItem(string barcode);
         //Task<Item> UpdateItemCount();
         //Task<Item> UpdateItemInfo();
+        Task<bool> DeleteItem(Guid itemId);
     }
 }

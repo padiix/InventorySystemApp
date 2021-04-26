@@ -30,9 +30,13 @@ namespace InventorySystem.Views
 
         private void CheckPasswordValidity()
         {
-            if (PasswordValidationBehavior.IsValid) return;
-            PasswordError.IsVisible = true;
-                
+            if (PasswordValidationBehavior.IsValid)
+            {
+                PasswordError.Text = "";
+                PasswordError.IsVisible = false;
+                return;
+            }
+
             var errorBuilder = new StringBuilder();
 
             errorBuilder.Append("Hasło musi mieć:\n");
@@ -47,16 +51,12 @@ namespace InventorySystem.Views
                 }
 
             PasswordError.Text = errorBuilder.ToString();
+            PasswordError.IsVisible = true;
         }
 
-        private void PasswordEntry_OnUnfocused(object sender, FocusEventArgs e)
+        private void PasswordEntry_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             CheckPasswordValidity();
-        }
-
-        private void PasswordEntry_OnFocused(object sender, FocusEventArgs e)
-        {
-            PasswordError.IsVisible = false;
         }
     }
 }

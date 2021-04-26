@@ -71,13 +71,12 @@
                        FontSize="Medium" 
                            IsPassword="True" 
                            Text="{Binding Password}" 
-                           Unfocused="PasswordEntry_OnUnfocused" 
-                           Focused="PasswordEntry_OnFocused">
+                           TextChanged="PasswordEntry_OnTextChanged">
                     <Entry.Behaviors>
 
                         <xct:MultiValidationBehavior x:Name="PasswordValidationBehavior" 
                                                          IsValid="{Binding IsPasswordValid}"
-                                                         Flags="ValidateOnUnfocusing">
+                                                         Flags="ValidateOnValueChanging">
 
                             <xct:TextValidationBehavior MinimumLength="6" 
                                                             xct:MultiValidationBehavior.Error="* conajmniej 6 znaków" />

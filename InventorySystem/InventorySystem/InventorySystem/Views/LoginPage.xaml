@@ -35,7 +35,7 @@
                            Text="{Binding Email}">
                         <Entry.Behaviors>
 
-                            <xct:EmailValidationBehavior Flags="ValidateOnUnfocusing" 
+                            <xct:EmailValidationBehavior Flags="ValidateOnValueChanging" 
                                                          IsValid="{Binding IsEmailValid}"/>
 
                         </Entry.Behaviors>
@@ -51,14 +51,13 @@
                            Placeholder="Password" 
                            FontSize="Medium" 
                            IsPassword="True" 
-                           Text="{Binding Password}" 
-                           Unfocused="PasswordEntry_OnUnfocused" 
-                           Focused="PasswordEntry_OnFocused">
+                           Text="{Binding Password}"
+                           TextChanged="PasswordEntry_OnTextChanged">
                         <Entry.Behaviors>
 
                             <xct:MultiValidationBehavior x:Name="PasswordValidationBehavior" 
                                                          IsValid="{Binding IsPasswordValid}"
-                                                         Flags="ValidateOnUnfocusing">
+                                                         Flags="ValidateOnValueChanging">
 
                                 <xct:TextValidationBehavior MinimumLength="6" 
                                                             xct:MultiValidationBehavior.Error="* conajmniej 6 znaków" />

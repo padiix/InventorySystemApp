@@ -18,8 +18,8 @@ namespace InventorySystem.Services
 
         private readonly HttpClient _client;
         
-        public Item Item { get; set; }
-        public List<Item> Items { get; set; }
+        private Item Item { get; set; }
+        private List<Item> Items { get; set; }
         private UserData _userData;
 
         public RestService()
@@ -31,7 +31,6 @@ namespace InventorySystem.Services
 
         public async Task<bool> VerifyLogin(string email, string password)
         {
-            var uri = new Uri(Constants.AccountLogin);
             var valuesLogin = new Login()
             {
                 Email = email,
@@ -45,13 +44,11 @@ namespace InventorySystem.Services
 
             try
             {
-                responseMessage = await _client.PostAsync(uri, content);
+                responseMessage = await _client.PostAsync(new Uri(Constants.AccountLogin), content);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
-                //DependencyService.Get<IMessage>().LongAlert($"Error: {ex.Message}");
-                return false;
+                throw new Exception(ex.Message);
             }
 
             if (responseMessage.IsSuccessStatusCode)
@@ -63,16 +60,16 @@ namespace InventorySystem.Services
 
                 return true;
             }
-
-            var errorMessage = await responseMessage.Content.ReadAsStringAsync();
-            Console.WriteLine(errorMessage);
-
-            return false;
+            else
+            {
+                //throw new Exception(Constants.UnauthorizedError);
+                DependencyService.Get<IMessage>().LongAlert(Constants.UnauthorizedError);
+                return false;
+            }
         }
 
         public async Task<bool> Register(string username, string firstname, string lastname, string email, string password)
         {
-            var uri = new Uri(Constants.AccountRegister);
             var valuesRegister = new Register()
             {
                 Email = email,
@@ -89,12 +86,11 @@ namespace InventorySystem.Services
 
             try
             {
-                responseMessage = await _client.PostAsync(uri, content);
+                responseMessage = await _client.PostAsync(new Uri(Constants.AccountRegister), content);
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                Console.WriteLine(exception);
-                return false;
+                throw new Exception(ex.Message);
             }
 
             if (!responseMessage.IsSuccessStatusCode) return false;
@@ -113,7 +109,7 @@ namespace InventorySystem.Services
 
             if (string.IsNullOrWhiteSpace(token))
             {
-                return false;
+                DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
             }
 
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(Constants.AccountEndpoint)))
@@ -128,9 +124,7 @@ namespace InventorySystem.Services
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex);
-                    //DependencyService.Get<IMessage>().LongAlert($"Error: {ex.Message}");
-                    return false;
+                    throw new Exception(ex.Message);
                 }
 
                 if (response.IsSuccessStatusCode)
@@ -157,13 +151,27 @@ namespace InventorySystem.Services
 
         public async Task<List<Item>> GetAllItems()
         {
-            var uri = new Uri(Constants.ItemsEndpoint);
+            var token = await Xamarin.Essentials.SecureStorage.GetAsync(Token);
 
-            try
+            if (string.IsNullOrWhiteSpace(token))
             {
-                HttpResponseMessage response = null;
+                DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
+            }
 
-                response = await _client.GetAsync(uri);
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(Constants.ItemsEndpoint)))
+            {
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                HttpResponseMessage response;
+
+                try
+                {
+                    response = await _client.SendAsync(requestMessage);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -172,17 +180,9 @@ namespace InventorySystem.Services
 
                     return Items;
                 }
-                else
-                {
-                    var errorMessage = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine(errorMessage);
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                throw;
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(errorMessage);
+                return null;
             }
         }
 
@@ -202,8 +202,7 @@ namespace InventorySystem.Services
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex);
-                    return null;
+                    throw new Exception(ex.Message);
                 }
 
                 if (response.IsSuccessStatusCode)
@@ -214,6 +213,47 @@ namespace InventorySystem.Services
                 }
                 Console.WriteLine(response.Content.ReadAsStringAsync());
                 return null;
+            }
+        }
+
+        //TODO: Check if DeleteItem works
+        public async Task<bool> DeleteItem(Guid itemId)
+        {
+            var token = await Xamarin.Essentials.SecureStorage.GetAsync(Token);
+
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                throw new Exception(Constants.NoTokenError);
+            }
+
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Delete, new Uri(Constants.ItemsEndpoint + $"/{itemId}")))
+            {
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                HttpResponseMessage response;
+
+                try
+                {
+                    response = await _client.SendAsync(requestMessage);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonAsStringAsync = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Rest Client: {jsonAsStringAsync}");
+                    DependencyService.Get<IMessage>().LongAlert(Constants.DeletionSuccessful);
+                    return true;
+                }
+                else
+                {
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(errorMessage);
+                    return false;
+                }
             }
         }
     }

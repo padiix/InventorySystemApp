@@ -66,7 +66,7 @@
 
             <SearchBar Scale="0.9"
                        Placeholder="Nazwa przedmiotu"
-                       TextChanged="SearchBar_OnTextChanged"/>
+                       Text="{Binding SearchValue}"/>
 
 
             <CollectionView ItemsSource="{Binding UserItems}"
@@ -85,18 +85,18 @@
                                    FontSize="18"
                                    FontAttributes="Bold"/>
 
-                                <StackLayout Orientation="Horizontal">
+                                <StackLayout>
 
                                     <Label Text="Kod kreskowy: "
                                            FontSize="15"
                                            FontAttributes="Bold"/>
 
                                     <Label Text ="{Binding Barcode}"
-                                       FontSize="15"/>
+                                       FontSize="20"/>
 
                                 </StackLayout>
 
-                                <FlexLayout AlignItems="Center">
+                                <StackLayout>
 
                                     <Label Text="Dodany:  "
                                            FontSize="15"
@@ -105,13 +105,13 @@
                                     <Label Text="{Binding DateAdded}"
                                        FontSize="15"/>
 
-                                </FlexLayout>
+                                </StackLayout>
 
+                                <Label Text="Dodany przez: "
+                                       FontSize="15"
+                                       FontAttributes="Bold"/>
+                                    
                                 <StackLayout Orientation="Horizontal">
-
-                                    <Label Text="Dodany przez: "
-                                           FontSize="15"
-                                           FontAttributes="Bold"/>
 
                                     <Label Text="{Binding User.FirstName}"
                                            FontSize="15"/>
@@ -123,12 +123,14 @@
 
                             </StackLayout>
                             
-                            <StackLayout VerticalOptions="End">
+                            <StackLayout VerticalOptions="Start"
+                                         Padding="0,25,0,0">
 
                                 <Label Text="Dostępne opcje:"/>
 
-                                <!--TODO: Dodać odpowiedni scope'ing na poszczególne dane-->
-                                <Button Text="Modyfikuj"/>
+                                <!--//TODO: Dodać odpowiedni scope'ing na poszczególne dane-->
+                                <Button Text="Modyfikuj"
+                                        Command="{Binding MoveToModificationPage}"/>
 
                             </StackLayout>
 

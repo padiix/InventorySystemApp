@@ -65,10 +65,5 @@ namespace InventorySystem.Views
                                                          $"Username: {StaticValues.Username}{Environment.NewLine}" +
                                                          $"E-mail: {StaticValues.Email}");
         }
-
-        private void SearchBar_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
