@@ -3,12 +3,14 @@ using InventorySystem.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 
 namespace InventorySystem.Services
 {
@@ -17,14 +19,13 @@ namespace InventorySystem.Services
         public const string Token = "token";
 
         private readonly HttpClient _client;
-        
+
         private Item Item { get; set; }
         private List<Item> Items { get; set; }
-        private UserData _userData;
 
         public RestService()
         {
-            _client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
+            _client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) }; //Po 10 sekundach HttpClient zwróci problem z po³¹czeniem.
             Items = null;
             Item = null;
         }
@@ -52,29 +53,23 @@ namespace InventorySystem.Services
                 return false;
             }
 
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonAsStringAsync = await responseMessage.Content.ReadAsStringAsync();
-                _userData = JsonConvert.DeserializeObject<UserData>(jsonAsStringAsync);
-
-                if (_userData == null) return false;
-
-                StaticValues.UserId = _userData.Id.ToString();
-                StaticValues.FirstName = _userData.FirstName;
-                StaticValues.LastName = _userData.LastName;
-                StaticValues.Username = _userData.Username;
-                StaticValues.Email = _userData.Email;
-
-                await Xamarin.Essentials.SecureStorage.SetAsync(Token, _userData.Token);
-
-                await Application.Current.SavePropertiesAsync();
-                return true;
-            }
-            else
+            if (!responseMessage.IsSuccessStatusCode)
             {
                 DependencyService.Get<IMessage>().LongAlert(Constants.UnauthorizedError);
+                ShowInConsole(responseMessage);
                 return false;
             }
+
+            var jsonAsStringAsync = await responseMessage.Content.ReadAsStringAsync();
+            var userData = JsonConvert.DeserializeObject<UserData>(jsonAsStringAsync);
+
+            if (userData == null) return false;
+
+            SaveUserDetails(userData);
+            await Xamarin.Essentials.SecureStorage.SetAsync(Token, userData.Token);
+
+            await Application.Current.SavePropertiesAsync();
+            return true;
         }
 
         public async Task<bool> Register(string username, string firstname, string lastname, string email, string password)
@@ -102,13 +97,22 @@ namespace InventorySystem.Services
                 throw new Exception(ex.Message);
             }
 
-            if (!responseMessage.IsSuccessStatusCode) return false;
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                DependencyService.Get<IMessage>().LongAlert(Constants.RegistrationError);
+                ShowInConsole(responseMessage);
+                return false;
+            }
 
             var jsonAsStringAsync = await responseMessage.Content.ReadAsStringAsync();
-            _userData = JsonConvert.DeserializeObject<UserData>(jsonAsStringAsync);
+            var userData = JsonConvert.DeserializeObject<UserData>(jsonAsStringAsync);
 
-            await Xamarin.Essentials.SecureStorage.SetAsync(Token, _userData.Token);
+            if (userData == null) return false;
 
+            SaveUserDetails(userData);
+            await Xamarin.Essentials.SecureStorage.SetAsync(Token, userData.Token);
+
+            await Application.Current.SavePropertiesAsync();
             return true;
         }
 
@@ -119,37 +123,35 @@ namespace InventorySystem.Services
             if (string.IsNullOrWhiteSpace(token))
             {
                 DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
+                return false;
             }
 
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(Constants.AccountEndpoint)))
             {
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                HttpResponseMessage response;
+                HttpResponseMessage responseMessage;
 
                 try
                 {
-                    response = await _client.SendAsync(requestMessage);
+                    responseMessage = await _client.SendAsync(requestMessage);
                 }
                 catch (Exception ex)
                 {
                     throw new Exception(ex.Message);
                 }
 
-                if (response.IsSuccessStatusCode)
+                if (!responseMessage.IsSuccessStatusCode)
                 {
-                    var jsonAsStringAsync = await response.Content.ReadAsStringAsync();
-                    _userData = JsonConvert.DeserializeObject<UserData>(jsonAsStringAsync);
-
-                    if (_userData == null) return false;
-                    return true;
-
+                    DependencyService.Get<IMessage>().LongAlert(Constants.ConnectionError);
+                    ShowInConsole(responseMessage);
+                    return false;
                 }
 
-                var errorMessage = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(errorMessage);
+                var jsonAsStringAsync = await responseMessage.Content.ReadAsStringAsync();
+                var userData = JsonConvert.DeserializeObject<UserData>(jsonAsStringAsync);
 
-                return false;
+                return userData != null;
             }
         }
 
@@ -160,33 +162,35 @@ namespace InventorySystem.Services
             if (string.IsNullOrWhiteSpace(token))
             {
                 DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
+                return null;
             }
 
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(Constants.ItemsEndpoint)))
             {
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                HttpResponseMessage response;
+                HttpResponseMessage responseMessage;
 
                 try
                 {
-                    response = await _client.SendAsync(requestMessage);
+                    responseMessage = await _client.SendAsync(requestMessage);
                 }
                 catch (Exception ex)
                 {
                     throw new Exception(ex.Message);
                 }
 
-                if (response.IsSuccessStatusCode)
+                if (!responseMessage.IsSuccessStatusCode)
                 {
-                    var jsonAsStringAsync = await response.Content.ReadAsStringAsync();
-                    Items = JsonConvert.DeserializeObject<List<Item>>(jsonAsStringAsync);
-
-                    return Items;
+                    DependencyService.Get<IMessage>().LongAlert(Constants.ItemsError);
+                    ShowInConsole(responseMessage);
+                    return null;
                 }
-                var errorMessage = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(errorMessage);
-                return null;
+
+                var jsonAsStringAsync = await responseMessage.Content.ReadAsStringAsync();
+                Items = JsonConvert.DeserializeObject<List<Item>>(jsonAsStringAsync);
+
+                return Items != null ? Items : null;
             }
         }
 
@@ -199,24 +203,27 @@ namespace InventorySystem.Services
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri))
             {
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                HttpResponseMessage response;
+                HttpResponseMessage responseMessage;
                 try
                 {
-                    response = await _client.SendAsync(requestMessage);
+                    responseMessage = await _client.SendAsync(requestMessage);
                 }
                 catch (Exception ex)
                 {
                     throw new Exception(ex.Message);
                 }
 
-                if (response.IsSuccessStatusCode)
+                if (!responseMessage.IsSuccessStatusCode)
                 {
-                    var jsonAsStringAsync = await response.Content.ReadAsStringAsync();
-                    Item = JsonConvert.DeserializeObject<Item>(jsonAsStringAsync);
-                    return Item;
+                    DependencyService.Get<IMessage>().LongAlert(Constants.SpecificItemError);
+                    ShowInConsole(responseMessage);
+                    return null;
                 }
-                Console.WriteLine(response.Content.ReadAsStringAsync());
-                return null;
+
+                var jsonAsStringAsync = await responseMessage.Content.ReadAsStringAsync();
+                Item = JsonConvert.DeserializeObject<Item>(jsonAsStringAsync);
+
+                return Item != null ? Item : null;
             }
         }
 
@@ -227,38 +234,52 @@ namespace InventorySystem.Services
 
             if (string.IsNullOrWhiteSpace(token))
             {
-                throw new Exception(Constants.NoTokenError);
+                DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
+                return false;
             }
 
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Delete, new Uri(Constants.ItemsEndpoint + $"/{itemId}")))
             {
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                HttpResponseMessage response;
+                HttpResponseMessage responseMessage;
 
                 try
                 {
-                    response = await _client.SendAsync(requestMessage);
+                    responseMessage = await _client.SendAsync(requestMessage);
                 }
                 catch (Exception ex)
                 {
                     throw new Exception(ex.Message);
                 }
 
-                if (response.IsSuccessStatusCode)
+                if (!responseMessage.IsSuccessStatusCode)
                 {
-                    var jsonAsStringAsync = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine($"Rest Client: {jsonAsStringAsync}");
-                    DependencyService.Get<IMessage>().LongAlert(Constants.DeletionSuccessful);
-                    return true;
+                    DependencyService.Get<IMessage>().LongAlert(Constants.DeletionError);
+                    ShowInConsole(responseMessage);
+                    return false;
                 }
                 else
                 {
-                    var errorMessage = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine(errorMessage);
-                    return false;
+                    DependencyService.Get<IMessage>().LongAlert(Constants.DeletionSuccessful);
+                    ShowInConsole(responseMessage);
+                    return true;
                 }
             }
+        }
+
+        private static void SaveUserDetails(UserData userData)
+        {
+            StaticValues.UserId = userData.Id.ToString();
+            StaticValues.FirstName = userData.FirstName;
+            StaticValues.LastName = userData.LastName;
+            StaticValues.Username = userData.Username;
+            StaticValues.Email = userData.Email;
+        }
+
+        private static void ShowInConsole(HttpResponseMessage response)
+        {
+            Console.WriteLine("[API Response Message] " + response.StatusCode + ", " + response.Content.ReadAsStringAsync());
         }
     }
 }
