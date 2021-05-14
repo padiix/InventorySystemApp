@@ -9,7 +9,6 @@ namespace InventorySystem.Views
 {
     public partial class MainPage : ContentPage
     {
-        public const string EVENT_CONNECTED_TO_API = "EVENT_CONNECTED_TO_API";
 
         private readonly RestService _restClient = new RestService();
 
@@ -17,13 +16,6 @@ namespace InventorySystem.Views
         {
             InitializeComponent();
             this.BindingContext = new MainPageViewModel();
-
-            MessagingCenter.Subscribe<object>(this, EVENT_CONNECTED_TO_API, HideDisconnectedMessage);
-        }
-
-        private void HideDisconnectedMessage(object sender)
-        {
-            DisconnectedMessage.IsVisible = false;
         }
 
         protected override async void OnAppearing()

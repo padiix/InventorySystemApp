@@ -35,7 +35,7 @@
                      HorizontalOptions="CenterAndExpand"
                      BackgroundColor="Cyan"
                      Padding="10"
-                     IsVisible="False">
+                     IsVisible="{Binding IsErrorVisible}">
 
             <Label Text="Wygląda na to, że wystąpił błąd z połączeniem, kliknij przycisk po prawej, żeby spróbować ponownie."
                    FontSize="Caption"
@@ -130,7 +130,7 @@
 
                                 <!--//TODO: Dodać odpowiedni scope'ing na poszczególne dane-->
                                 <Button Text="Modyfikuj"
-                                        Command="{Binding MoveToModificationPage}"/>
+                                        /><!--Command="{Binding Path=, MoveToModificationPage}"/>-->
 
                             </StackLayout>
 

@@ -46,9 +46,10 @@ namespace InventorySystem.Services
             {
                 responseMessage = await _client.PostAsync(new Uri(Constants.AccountLogin), content);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception(ex.Message);
+                DependencyService.Get<IMessage>().LongAlert(Constants.ConnectionError);
+                return false;
             }
 
             if (responseMessage.IsSuccessStatusCode)
@@ -56,13 +57,21 @@ namespace InventorySystem.Services
                 var jsonAsStringAsync = await responseMessage.Content.ReadAsStringAsync();
                 _userData = JsonConvert.DeserializeObject<UserData>(jsonAsStringAsync);
 
+                if (_userData == null) return false;
+
+                StaticValues.UserId = _userData.Id.ToString();
+                StaticValues.FirstName = _userData.FirstName;
+                StaticValues.LastName = _userData.LastName;
+                StaticValues.Username = _userData.Username;
+                StaticValues.Email = _userData.Email;
+
                 await Xamarin.Essentials.SecureStorage.SetAsync(Token, _userData.Token);
 
+                await Application.Current.SavePropertiesAsync();
                 return true;
             }
             else
             {
-                //throw new Exception(Constants.UnauthorizedError);
                 DependencyService.Get<IMessage>().LongAlert(Constants.UnauthorizedError);
                 return false;
             }
@@ -132,14 +141,9 @@ namespace InventorySystem.Services
                     var jsonAsStringAsync = await response.Content.ReadAsStringAsync();
                     _userData = JsonConvert.DeserializeObject<UserData>(jsonAsStringAsync);
 
-                    StaticValues.UserId = _userData.Id.ToString();
-                    StaticValues.FirstName = _userData.FirstName;
-                    StaticValues.LastName = _userData.LastName;
-                    StaticValues.Username = _userData.Username;
-                    StaticValues.Email = _userData.Email;
-
-                    await Application.Current.SavePropertiesAsync();
+                    if (_userData == null) return false;
                     return true;
+
                 }
 
                 var errorMessage = await response.Content.ReadAsStringAsync();

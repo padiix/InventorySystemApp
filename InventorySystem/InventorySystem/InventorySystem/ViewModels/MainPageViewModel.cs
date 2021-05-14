@@ -52,6 +52,7 @@ namespace InventorySystem.ViewModels
 
         //Zmienne do filtrowania CollectionView po nazwie
         private string _searchValue;
+
         public string SearchValue
         {
             get => _searchValue;
@@ -65,6 +66,9 @@ namespace InventorySystem.ViewModels
         //Komenda prowadząca do strony modyfikacji przedmiotu
         public Command MoveToModificationPage { get; }
 
+        //Pole połączone z właściwością IsVisible dla okienka z wiadomością o połączeniu.
+        public bool IsErrorVisible { get; set; } = false;
+
         public MainPageViewModel()
         {
             MessagingCenter.Subscribe<object>(this, EVENT_SET_WELCOME_MESSAGE, SetWelcomeMessage);
@@ -74,7 +78,7 @@ namespace InventorySystem.ViewModels
             RefreshCommand = new Command(async () => await GetConnection());
             MoveToModificationPage = new Command(() => ModifyItem());
             Title = "Strona główna";
-
+            InitCollectionViewWithFilter();
             //_sourceItems = new List<Item> { _item1, _item2, _item3 };
         }
 
@@ -116,13 +120,16 @@ namespace InventorySystem.ViewModels
 
         public async Task GetConnection()
         {
-            if (await _restClient.GetCurrentUser())
+            var response = await _restClient.GetCurrentUser();
+            if (response)
             {
                 DependencyService.Get<IMessage>().ShortAlert("Połączenie nawiązane pomyślnie.");
-                MessagingCenter.Send<object>(this, MainPage.EVENT_CONNECTED_TO_API);
+                IsErrorVisible = false;
                 InitCollectionViewWithFilter();
                 return;
             }
+
+            IsErrorVisible = true;
             DependencyService.Get<IMessage>().ShortAlert("Błąd połączenia.");
         }
         private void SetWelcomeMessage(object sender)
@@ -142,7 +149,8 @@ namespace InventorySystem.ViewModels
                 throw new Exception($"Napotkano błąd podczas łączenia się z API.\n {ex.Message}");
             }
 
-            _currentUserItems = _sourceItems.Where(item => item.User.Id.ToString().Contains(StaticValues.UserId.ToString())).ToList();
+            _currentUserItems = _sourceItems
+                .Where(item => item.User.Id.ToString().Contains(StaticValues.UserId.ToString())).ToList();
 
             foreach (var item in _currentUserItems)
             {

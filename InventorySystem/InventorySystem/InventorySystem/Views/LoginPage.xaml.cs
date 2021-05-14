@@ -15,6 +15,7 @@ namespace InventorySystem.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
+
         public LoginPage()
         {
             InitializeComponent();
@@ -57,6 +58,11 @@ namespace InventorySystem.Views
         private void PasswordEntry_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             CheckPasswordValidity();
+        }
+
+        private async void UserRegisterButton_OnClick(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new RegisterPage());
         }
     }
 }

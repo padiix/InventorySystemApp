@@ -20,24 +20,23 @@ namespace InventorySystem
 
             if (Settings.RememberMe == true)
             {
-                
                 MainPage = new AppShell();
             }
             else
             {
-                
                 MainPage = new NavigationPage(new LoginPage());
             }
         }
 
         public async void NavigateToLoginPage(object sender)
         {
-            await Shell.Current.GoToAsync("//login");
+            MainPage = new EmptyAppShell();
+
         }
         
         public async void NavigateToMainPage(object sender)
         {
-            await Shell.Current.GoToAsync("//main");
+            await Shell.Current.GoToAsync($"//main");
         }
 
         protected override void OnStart()

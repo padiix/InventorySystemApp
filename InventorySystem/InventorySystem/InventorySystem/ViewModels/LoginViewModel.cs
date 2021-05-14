@@ -1,20 +1,25 @@
 using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using InventorySystem.Interfaces;
 using InventorySystem.Models;
 using InventorySystem.Services;
+using InventorySystem.Views;
 using MvvmHelpers;
 using Xamarin.Forms;
+using System.Runtime.CompilerServices;
 
 namespace InventorySystem.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
+        //Values kept in ViewModel
         private string _email;
         private string _password;
         private bool _isEmailValid;
         private bool _isPasswordValid;
-
+        
+        //Binded objects
         public bool IsEmailValid
         {
             get => _isEmailValid;
@@ -39,7 +44,7 @@ namespace InventorySystem.ViewModels
             set
             {
                 _email = value;
-                OnPropertyChanged(Email);
+                OnPropertyChanged(nameof(Email));
             }
         }
         public string Password
@@ -48,23 +53,77 @@ namespace InventorySystem.ViewModels
             set
             {
                 _password = value;
-                OnPropertyChanged(Password);
+                OnPropertyChanged(nameof(Password));
+            }
+        }
+        
+        //Activity indicator
+        private bool _connectingMessageVisibility;
+        private bool _runActivityIndicator;
+
+        public bool ConnectingMessageVisibility
+        {
+            get => _connectingMessageVisibility;
+            set
+            {
+                _connectingMessageVisibility = value;
+                OnPropertyChanged(nameof(ConnectingMessageVisibility));
+            }
+        }
+        public bool RunActivityIndicator
+        {
+            get => _runActivityIndicator;
+            set
+            {
+                _runActivityIndicator = value;
+                OnPropertyChanged(nameof(RunActivityIndicator));
             }
         }
 
+        //Objects enabling/disabling elements on LoginPage.xaml
+        private bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null)
+        {
+            if (!Equals(field, newValue))
+            {
+                field = newValue;
+                OnPropertyChanged(propertyName ?? string.Empty);
+                //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool _isEnabledRememberMe;
+
+        public bool IsEnabledRememberMe { get => _isEnabledRememberMe; set => SetProperty(ref _isEnabledRememberMe, value); }
+
+        private bool _isEnabledLoginButton;
+
+        public bool IsEnabledLoginButton { get => _isEnabledLoginButton; set => SetProperty(ref _isEnabledLoginButton, value); }
+
+        private bool _isEnabledRegisterButton;
+
+        public bool IsEnabledRegisterButton { get => _isEnabledRegisterButton; set => SetProperty(ref _isEnabledRegisterButton, value); }
+
+        private bool _isReadOnlyPasswordEntry;
+
+        public bool IsReadOnlyPasswordEntry { get => _isReadOnlyPasswordEntry; set => SetProperty(ref _isReadOnlyPasswordEntry, value); }
+
+        private bool _isReadOnlyEmailEntry;
+
+        public bool IsReadOnlyEmailEntry { get => _isReadOnlyEmailEntry; set => SetProperty(ref _isReadOnlyEmailEntry, value); }
+
+
+        //Commands
         public Command LoginCommand { get; }
-        public Command RegisterCommand { get; }
+
 
         public LoginViewModel()
         {
-            LoginCommand = new Command(async () => await OnLoginClicked());
-            RegisterCommand = new Command(async() => await OnRegisterClicked());
-        }
+            EnableElements();
 
-        private static async Task OnRegisterClicked()
-        {
-            Application.Current.MainPage = new AppShell();
-            await Shell.Current.GoToAsync("//register");
+            LoginCommand = new Command(async () => await OnLoginClicked());
         }
 
         public bool IsEmailAndPasswordNotNull()
@@ -73,13 +132,54 @@ namespace InventorySystem.ViewModels
             return !string.IsNullOrWhiteSpace(Password);
         }
 
+        private void EnableElements()
+        {
+            //TODO: Figure out how to ENABLE/DISABLE elements in a runtime
+            IsEnabledLoginButton = true;
+            IsEnabledRegisterButton = true;
+            IsEnabledRememberMe = true;
+
+            IsReadOnlyEmailEntry = false;
+            IsReadOnlyPasswordEntry = false;
+        }
+
+        private void DisableElements()
+        {
+            IsEnabledLoginButton = false;
+            IsEnabledRegisterButton = false;
+            IsEnabledRememberMe = false;
+
+            IsReadOnlyEmailEntry = true;
+            IsReadOnlyPasswordEntry = true;
+        }
+
+        private void ShowActivityIndicator()
+        {
+            DisableElements();
+
+            ConnectingMessageVisibility = true;
+            RunActivityIndicator = true;
+        }
+
+        private void HideActivityIndicator()
+        {
+            EnableElements();
+
+            ConnectingMessageVisibility = false;
+            RunActivityIndicator = false;
+        }
+
         private async Task OnLoginClicked()
         {
             if (IsEmailAndPasswordNotNull())
             {
+                ShowActivityIndicator();
                 var restService = new RestService();
-                if (await restService.VerifyLogin(Email, Password))
+                bool isVerified = await restService.VerifyLogin(Email, Password);
+                if (isVerified)
                 {
+                    HideActivityIndicator();
+
                     var token = Xamarin.Essentials.SecureStorage.GetAsync(RestService.Token);
 
                     if (token == null)
@@ -101,11 +201,8 @@ namespace InventorySystem.ViewModels
                     }
 
                 }
-                else
-                {
-                    DependencyService.Get<IMessage>().LongAlert(Constants.ConnectionError);
-                    return;
-                }
+                
+                HideActivityIndicator();
             }
             else
             {

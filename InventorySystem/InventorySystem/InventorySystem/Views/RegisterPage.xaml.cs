@@ -17,7 +17,7 @@ namespace InventorySystem.Views
         {
             InitializeComponent();
             this.BindingContext = new RegisterViewModel();
-            Shell.SetNavBarIsVisible(this, false);
+            NavigationPage.SetHasNavigationBar(this, false);
         }
 
         private void CheckPasswordValidity()
@@ -49,6 +49,17 @@ namespace InventorySystem.Views
         private void PasswordEntry_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             CheckPasswordValidity();
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            Navigation.PopAsync();
+            return true;
+        }
+
+        private async void GoBackButton_OnClick(object sender, EventArgs e)
+        {
+            await Navigation.PopAsync();
         }
     }
 }

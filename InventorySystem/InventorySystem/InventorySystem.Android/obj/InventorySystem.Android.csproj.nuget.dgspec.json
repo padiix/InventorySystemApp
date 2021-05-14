@@ -46,7 +46,7 @@
           "dependencies": {
             "Newtonsoft.Json": {
               "target": "Package",
-              "version": "[12.0.3, )"
+              "version": "[13.0.1, )"
             },
             "Xamarin.CommunityToolkit": {
               "target": "Package",
@@ -114,7 +114,7 @@
             },
             "Newtonsoft.Json": {
               "target": "Package",
-              "version": "[12.0.3, )"
+              "version": "[13.0.1, )"
             },
             "Refractored.MvvmHelpers": {
               "target": "Package",

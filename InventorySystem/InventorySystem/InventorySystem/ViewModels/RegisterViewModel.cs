@@ -87,12 +87,12 @@ namespace InventorySystem.ViewModels
         }
 
         public Command RegisterCommand { get; }
-        public Command ReturnCommand { get; }
+        //public Command ReturnCommand { get; }
 
         public RegisterViewModel()
         {
             RegisterCommand = new Command(async () => await OnRegisterClick());
-            ReturnCommand = new Command(async () => await OnReturnClick());
+            //ReturnCommand = new Command(OnReturnClick);
         }
 
         private bool AreFieldsNotNull()
@@ -125,11 +125,6 @@ namespace InventorySystem.ViewModels
                 DependencyService.Get<IMessage>().LongAlert(Constants.ConnectionError);
             }
 
-        }
-
-        private async Task OnReturnClick()
-        {
-            await Shell.Current.GoToAsync("//login");
         }
     }
 }
