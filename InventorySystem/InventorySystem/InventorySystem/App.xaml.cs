@@ -24,14 +24,14 @@ namespace InventorySystem
             }
             else
             {
-                MainPage = new NavigationPage(new LoginPage());
+                MainPage = new EmptyAppShell();
+                           //new NavigationPage(new LoginPage());
             }
         }
 
-        public async void NavigateToLoginPage(object sender)
+        public void NavigateToLoginPage(object sender)
         {
             MainPage = new EmptyAppShell();
-
         }
         
         public async void NavigateToMainPage(object sender)

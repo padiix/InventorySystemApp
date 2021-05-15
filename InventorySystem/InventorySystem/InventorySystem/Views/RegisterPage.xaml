@@ -32,12 +32,14 @@
                 <Label Text="Imię:"/>
                 <Entry Text="{Binding Firstname}"
                        Placeholder="np. Jan"
-                       FontSize="Medium"/>
+                       FontSize="Medium"
+                       IsReadOnly="{Binding IsReadOnlyFirstname}"/>
 
                 <Label Text="Nazwisko:"></Label>
                 <Entry Text="{Binding Lastname}"
                        Placeholder="np. Kowalski"
-                       FontSize="Medium"/>
+                       FontSize="Medium"
+                       IsReadOnly="{Binding IsReadOnlyLastname}"/>
 
             </StackLayout>
             <StackLayout Padding="0,10">
@@ -45,13 +47,15 @@
                 <Label Text="Nazwa użytkownika:"/>
                 <Entry Text="{Binding Username}"
                        Placeholder="np. jkowalski97"
-                       FontSize="Medium"/>
+                       FontSize="Medium"
+                       IsReadOnly="{Binding IsReadOnlyUsername}"/>
 
                 <Label Text="E-mail:"/>
                 <Entry x:Name="EmailEntry" 
                        Placeholder="np. JanKowalski@gmail.com" 
                        FontSize="Medium" 
-                       IsSpellCheckEnabled="False" 
+                       IsSpellCheckEnabled="False"
+                       IsReadOnly="{Binding IsReadOnlyEmail}"
                        Text="{Binding Email}">
                     <Entry.Behaviors>
 
@@ -70,9 +74,10 @@
                 <Label Text="Hasło:"/>
                 <Entry x:Name="PasswordEntry"
                        FontSize="Medium" 
-                           IsPassword="True" 
-                           Text="{Binding Password}" 
-                           TextChanged="PasswordEntry_OnTextChanged">
+                       IsPassword="True"
+                       IsReadOnly="{Binding IsReadOnlyPassword}"
+                       Text="{Binding Password}" 
+                       TextChanged="PasswordEntry_OnTextChanged">
                     <Entry.Behaviors>
 
                         <xct:MultiValidationBehavior x:Name="PasswordValidationBehavior" 
@@ -109,16 +114,35 @@
 
             <StackLayout Orientation="Horizontal"
                          HorizontalOptions="Center"
-                         Padding="0,50">
+                         Padding="0,30,0,20">
 
                 <Button Text="Zarejestruj"
                         Padding="10"
-                        Command="{Binding RegisterCommand}"/>
+                        Command="{Binding RegisterCommand}"
+                        IsEnabled="{Binding IsEnabledRegisterButton}"/>
 
                 <Button Text="Powrót do ekranu logowania"
                         Padding="10"
-                        Clicked="GoBackButton_OnClick"/>
-                        <!--Command="{Binding ReturnCommand}"-->
+                        Clicked="GoBackButton_OnClick"
+                        IsEnabled="{Binding IsEnabledReturnButton}"/>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="Center"
+                         Padding="0">
+
+                <StackLayout Orientation="Vertical"
+                             VerticalOptions="Center">
+
+                    <Label Text="Rejestrowanie użytkownika"
+                           Padding="10"
+                           FontSize="Subtitle"
+                           IsVisible="{Binding IsRegistrationMessageVisible}"/>
+
+                </StackLayout>
+                    
+                <ActivityIndicator IsRunning="{Binding IsActivityIndicatorRunning}"/>
+
             </StackLayout>
 
         </StackLayout>

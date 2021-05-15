@@ -83,15 +83,10 @@ namespace InventorySystem.ViewModels
         //Objects enabling/disabling elements on LoginPage.xaml
         private bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null)
         {
-            if (!Equals(field, newValue))
-            {
-                field = newValue;
-                OnPropertyChanged(propertyName ?? string.Empty);
-                //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-                return true;
-            }
-
-            return false;
+            if (Equals(field, newValue)) return false;
+            field = newValue;
+            OnPropertyChanged(propertyName ?? string.Empty);
+            return true;
         }
 
         private bool _isEnabledRememberMe;
@@ -175,7 +170,7 @@ namespace InventorySystem.ViewModels
             {
                 ShowActivityIndicator();
                 var restService = new RestService();
-                bool isVerified = await restService.VerifyLogin(Email, Password);
+                var isVerified = await restService.VerifyLogin(Email, Password);
                 if (isVerified)
                 {
                     HideActivityIndicator();

@@ -47,9 +47,9 @@ namespace InventorySystem.Services
             {
                 responseMessage = await _client.PostAsync(new Uri(Constants.AccountLogin), content);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                DependencyService.Get<IMessage>().LongAlert(Constants.ConnectionError);
+                ConnectionErrorMethod(ex);
                 return false;
             }
 
@@ -94,7 +94,8 @@ namespace InventorySystem.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ConnectionErrorMethod(ex);
+                return false;
             }
 
             if (!responseMessage.IsSuccessStatusCode)
@@ -138,7 +139,8 @@ namespace InventorySystem.Services
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.Message);
+                    ConnectionErrorMethod(ex);
+                    return false;
                 }
 
                 if (!responseMessage.IsSuccessStatusCode)
@@ -177,7 +179,8 @@ namespace InventorySystem.Services
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.Message);
+                    ConnectionErrorMethod(ex);
+                    return null;
                 }
 
                 if (!responseMessage.IsSuccessStatusCode)
@@ -210,7 +213,8 @@ namespace InventorySystem.Services
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.Message);
+                    ConnectionErrorMethod(ex);
+                    return null;
                 }
 
                 if (!responseMessage.IsSuccessStatusCode)
@@ -250,7 +254,8 @@ namespace InventorySystem.Services
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.Message);
+                    ConnectionErrorMethod(ex);
+                    return false;
                 }
 
                 if (!responseMessage.IsSuccessStatusCode)
@@ -268,6 +273,7 @@ namespace InventorySystem.Services
             }
         }
 
+        //Additional usefull methods
         private static void SaveUserDetails(UserData userData)
         {
             StaticValues.UserId = userData.Id.ToString();
@@ -276,10 +282,18 @@ namespace InventorySystem.Services
             StaticValues.Username = userData.Username;
             StaticValues.Email = userData.Email;
         }
-
+        private static void ShowInConsole(string message)
+        {
+            Console.WriteLine("[API Error Message] " + message);
+        }
         private static void ShowInConsole(HttpResponseMessage response)
         {
             Console.WriteLine("[API Response Message] " + response.StatusCode + ", " + response.Content.ReadAsStringAsync());
+        }
+        private void ConnectionErrorMethod(Exception ex)
+        {
+            DependencyService.Get<IMessage>().LongAlert(Constants.ConnectionError);
+            ShowInConsole(ex.Message);
         }
     }
 }
