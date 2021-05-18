@@ -4,7 +4,7 @@
              x:Class="InventorySystem.Views.MainPage"
              xmlns:vm="clr-namespace:InventorySystem.ViewModels"
              Shell.TabBarIsVisible="True"
-             Title="{Binding Title}">
+             Title="Strona główna">
 
     <ContentPage.BindingContext>
         <vm:MainPageViewModel />
@@ -53,12 +53,9 @@
             <Label Text="{Binding WelcomeMessage}" 
                    FontSize="Title"/>
 
-            <!--<Label Text="Co dzisiaj chcesz zrobić ?"/>-->
-
         </StackLayout>
 
-        <StackLayout Grid.Row="1" 
-                     Padding="10,20">
+        <StackLayout Padding="10,20">
 
             <Label Padding="10,0,0,5"
                    Text="Ostatnio dodane przedmioty:"
@@ -67,6 +64,26 @@
             <SearchBar Scale="0.9"
                        Placeholder="Nazwa przedmiotu"
                        Text="{Binding SearchValue}"/>
+
+            <Grid Padding="0,20,0 ,0"
+                  HorizontalOptions="Center"
+                  IsVisible="{Binding IsVisibleMessageAndActivityIndicator}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+            
+                <Label Text="Ładowanie danych"
+                       FontSize="Subtitle"
+                       IsVisible="true"
+                       VerticalOptions="Center"/>
+                <ActivityIndicator Grid.Column="1"
+                                   IsRunning="true"
+                                   Scale="0.7"/>
+            </Grid>
 
 
             <CollectionView ItemsSource="{Binding UserItems}"
@@ -110,7 +127,7 @@
                                 <Label Text="Dodany przez: "
                                        FontSize="15"
                                        FontAttributes="Bold"/>
-                                    
+
                                 <StackLayout Orientation="Horizontal">
 
                                     <Label Text="{Binding User.FirstName}"
@@ -122,7 +139,7 @@
                                 </StackLayout>
 
                             </StackLayout>
-                            
+
                             <StackLayout VerticalOptions="Start"
                                          Padding="0,25,0,0">
 
@@ -130,7 +147,8 @@
 
                                 <!--//TODO: Dodać odpowiedni scope'ing na poszczególne dane-->
                                 <Button Text="Modyfikuj"
-                                        /><!--Command="{Binding Path=, MoveToModificationPage}"/>-->
+                                        />
+                                <!--Command="{Binding Path=, MoveToModificationPage}"/>-->
 
                             </StackLayout>
 

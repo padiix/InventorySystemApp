@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using InventorySystem.Interfaces;
 using InventorySystem.Models;
@@ -14,6 +15,8 @@ namespace InventorySystem.ViewModels
 {
     public class MainPageViewModel : BaseViewModel
     {
+        public const string EVENT_SET_WELCOME_MESSAGE = "EVENT_SET_WELCOME_MESSAGE";
+
         //Przykładowe dane do testów
         private static readonly Guid _itemGuid1 = new Guid("ce91ee2a-64ee-40ae-a839-ceb7194d2850");
         private static readonly Guid _itemGuid2 = new Guid("93aed42e-8b10-4d38-a01c-fb2d8ff5b487");
@@ -33,17 +36,7 @@ namespace InventorySystem.ViewModels
 
         //Zmienne potrzebne do ustawiania wiadomości powitalnej
         private string _welcomeMessage;
-        public string WelcomeMessage
-        {
-            get => _welcomeMessage;
-            set
-            {
-                _welcomeMessage = value;
-                OnPropertyChanged(nameof(WelcomeMessage)); // Informuj, że była zmiana na tej właściwości
-            }
-        }
-
-        public const string EVENT_SET_WELCOME_MESSAGE = "EVENT_SET_WELCOME_MESSAGE";
+        public string WelcomeMessage { get => _welcomeMessage; set => SetProperty(ref _welcomeMessage, value); }
 
         //Klient pozwalający na połączenie z API
         private readonly RestService _restClient;
@@ -52,22 +45,21 @@ namespace InventorySystem.ViewModels
 
         //Zmienne do filtrowania CollectionView po nazwie
         private string _searchValue;
+        
 
-        public string SearchValue
-        {
-            get => _searchValue;
-            set
-            {
-                _searchValue = value;
-                OnPropertyChanged(nameof(SearchValue));
-            }
-        }
+        public string SearchValue { get => _searchValue; set => SetProperty(ref _searchValue, value); }
 
         //Komenda prowadząca do strony modyfikacji przedmiotu
         public Command MoveToModificationPage { get; }
 
         //Pole połączone z właściwością IsVisible dla okienka z wiadomością o połączeniu.
         public bool IsErrorVisible { get; set; } = false;
+
+        //Activity Indicator
+        private bool _isVisibleMessageAndActivityIndicator = false;
+
+        public bool IsVisibleMessageAndActivityIndicator { get => _isVisibleMessageAndActivityIndicator; set => SetProperty(ref _isVisibleMessageAndActivityIndicator, value); }
+
 
         public MainPageViewModel()
         {
@@ -77,8 +69,7 @@ namespace InventorySystem.ViewModels
 
             RefreshCommand = new Command(async () => await GetConnection());
             MoveToModificationPage = new Command(() => ModifyItem());
-            Title = "Strona główna";
-            InitCollectionViewWithFilter();
+            InitCollectionView();
             //_sourceItems = new List<Item> { _item1, _item2, _item3 };
         }
 
@@ -120,16 +111,19 @@ namespace InventorySystem.ViewModels
 
         public async Task GetConnection()
         {
+            ShowActivityIndicatorWithMessage();
             var response = await _restClient.GetCurrentUser();
             if (response)
             {
                 DependencyService.Get<IMessage>().ShortAlert("Połączenie nawiązane pomyślnie.");
                 IsErrorVisible = false;
-                InitCollectionViewWithFilter();
+                await GetItemsForUser();
+                HideActivityIndicatorWithMessage();
                 return;
             }
 
             IsErrorVisible = true;
+            HideActivityIndicatorWithMessage();
             DependencyService.Get<IMessage>().ShortAlert("Błąd połączenia.");
         }
         private void SetWelcomeMessage(object sender)
@@ -137,16 +131,31 @@ namespace InventorySystem.ViewModels
             //Wiadomość w tej zmiennej będzie pokazana na górze ekranu na stronie głównej.
             WelcomeMessage = "Witaj, " + StaticValues.FirstName + "!";
         }
-        private async void InitCollectionViewWithFilter()
+
+        private async Task GetItemsForUser()
         {
-            _currentUserItems = new List<Item>();
+            _sourceItems.Clear();
+
             try
             {
-                _sourceItems = await _restClient.GetAllItems();
+                var itemsFromAPI = await _restClient.GetAllItems();
+
+                foreach (var item in itemsFromAPI)
+                {
+                    _sourceItems.Add(item);
+                }
+
+                //Proponowane sprawdzanie czy elementy się powtarzają
+                //foreach (var item in itemsFromAPI)
+                //{
+                //    if (_sourceItems.Contains(item)) continue;
+                //    _sourceItems.Add(item);
+                //}
+
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                throw new Exception($"Napotkano błąd podczas łączenia się z API.\n {ex.Message}");
+                Console.WriteLine(e);
             }
 
             _currentUserItems = _sourceItems
@@ -160,6 +169,32 @@ namespace InventorySystem.ViewModels
                 else if (!_currentUserItems.Contains(item))
                     UserItems.Remove(item);
             }
+        }
+
+        private async void InitCollectionView()
+        {
+            _currentUserItems = new List<Item>();
+            _sourceItems = new List<Item>();
+
+            await GetItemsForUser();
+        }
+
+        private void ShowActivityIndicatorWithMessage()
+        {
+            IsVisibleMessageAndActivityIndicator = true;
+        }
+
+        private void HideActivityIndicatorWithMessage()
+        {
+            IsVisibleMessageAndActivityIndicator = false;
+        }
+
+        private bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null)
+        {
+            if (Equals(field, newValue)) return false;
+            field = newValue;
+            OnPropertyChanged(propertyName ?? string.Empty);
+            return true;
         }
     }
 }
