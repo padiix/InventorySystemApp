@@ -43,14 +43,13 @@ namespace InventorySystem.ViewModels
 
         public Command RefreshCommand { get; }
 
+        public Command AddItemCommand { get; }
+        public Command MoveToModificationPageCommand { get; }
+        public Command DeleteItemCommand { get; }
+
         //Zmienne do filtrowania CollectionView po nazwie
         private string _searchValue;
-        
-
         public string SearchValue { get => _searchValue; set => SetProperty(ref _searchValue, value); }
-
-        //Komenda prowadząca do strony modyfikacji przedmiotu
-        public Command MoveToModificationPage { get; }
 
         //Pole połączone z właściwością IsVisible dla okienka z wiadomością o połączeniu.
         public bool IsErrorVisible { get; set; } = false;
@@ -68,15 +67,31 @@ namespace InventorySystem.ViewModels
             _restClient = new RestService();
 
             RefreshCommand = new Command(async () => await GetConnection());
-            MoveToModificationPage = new Command(() => ModifyItem());
+
+            //Test działania Bindingu
+            MoveToModificationPageCommand = new Command<Item>(model =>
+            {
+                DependencyService.Get<IMessage>().ShortAlert($"Przenoszę do strony modyfikacji przemiotu o nazwie {model.Name}");
+            });
+
+            AddItemCommand = new Command(() =>
+            {
+                DependencyService.Get<IMessage>().ShortAlert($"Dodaję przedmiot");
+            });
+
+            DeleteItemCommand = new Command<Item>(model =>
+            {
+                DependencyService.Get<IMessage>().ShortAlert($"Usuwam przedmiot o nazwie {model.Name}");
+            });
+
             InitCollectionView();
             //_sourceItems = new List<Item> { _item1, _item2, _item3 };
         }
 
-        private void ModifyItem(string guid = "no guid")
-        {
-            DependencyService.Get<IMessage>().ShortAlert($"Przenoszę do strony modyfikacji przemiotu o kodzie {guid}");
-        }
+        //private void ModifyItem(string guid = "no guid")
+        //{
+            
+        //}
 
         protected override void OnPropertyChanged(string propertyName = "")
         {
@@ -178,6 +193,16 @@ namespace InventorySystem.ViewModels
 
             await GetItemsForUser();
         }
+
+        //private async Task ModifyItem(Item item)
+        //{
+
+        //}
+
+        //private async Task DeleteItem(Item item)
+        //{
+
+        //}
 
         private void ShowActivityIndicatorWithMessage()
         {

@@ -85,74 +85,104 @@
                                    Scale="0.7"/>
             </Grid>
 
+            <Grid Padding="0,10,0, 10"
+                  ColumnDefinitions="Auto"
+                  RowDefinitions="*"
+                  HorizontalOptions="End">
 
-            <CollectionView ItemsSource="{Binding UserItems}"
+                <!--<Label Grid.Column="0" 
+                       Text="Dodaj przedmiot">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="{Binding AddItemCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>-->
+
+                <ImageButton Grid.Column="1"
+                             Source="add_button50x50.png"
+                             BackgroundColor="Transparent"
+                             WidthRequest="50"
+                             HeightRequest="50"
+                             Command="{Binding AddItemCommand}"/>
+
+            </Grid>
+            
+
+            <CollectionView x:Name="UserItems"
+                            ItemsSource="{Binding UserItems}"
                             BackgroundColor="GhostWhite">
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout Orientation="Horizontal">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="140"/>
+                            </Grid.ColumnDefinitions>
 
-                            <StackLayout Padding="5,20,10,0">
+                            <StackLayout Padding="5,10,10,0">
 
                                 <Label Text="{Binding Name}"
                                    TextColor="Black"
                                    HorizontalTextAlignment="Center"
                                    TextTransform="Uppercase"
-                                   FontSize="18"
+                                   FontSize="20"
                                    FontAttributes="Bold"/>
 
-                                <StackLayout>
-
-                                    <Label Text="Kod kreskowy: "
-                                           FontSize="15"
-                                           FontAttributes="Bold"/>
-
-                                    <Label Text ="{Binding Barcode}"
-                                       FontSize="20"/>
-
-                                </StackLayout>
-
-                                <StackLayout>
-
-                                    <Label Text="Dodany:  "
-                                           FontSize="15"
-                                           FontAttributes="Bold"/>
-
-                                    <Label Text="{Binding DateAdded}"
-                                       FontSize="15"/>
-
-                                </StackLayout>
-
-                                <Label Text="Dodany przez: "
+                                <Label Text="Kod kreskowy:"
                                        FontSize="15"
                                        FontAttributes="Bold"/>
 
-                                <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding Barcode}"
+                                       FontSize="20"
+                                       TextDecorations="Underline"/>
 
-                                    <Label Text="{Binding User.FirstName}"
-                                           FontSize="15"/>
+                                <Label Text="Dodany:"
+                                       FontSize="15"
+                                       FontAttributes="Bold"/>
 
-                                    <Label Text="{Binding User.LastName}"
-                                           FontSize="15"/>
+                                <Label Text="{Binding DateAdded}"
+                                       FontSize="16"
+                                       Padding="0,0,0,10"/>
 
-                                </StackLayout>
+                                <Label Text="Dodany przez:"
+                                       FontSize="15"
+                                       FontAttributes="Bold"/>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Column="0" 
+                                           Text="{Binding User.FirstName}"
+                                           FontSize="16"/>
+
+                                    <Label Grid.Column="1"
+                                           Text="{Binding User.LastName}"
+                                           FontSize="16"/>
+
+                                </Grid>
 
                             </StackLayout>
 
-                            <StackLayout VerticalOptions="Start"
-                                         Padding="0,25,0,0">
+                            <StackLayout Grid.Column="1"
+                                         VerticalOptions="Start"
+                                         Padding="0,15,0,0">
 
                                 <Label Text="Dostępne opcje:"/>
 
-                                <!--//TODO: Dodać odpowiedni scope'ing na poszczególne dane-->
                                 <Button Text="Modyfikuj"
-                                        />
-                                <!--Command="{Binding Path=, MoveToModificationPage}"/>-->
+                                        Command="{Binding Path=BindingContext.MoveToModificationPageCommand, Source={Reference UserItems}}"
+                                        CommandParameter="{Binding .}"/>
+                                
+                                <Button Text="Usuń"
+                                        Command="{Binding Path=BindingContext.DeleteItemCommand, Source={Reference UserItems}}"
+                                        CommandParameter="{Binding .}"/>
 
                             </StackLayout>
 
-                        </StackLayout>
+                        </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
 
