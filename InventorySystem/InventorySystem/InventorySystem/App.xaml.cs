@@ -36,6 +36,7 @@ namespace InventorySystem
         
         public async void NavigateToMainPage(object sender)
         {
+            MainPage = new AppShell();
             await Shell.Current.GoToAsync($"//main");
         }
 
