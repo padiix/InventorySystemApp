@@ -92,7 +92,7 @@
                     <FlexLayout AlignItems="Center" 
                                 JustifyContent="End">
 
-                        <Label Text="Remember me"/>
+                        <Label Text="Zapamiętaj mnie"/>
 
                         <CheckBox x:Name="RememberMeChkbox" 
                                   IsChecked="False"
@@ -102,7 +102,7 @@
                     </FlexLayout>
 
                     <Button VerticalOptions="Center" 
-                            Text="Login" 
+                            Text="Zaloguj" 
                             Command="{Binding LoginCommand}"
                             IsEnabled="{Binding IsEnabledLoginButton}"/>
 
@@ -120,7 +120,7 @@
                          Padding="0,50,0,0">
 
                 <Label IsVisible="{Binding ConnectingMessageVisibility}"
-                       Text="Connecting to API"
+                       Text="Łączenie z API"
                        FontSize="Subtitle"
                        Padding="0,15,10,0"/>
 
