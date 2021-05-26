@@ -31,7 +31,7 @@
                 <StackLayout>
 
                     <Entry x:Name="EmailEntry" 
-                           Placeholder="Email" 
+                           Placeholder="E-mail" 
                            FontSize="Medium" 
                            IsSpellCheckEnabled="False" 
                            Text="{Binding Email}"
@@ -51,7 +51,7 @@
                            FontAttributes="Bold"/>
 
                     <Entry x:Name="PasswordEntry" 
-                           Placeholder="Password" 
+                           Placeholder="Hasło" 
                            FontSize="Medium" 
                            IsPassword="True" 
                            Text="{Binding Password}"
