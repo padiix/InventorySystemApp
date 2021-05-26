@@ -153,9 +153,9 @@ namespace InventorySystem.ViewModels
 
             try
             {
-                var itemsFromAPI = await _restClient.GetAllItems();
+                var itemsFromApi = await _restClient.GetAllItems();
 
-                foreach (var item in itemsFromAPI)
+                foreach (var item in itemsFromApi)
                 {
                     _sourceItems.Add(item);
                 }
@@ -173,8 +173,8 @@ namespace InventorySystem.ViewModels
                 Console.WriteLine(e);
             }
 
-            _currentUserItems = _sourceItems
-                .Where(item => item.User.Id.ToString().Contains(StaticValues.UserId.ToString())).ToList();
+            _currentUserItems = _sourceItems;
+            //    .Where(item => item.User.Id.ToString().Contains(StaticValues.UserId.ToString())).ToList();
 
             foreach (var item in _currentUserItems)
             {
@@ -188,21 +188,11 @@ namespace InventorySystem.ViewModels
 
         private async void InitCollectionView()
         {
-            _currentUserItems = new List<Item>();
+           _currentUserItems = new List<Item>();
             _sourceItems = new List<Item>();
 
             await GetItemsForUser();
         }
-
-        //private async Task ModifyItem(Item item)
-        //{
-
-        //}
-
-        //private async Task DeleteItem(Item item)
-        //{
-
-        //}
 
         private void ShowActivityIndicatorWithMessage()
         {
