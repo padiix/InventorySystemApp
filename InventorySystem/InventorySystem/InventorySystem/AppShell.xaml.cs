@@ -1,7 +1,4 @@
-﻿using InventorySystem.ViewModels;
-using InventorySystem.Views;
-using System;
-using System.Collections.Generic;
+﻿using InventorySystem.Views;
 using Xamarin.Forms;
 
 namespace InventorySystem
@@ -16,8 +13,6 @@ namespace InventorySystem
 
         private void RegisterRoutes()
         {
-            Routing.RegisterRoute("scanner", typeof(BarcodeScanner));
-            Routing.RegisterRoute("about", typeof(AboutApp));
             Routing.RegisterRoute("login", typeof(LoginPage));
             Routing.RegisterRoute("account/details", typeof(AccountDetailsPage));
             Routing.RegisterRoute("item/modify", typeof(ModifyItemPage));
