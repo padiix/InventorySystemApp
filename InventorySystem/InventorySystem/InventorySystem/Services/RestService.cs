@@ -281,6 +281,7 @@ namespace InventorySystem.Services
             StaticValues.LastName = userData.LastName;
             StaticValues.Username = userData.Username;
             StaticValues.Email = userData.Email;
+            StaticValues.IsAdmin = userData.IsAdmin;
         }
         private static void ShowInConsole(string message)
         {

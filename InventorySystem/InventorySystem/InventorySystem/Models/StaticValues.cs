@@ -32,5 +32,10 @@ namespace InventorySystem.Models
             set => Preferences.Set(nameof(Email), value);
         }
 
+        public static bool IsAdmin
+        {
+            get => Preferences.Get(nameof(IsAdmin), false);
+            set => Preferences.Set(nameof(IsAdmin), value);
+        }
     }
 }

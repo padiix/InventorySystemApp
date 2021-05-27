@@ -10,8 +10,10 @@ namespace InventorySystem.Services
 
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
         {
-            //TODO: Dodać część kodu sprawdzającą czy użytkownik jest administratorem
-            return ((Item) item).User.Id.ToString().Equals(StaticValues.UserId) ? CurrentUser : OtherUsers;
+            if (StaticValues.IsAdmin.Equals(true)) 
+                return CurrentUser;
+            else
+                return ((Item) item).User.Id.ToString().Equals(StaticValues.UserId) ? CurrentUser : OtherUsers;
         }
     }
 }

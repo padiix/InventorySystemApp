@@ -22,5 +22,8 @@
 
         [JsonProperty("lastName")]
         public string LastName { get; set; }
+
+        [JsonProperty("isAdmin")] 
+        public bool IsAdmin { get; set; }
     }
 }
