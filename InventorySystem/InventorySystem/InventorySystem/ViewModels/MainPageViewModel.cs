@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using InventorySystem.Interfaces;
 using InventorySystem.Models;
 using InventorySystem.Services;
-using InventorySystem.Views;
 using Xamarin.Forms;
 
 namespace InventorySystem.ViewModels

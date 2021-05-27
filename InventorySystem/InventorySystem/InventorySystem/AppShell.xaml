@@ -45,14 +45,17 @@
         </ResourceDictionary>
     </Shell.Resources>
 
-    <TabBar Route="main">
+    <TabBar>
 
         <ShellContent Title="Strona główna" 
+                      Route="main"
                       ContentTemplate="{DataTemplate local:MainPage}"/>
         <ShellContent Title="Skaner Kodów Kreskowych" 
+                      Route="scanner"
                       Icon="icon_feed.png" 
                       ContentTemplate="{DataTemplate local:BarcodeScanner}"/>
         <ShellContent Title="O Aplikacji" 
+                      Route="about"
                       Icon="icon_about.png" 
                       ContentTemplate="{DataTemplate local:AboutApp}"/>
 

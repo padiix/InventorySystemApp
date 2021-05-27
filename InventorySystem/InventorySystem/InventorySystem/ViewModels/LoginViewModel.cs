@@ -1,10 +1,6 @@
-using System;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using InventorySystem.Interfaces;
-using InventorySystem.Models;
 using InventorySystem.Services;
-using InventorySystem.Views;
 using MvvmHelpers;
 using Xamarin.Forms;
 using System.Runtime.CompilerServices;
@@ -188,11 +184,11 @@ namespace InventorySystem.ViewModels
                     if (Settings.FirstRun)
                     {
                         Settings.FirstRun = false;
-                        await Shell.Current.GoToAsync("//about");
+                        await Shell.Current.GoToAsync($"//about");
                     }
                     else
                     {
-                        await Shell.Current.GoToAsync("//main");
+                        await Shell.Current.GoToAsync($"//main");
                     }
 
                 }

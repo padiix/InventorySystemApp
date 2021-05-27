@@ -1,8 +1,5 @@
-﻿using InventorySystem.Views;
-using System;
-using InventorySystem.Services;
+﻿using InventorySystem.Services;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace InventorySystem
 {
@@ -25,7 +22,6 @@ namespace InventorySystem
             else
             {
                 MainPage = new EmptyAppShell();
-                           //new NavigationPage(new LoginPage());
             }
         }
 
