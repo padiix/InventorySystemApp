@@ -61,7 +61,6 @@
     <ShellItem>
 
         <ShellContent ContentTemplate="{DataTemplate local:LoginPage}" />
-        <!--<ShellContent ContentTemplate="{DataTemplate local:RegisterPage}"/>-->
 
     </ShellItem>
 </Shell>
