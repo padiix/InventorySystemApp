@@ -29,17 +29,22 @@ namespace InventorySystem.ViewModels
         private readonly RestService _restClient;
 
         public Command RefreshCommand { get; }
-
+        public Command RefreshItemsCommand { get; }
         public Command AddItemCommand { get; }
         public Command MoveToModificationPageCommand { get; }
         public Command DeleteItemCommand { get; }
 
-        //Zmienne do filtrowania CollectionView po nazwie
+        //RefreshView
+        private bool _isCollectionViewRefreshing = false;
+        public bool IsCollectionViewRefreshing { get => _isCollectionViewRefreshing; set => SetProperty(ref _isCollectionViewRefreshing, value); }
+
+        //Filtrowanie CollectionView po nazwie przedmiotu
         private string _searchValue;
         public string SearchValue { get => _searchValue; set => SetProperty(ref _searchValue, value); }
 
         //Pole połączone z właściwością IsVisible dla okienka z wiadomością o połączeniu.
-        public bool IsErrorVisible { get; set; } = false;
+        private bool _isErrorVisible = false;
+        public bool IsErrorVisible { get => _isErrorVisible; set => SetProperty(ref _isErrorVisible, value); }
 
         //Activity Indicator
         private bool _isVisibleMessageAndActivityIndicator = false;
@@ -54,6 +59,8 @@ namespace InventorySystem.ViewModels
             _restClient = new RestService();
 
             RefreshCommand = new Command(async () => await GetConnection());
+
+            RefreshItemsCommand = new Command(async () => await GetItemsForUser());
 
             //Test działania Bindingu
             MoveToModificationPageCommand = new Command<Item>(model =>
@@ -90,12 +97,16 @@ namespace InventorySystem.ViewModels
             base.OnPropertyChanged(propertyName);
         }
 
-        private void FilterCollectionView()
+        private async void FilterCollectionView()
         {
             var searchTerm = SearchValue;
 
             if (string.IsNullOrWhiteSpace(searchTerm))
+            {
                 searchTerm = string.Empty;
+                await GetItemsForUser();
+            }
+                
 
             searchTerm = searchTerm.ToLowerInvariant();
 
@@ -117,7 +128,7 @@ namespace InventorySystem.ViewModels
             var response = await _restClient.GetCurrentUser();
             if (response)
             {
-                DependencyService.Get<IMessage>().ShortAlert("Połączenie nawiązane pomyślnie.");
+                //DependencyService.Get<IMessage>().ShortAlert("Połączenie nawiązane pomyślnie.");
                 IsErrorVisible = false;
                 await GetItemsForUser();
                 HideActivityIndicatorWithMessage();
@@ -160,8 +171,14 @@ namespace InventorySystem.ViewModels
                 Console.WriteLine(e);
             }
 
-            _currentUserItems = _sourceItems;
-            //    .Where(item => item.User.Id.ToString().Contains(StaticValues.UserId.ToString())).ToList();
+            _currentUserItems.Clear();
+
+            foreach (var sourceItem in _sourceItems)
+            {
+                _currentUserItems.Add(sourceItem);
+            }
+
+            UserItems.Clear();
 
             foreach (var item in _currentUserItems)
             {
@@ -171,6 +188,8 @@ namespace InventorySystem.ViewModels
                 else if (!_currentUserItems.Contains(item))
                     UserItems.Remove(item);
             }
+
+            IsCollectionViewRefreshing = false;
         }
 
         private async void InitCollectionView()

@@ -16,21 +16,19 @@
 
             <Color x:Key="Accent">LightGray</Color>
 
-        </ResourceDictionary>
+            <DataTemplate x:Key="CurrentUserItems">
+                <Grid Padding="5,10,5,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.7*"/>
+                        <ColumnDefinition Width="0.3*"/>
+                    </Grid.ColumnDefinitions>
 
-        <DataTemplate x:Key="CurrentUserItems">
-            <Grid Padding="5,10,5,15">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.7*"/>
-                    <ColumnDefinition Width="0.3*"/>
-                </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.1*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="0.1*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <Label Grid.Column="0"
+                    <Label Grid.Column="0"
                        Grid.Row="0"
                        Grid.ColumnSpan="2"
                        Text="{Binding Name}"
@@ -40,83 +38,83 @@
                        FontSize="20"
                        FontAttributes="Bold"/>
 
-                <StackLayout Grid.Column="0"
+                    <StackLayout Grid.Column="0"
                              Grid.Row="1"
                              Padding="5,10,10,0">
 
-                    <Label Text="Kod kreskowy:"
+                        <Label Text="Kod kreskowy:"
                            FontSize="15"
                            FontAttributes="Bold"/>
 
-                    <Label Text="{Binding Barcode}"
+                        <Label Text="{Binding Barcode}"
                                        FontSize="20"
                                        TextDecorations="Underline"/>
 
-                    <Label Text="Dodany:"
+                        <Label Text="Data dodania:"
                                        FontSize="15"
                                        FontAttributes="Bold"/>
 
-                    <Label Text="{Binding DateAdded}"
+                        <Label Text="{Binding DateAdded}"
                                        FontSize="16"
                                        Padding="0,0,0,10"/>
 
-                    <Label Text="Dodany przez:"
+                        <Label Text="Dodany przez:"
                                        FontSize="15"
                                        FontAttributes="Bold"/>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                        <Label Grid.Column="0" 
+                            <Label Grid.Column="0" 
                                            Text="{Binding User.FirstName}"
                                            FontSize="16"/>
 
-                        <Label Grid.Column="1"
+                            <Label Grid.Column="1"
                                            Text="{Binding User.LastName}"
                                            FontSize="16"/>
 
-                    </Grid>
+                        </Grid>
 
-                </StackLayout>
+                    </StackLayout>
 
-                <StackLayout Grid.Column="1"
+                    <StackLayout Grid.Column="1"
                              Grid.Row="1"
                              VerticalOptions="Start"
                              Padding="0,15,0,0">
 
-                    <Label Text="Dostępne opcje:"/>
+                        <Label Text="Dostępne opcje:"/>
 
-                    <Button Text="Modyfikuj"
+                        <Button Text="Modyfikuj"
                                         IsEnabled="{Binding IsModifyingEnabled }"
                                         Command="{Binding Path=BindingContext.MoveToModificationPageCommand, Source={Reference UserItems}}"
                                         CommandParameter="{Binding .}"/>
 
-                    <Button Text="Usuń"
+                        <Button Text="Usuń"
                                         IsEnabled="{Binding IsDeletingEnabled}"
                                         Command="{Binding Path=BindingContext.DeleteItemCommand, Source={Reference UserItems}}"
                                         CommandParameter="{Binding .}"/>
 
-                </StackLayout>
+                    </StackLayout>
 
-            </Grid>
-        </DataTemplate>
+                </Grid>
+            </DataTemplate>
 
-        <DataTemplate x:Key="OtherUsersItems">
-            <Grid Padding="5,10,5,15">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.7*"/>
-                    <ColumnDefinition Width="0.3*"/>
-                </Grid.ColumnDefinitions>
+            <DataTemplate x:Key="OtherUsersItems">
+                <Grid Padding="5,10,5,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.7*"/>
+                        <ColumnDefinition Width="0.3*"/>
+                    </Grid.ColumnDefinitions>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="0.1*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.1*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                <Label Grid.Column="0"
+                    <Label Grid.Column="0"
                        Grid.Row="0"
                        Grid.ColumnSpan="2"
                        Text="{Binding Name}"
@@ -126,64 +124,67 @@
                        FontSize="20"
                        FontAttributes="Bold"/>
 
-                <StackLayout Grid.Column="0"
+                    <StackLayout Grid.Column="0"
                              Grid.Row="1"
                              Padding="5,10,10,0">
 
-                    <Label Text="Kod kreskowy:"
+                        <Label Text="Kod kreskowy:"
                            FontSize="15"
                            FontAttributes="Bold"/>
 
-                    <Label Text="{Binding Barcode}"
+                        <Label Text="{Binding Barcode}"
                                        FontSize="20"
                                        TextDecorations="Underline"/>
 
-                    <Label Text="Dodany:"
+                        <Label Text="Data dodania:"
                                        FontSize="15"
                                        FontAttributes="Bold"/>
 
-                    <Label Text="{Binding DateAdded}"
+                        <Label Text="{Binding DateAdded}"
                                        FontSize="16"
                                        Padding="0,0,0,10"/>
 
-                    <Label Text="Dodany przez:"
+                        <Label Text="Dodany przez:"
                                        FontSize="15"
                                        FontAttributes="Bold"/>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                        <Label Grid.Column="0" 
+                            <Label Grid.Column="0" 
                                            Text="{Binding User.FirstName}"
                                            FontSize="16"/>
 
-                        <Label Grid.Column="1"
+                            <Label Grid.Column="1"
                                            Text="{Binding User.LastName}"
                                            FontSize="16"/>
 
-                    </Grid>
+                        </Grid>
 
-                </StackLayout>
+                    </StackLayout>
 
-                <StackLayout Grid.Column="1"
+                    <StackLayout Grid.Column="1"
                              Grid.Row="1"
                              VerticalOptions="Start"
                              Padding="0,15,0,0">
 
-                    <Label Text="Nie można modyfikować przedmiotów innych użytkowników."
+                        <Label Text="Nie można modyfikować przedmiotów innych użytkowników."
                            TextColor="DarkGray"/>
 
-                </StackLayout>
+                    </StackLayout>
 
-            </Grid>
-        </DataTemplate>
+                </Grid>
+            </DataTemplate>
 
-        <services:UserItemsDataTemplateSelector x:Key="UserItemsSelector"
+            <services:UserItemsDataTemplateSelector x:Key="UserItemsSelector"
                                                 CurrentUser="{StaticResource CurrentUserItems}"
                                                 OtherUsers="{StaticResource OtherUsersItems}"/>
+
+        </ResourceDictionary>
+
     </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
@@ -225,10 +226,6 @@
 
         <StackLayout Padding="10,20">
 
-            <Label Padding="10,0,0,5"
-                   Text="Ostatnio dodane przedmioty:"
-                   FontSize="18"/>
-
             <SearchBar Scale="0.9"
                        Placeholder="Nazwa przedmiotu"
                        Text="{Binding SearchValue}"/>
@@ -258,29 +255,32 @@
                   RowDefinitions="*"
                   HorizontalOptions="End">
 
-                <!--<Label Grid.Column="0" 
-                       Text="Dodaj przedmiot">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="{Binding AddItemCommand}"/>
-                    </Label.GestureRecognizers>
-                </Label>-->
-
-                <ImageButton Grid.Column="1"
+                <ImageButton Grid.Column="0"
                              Source="add_button50x50.png"
                              BackgroundColor="Transparent"
                              WidthRequest="50"
                              HeightRequest="50"
                              Command="{Binding AddItemCommand}"/>
 
+                <ImageButton Grid.Column="1"
+                             Source="refresh_button50x50.png"
+                             BackgroundColor="Transparent"
+                             WidthRequest="50"
+                             HeightRequest="50"
+                             Command="{Binding RefreshCommand}"/>
+
             </Grid>
 
-
-            <CollectionView x:Name="UserItems"
+            <RefreshView IsRefreshing="{Binding IsCollectionViewRefreshing}"
+                         Command="{Binding RefreshItemsCommand}">
+                <CollectionView x:Name="UserItems"
                             ItemsSource="{Binding UserItems}"
                             ItemTemplate="{StaticResource UserItemsSelector}"
                             BackgroundColor="GhostWhite">
 
-            </CollectionView>
+                </CollectionView>
+            </RefreshView>
+
 
         </StackLayout>
     </StackLayout>
