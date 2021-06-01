@@ -166,21 +166,20 @@ namespace InventorySystem.ViewModels
                 //}
 
             }
+            catch (TimeoutException toEx)
+            {
+                Console.WriteLine(toEx);
+                IsErrorVisible = true;
+                DependencyService.Get<IMessage>().ShortAlert("Błąd połączenia.");
+            }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
 
-            _currentUserItems.Clear();
-
-            foreach (var sourceItem in _sourceItems)
-            {
-                _currentUserItems.Add(sourceItem);
-            }
-
             UserItems.Clear();
 
-            foreach (var item in _currentUserItems)
+            foreach (var item in _sourceItems)
             {
                 if (!UserItems.Contains(item))
                     UserItems.Add(item);
