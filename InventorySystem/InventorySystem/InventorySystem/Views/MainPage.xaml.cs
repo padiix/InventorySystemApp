@@ -29,6 +29,8 @@ namespace InventorySystem.Views
             {
                 DisconnectedMessage.IsVisible = true;
             }
+
+            MessagingCenter.Send<object>(this, MainPageViewModel.EVENT_SYNCHRONIZE_ITEMS);
         }
         
 
@@ -50,12 +52,6 @@ namespace InventorySystem.Views
 
         private void Account_OnClicked(object sender, EventArgs e)
         {
-            //DependencyService.Get<IMessage>().LongAlert("Pokazywanie strony z info o koncie...\n" +
-            //                                             $"UserId: {StaticValues.UserId}{Environment.NewLine}" +
-            //                                             $"FirstName: {StaticValues.FirstName}{Environment.NewLine}" +
-            //                                             $"LastName: {StaticValues.LastName}{Environment.NewLine}" +
-            //                                             $"Username: {StaticValues.Username}{Environment.NewLine}" +
-            //                                             $"E-mail: {StaticValues.Email}");
             Shell.Current.GoToAsync("account/details");
         }
     }

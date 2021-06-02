@@ -35,7 +35,7 @@
                         <FormattedString>
                             <FormattedString.Spans>
 
-                                <Span Text="Ikony użyte w aplikacji pochodzą od - "/>
+                                <Span Text="Ikony użyte w aplikacji pochodzą od: &#x0a;- "/>
 
                                 <helpers:HyperlinkSpan Text="Gregora Cresnara"
                                                        Url="https://www.flaticon.com/authors/gregor-cresnar">
@@ -47,7 +47,7 @@
                                       FontAttributes="Bold"
                                       FontSize="16"/>
 
-                                <Span Text=" oraz od "/>
+                                <Span Text=", "/>
 
                                 <helpers:HyperlinkSpan Text="Freepik"
                                 Url="https://www.freepik.com">

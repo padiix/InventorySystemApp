@@ -15,10 +15,10 @@ namespace InventorySystem.ViewModels
     public class MainPageViewModel : BaseViewModel
     {
         public const string EVENT_SET_WELCOME_MESSAGE = "EVENT_SET_WELCOME_MESSAGE";
+        public const string EVENT_SYNCHRONIZE_ITEMS = "EVENT_SYNCHRONIZE_ITEMS";
 
         //Zmienne potrzebne dla poprawnego wyświetlania danych w CollectionView
         private List<Item> _sourceItems;
-        private List<Item> _currentUserItems;
         public ObservableCollection<Item> UserItems { get; } = new ObservableCollection<Item>();
 
         //Zmienne potrzebne do ustawiania wiadomości powitalnej
@@ -27,6 +27,7 @@ namespace InventorySystem.ViewModels
 
         //Klient pozwalający na połączenie z API
         private readonly RestService _restClient;
+        
 
         public Command RefreshCommand { get; }
         public Command RefreshItemsCommand { get; }
@@ -55,6 +56,8 @@ namespace InventorySystem.ViewModels
         public MainPageViewModel()
         {
             MessagingCenter.Subscribe<object>(this, EVENT_SET_WELCOME_MESSAGE, SetWelcomeMessage);
+            //TODO: Test if this event works
+            MessagingCenter.Subscribe<object>(this, EVENT_SYNCHRONIZE_ITEMS, InitCollectionView);
 
             _restClient = new RestService();
 
@@ -77,9 +80,6 @@ namespace InventorySystem.ViewModels
             {
                 DependencyService.Get<IMessage>().ShortAlert($"Usuwam przedmiot o nazwie {model.Name}");
             });
-
-            InitCollectionView();
-            //_sourceItems = new List<Item> { _item1, _item2, _item3 };
         }
 
         //private void ModifyItem(string guid = "no guid")
@@ -110,9 +110,9 @@ namespace InventorySystem.ViewModels
 
             searchTerm = searchTerm.ToLowerInvariant();
 
-            var filteredItems = _currentUserItems.Where(item => item.Name.ToLowerInvariant().Contains(searchTerm)).ToList();
+            var filteredItems = _sourceItems.Where(item => item.Name.ToLowerInvariant().Contains(searchTerm)).ToList();
 
-            foreach (var item in _currentUserItems)
+            foreach (var item in _sourceItems)
             {
                 if (!filteredItems.Contains(item))
                     UserItems.Remove(item);
@@ -184,18 +184,16 @@ namespace InventorySystem.ViewModels
                 if (!UserItems.Contains(item))
                     UserItems.Add(item);
 
-                else if (!_currentUserItems.Contains(item))
+                else if (!_sourceItems.Contains(item))
                     UserItems.Remove(item);
             }
 
             IsCollectionViewRefreshing = false;
         }
 
-        private async void InitCollectionView()
+        private async void InitCollectionView(object sender)
         {
-           _currentUserItems = new List<Item>();
             _sourceItems = new List<Item>();
-
             await GetItemsForUser();
         }
 
