@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using InventorySystem.Interfaces;
 using InventorySystem.Models;
 using InventorySystem.Services;
+using InventorySystem.Views;
 using Xamarin.Forms;
 
 namespace InventorySystem.ViewModels
@@ -69,16 +70,19 @@ namespace InventorySystem.ViewModels
             MoveToModificationPageCommand = new Command<Item>(model =>
             {
                 DependencyService.Get<IMessage>().ShortAlert($"Przenoszę do strony modyfikacji przemiotu o nazwie {model.Name}");
+                Shell.Current.GoToAsync($"item/modify?Id={model.Id.ToString()}");
             });
 
-            AddItemCommand = new Command(() =>
+            AddItemCommand = new Command(/*async*/ () =>
             {
                 DependencyService.Get<IMessage>().ShortAlert($"Dodaję przedmiot");
+                //await Shell.Current.GoToAsync($"item/add");
             });
 
-            DeleteItemCommand = new Command<Item>(model =>
+            DeleteItemCommand = new Command<Item>(async model =>
             {
                 DependencyService.Get<IMessage>().ShortAlert($"Usuwam przedmiot o nazwie {model.Name}");
+                //await _restClient.DeleteItem(model.Id);
             });
         }
 

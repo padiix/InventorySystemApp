@@ -88,14 +88,12 @@
                         <Label Text="Dostępne opcje:"/>
 
                         <Button Text="Modyfikuj"
-                                        IsEnabled="{Binding IsModifyingEnabled }"
-                                        Command="{Binding Path=BindingContext.MoveToModificationPageCommand, Source={Reference UserItems}}"
-                                        CommandParameter="{Binding .}"/>
+                                Command="{Binding Path=BindingContext.MoveToModificationPageCommand, Source={Reference UserItems}}"
+                                CommandParameter="{Binding .}"/>
 
                         <Button Text="Usuń"
-                                        IsEnabled="{Binding IsDeletingEnabled}"
-                                        Command="{Binding Path=BindingContext.DeleteItemCommand, Source={Reference UserItems}}"
-                                        CommandParameter="{Binding .}"/>
+                                Command="{Binding Path=BindingContext.DeleteItemCommand, Source={Reference UserItems}}"
+                                CommandParameter="{Binding .}"/>
 
                     </StackLayout>
 

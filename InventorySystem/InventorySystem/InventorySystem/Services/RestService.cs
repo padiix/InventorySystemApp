@@ -193,15 +193,15 @@ namespace InventorySystem.Services
                 var jsonAsStringAsync = await responseMessage.Content.ReadAsStringAsync();
                 Items = JsonConvert.DeserializeObject<List<Item>>(jsonAsStringAsync);
 
-                return Items != null ? Items : null;
+                return Items;
             }
         }
 
         //TODO: Check if GetSpecificItem works
-        public async Task<Item> GetSpecificItem(string barcode)
+        public async Task<Item> GetSpecificItem(string id)
         {
             var token = await Xamarin.Essentials.SecureStorage.GetAsync(Token);
-            var uri = new Uri(Constants.ItemsEndpoint + "/" + barcode);
+            var uri = new Uri(Constants.ItemsEndpoint + "/" + id);
 
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri))
             {
@@ -227,11 +227,74 @@ namespace InventorySystem.Services
                 var jsonAsStringAsync = await responseMessage.Content.ReadAsStringAsync();
                 Item = JsonConvert.DeserializeObject<Item>(jsonAsStringAsync);
 
-                return Item != null ? Item : null;
+                return Item;
             }
         }
 
+        //public async Task<Item> GetSpecificItem(string barcode)
+        //{
+        //    var token = await Xamarin.Essentials.SecureStorage.GetAsync(Token);
+        //    var uri = new Uri(Constants.ItemsEndpoint + "/" + barcode);
+
+        //    using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri))
+        //    {
+        //        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        //        HttpResponseMessage responseMessage;
+        //        try
+        //        {
+        //            responseMessage = await _client.SendAsync(requestMessage);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            ConnectionErrorMethod(ex);
+        //            return null;
+        //        }
+
+        //        if (!responseMessage.IsSuccessStatusCode)
+        //        {
+        //            DependencyService.Get<IMessage>().LongAlert(Constants.SpecificItemError);
+        //            ShowInConsole(responseMessage);
+        //            return null;
+        //        }
+
+        //        var jsonAsStringAsync = await responseMessage.Content.ReadAsStringAsync();
+        //        Item = JsonConvert.DeserializeObject<Item>(jsonAsStringAsync);
+
+        //        return Item != null ? Item : null;
+        //    }
+        //}
+
         //TODO: Check if DeleteItem works
+
+        public async Task<bool> UpdateItem(Guid itemId, Item item)
+        {
+            var token = await Xamarin.Essentials.SecureStorage.GetAsync(Token);
+
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
+                return false;
+            }
+
+            HttpResponseMessage responseMessage;
+            var json = JsonConvert.SerializeObject(item, Formatting.Indented);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            try
+            {
+                responseMessage = await _client.PutAsync(Constants.ItemsEndpoint + $"/{itemId}", content);
+            }
+            catch (Exception e)
+            {
+                ConnectionErrorMethod(e);
+                return false;
+            }
+
+            if (responseMessage.IsSuccessStatusCode) return true;
+            DependencyService.Get<IMessage>().LongAlert(Constants.SaveItemError);
+            ShowInConsole(responseMessage);
+            return false;
+        }
         public async Task<bool> DeleteItem(Guid itemId)
         {
             var token = await Xamarin.Essentials.SecureStorage.GetAsync(Token);

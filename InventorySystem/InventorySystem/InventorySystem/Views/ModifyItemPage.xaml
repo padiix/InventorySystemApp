@@ -1,12 +1,55 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="InventorySystem.Views.ModifyItemPage">
+             xmlns:vm="clr-namespace:InventorySystem.ViewModels;assembly=InventorySystem"
+             x:Class="InventorySystem.Views.ModifyItemPage"
+             Title="Modyfikuj przedmiot">
+
+<ContentPage.BindingContext>
+    <vm:ModifyItemPageViewModel/>
+</ContentPage.BindingContext>
+
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Modyfikuj przedmiot"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Padding="20,20">
+
+            <Label Text="Id:"
+                   FontSize="Title"
+                   HorizontalOptions="StartAndExpand"/>
+            <Entry Text="{Binding ItemId}"
+                   IsEnabled="False"/>
+
+            <!-- TODO: Sprawdzanie czy nie ma przedmiotu o tej samej nazwie w bazie danych -->
+            <Label Text="Nazwa:"
+                   FontSize="Title"
+                   HorizontalOptions="StartAndExpand"/>
+            <Entry Text="{Binding Name}"
+                   IsSpellCheckEnabled="True"/>
+
+            <!-- TODO: Sprawdzanie poprawności kodu kreskowego -->
+            <Label Text="Kod kreskowy:"
+                   FontSize="Title"
+                   HorizontalOptions="StartAndExpand"/>
+            <Entry Text="{Binding Barcode}"
+                   IsSpellCheckEnabled="False"/>
+
+            <Label Text="Data dodania:"
+                   FontSize="Title"
+                   HorizontalOptions="StartAndExpand"/>
+            <Entry Text="{Binding DateAdded}"
+                   IsEnabled="False"/>
+
+            <StackLayout Orientation="Horizontal"
+                         Padding="20,20">
+                <Button HorizontalOptions="FillAndExpand"
+                        Text="Zapisz"
+                        Command="{Binding SaveItemCommand}"/>
+
+                <Button HorizontalOptions="FillAndExpand"
+                        Text="Powrót"
+                        Clicked="Return_OnClicked"/>
+            </StackLayout>
+            
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
