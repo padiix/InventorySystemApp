@@ -12,8 +12,8 @@ namespace InventorySystem.Interfaces
         Task<bool> GetCurrentUser();
         Task<List<Item>> GetAllItems();
         Task<Item> GetSpecificItem(string barcode);
-        //Task<Item> UpdateItemCount();
-        //Task<Item> UpdateItemInfo();
+        Task<bool> UpdateItem(Guid itemId, Item item);
         Task<bool> DeleteItem(Guid itemId);
+        Task<bool> AddItem(Item item);
     }
 }
