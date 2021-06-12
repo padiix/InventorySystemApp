@@ -23,5 +23,13 @@ namespace InventorySystem.Models
 
         [JsonProperty("user")]
         public User User { get; set; }
+
+        public Item(Guid id, string name, string barcode, DateTimeOffset dateAdded)
+        {
+            this.Id = id;
+            this.Name = name;
+            this.Barcode = barcode;
+            this.DateAdded = dateAdded;
+        }
     }
 }

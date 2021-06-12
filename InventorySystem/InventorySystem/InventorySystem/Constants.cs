@@ -14,6 +14,7 @@
 
         //Success messages
         public const string DeletionSuccessful = "Pomyślnie usunięto przedmiot z bazy danych";
+        public const string UpdateSuccessful = "Pomyślnie zaktualizowano przedmiot w bazie danych";
 
         //Errors messages
         public const string FillInFieldsError = "Pewne pola nie są wypełnione, proszę, uzupełnij je!";
@@ -26,6 +27,6 @@
         public const string EmailAndPasswordFillInError = "Uzupełnij pola \"Email\" oraz \"Hasło\" !";
         public const string UnauthorizedError = "Błędny login lub hasło!";
         public const string DeletionError = "Wystąpił błąd podczas usuwania przedmiotu z bazy danych.";
-        public const string SaveItemError = "Wystąpił błąd podczas zapisywania zmian przedmiotu w bazie danych.";
+        public const string UpdateItemError = "Wystąpił błąd podczas zapisywania zmian przedmiotu w bazie danych.";
     }
 }

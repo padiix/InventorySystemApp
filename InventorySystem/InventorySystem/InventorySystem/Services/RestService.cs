@@ -17,8 +17,9 @@ namespace InventorySystem.Services
     public class RestService : IRestService
     {
         public const string Token = "token";
+        private string _token;
 
-        private readonly HttpClient _client;
+        private static HttpClient _client;
 
         private Item Item { get; set; }
         private List<Item> Items { get; set; }
@@ -119,17 +120,17 @@ namespace InventorySystem.Services
 
         public async Task<bool> GetCurrentUser()
         {
-            var token = await Xamarin.Essentials.SecureStorage.GetAsync(Token);
-
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
-                return false;
-            }
+            if (!CheckForToken())
+                if (!await GetToken())
+                {
+                    DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
+                    Console.WriteLine(new KeyNotFoundException("No token found."));
+                    return false;
+                }
 
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(Constants.AccountEndpoint)))
             {
-                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
 
                 HttpResponseMessage responseMessage;
 
@@ -156,20 +157,19 @@ namespace InventorySystem.Services
                 return userData != null;
             }
         }
-
         public async Task<List<Item>> GetAllItems()
         {
-            var token = await Xamarin.Essentials.SecureStorage.GetAsync(Token);
-
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
-                return null;
-            }
+            if (!CheckForToken())
+                if (!await GetToken())
+                {
+                    DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
+                    Console.WriteLine(new KeyNotFoundException("No token found."));
+                    return null;
+                }
 
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(Constants.ItemsEndpoint)))
             {
-                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
 
                 HttpResponseMessage responseMessage;
 
@@ -197,15 +197,22 @@ namespace InventorySystem.Services
             }
         }
 
-        //TODO: Check if GetSpecificItem works
+        //Methods used by ModifyItemPage
         public async Task<Item> GetSpecificItem(string id)
         {
-            var token = await Xamarin.Essentials.SecureStorage.GetAsync(Token);
+            if (!CheckForToken())
+                if (!await GetToken())
+                {
+                    DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
+                    Console.WriteLine(new KeyNotFoundException("No token found."));
+                    return null;
+                }
+
             var uri = new Uri(Constants.ItemsEndpoint + "/" + id);
 
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri))
             {
-                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
                 HttpResponseMessage responseMessage;
                 try
                 {
@@ -230,59 +237,28 @@ namespace InventorySystem.Services
                 return Item;
             }
         }
-
-        //public async Task<Item> GetSpecificItem(string barcode)
-        //{
-        //    var token = await Xamarin.Essentials.SecureStorage.GetAsync(Token);
-        //    var uri = new Uri(Constants.ItemsEndpoint + "/" + barcode);
-
-        //    using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri))
-        //    {
-        //        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        //        HttpResponseMessage responseMessage;
-        //        try
-        //        {
-        //            responseMessage = await _client.SendAsync(requestMessage);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            ConnectionErrorMethod(ex);
-        //            return null;
-        //        }
-
-        //        if (!responseMessage.IsSuccessStatusCode)
-        //        {
-        //            DependencyService.Get<IMessage>().LongAlert(Constants.SpecificItemError);
-        //            ShowInConsole(responseMessage);
-        //            return null;
-        //        }
-
-        //        var jsonAsStringAsync = await responseMessage.Content.ReadAsStringAsync();
-        //        Item = JsonConvert.DeserializeObject<Item>(jsonAsStringAsync);
-
-        //        return Item != null ? Item : null;
-        //    }
-        //}
-
-        //TODO: Check if DeleteItem works
-
         public async Task<bool> UpdateItem(Guid itemId, Item item)
         {
-            var token = await Xamarin.Essentials.SecureStorage.GetAsync(Token);
+            if (!CheckForToken())
+                if (!await GetToken())
+                {
+                    DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
+                    Console.WriteLine(new KeyNotFoundException("No token found."));
+                    return false;
+                }
 
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
-                return false;
-            }
+            HttpResponseMessage response;
 
-            HttpResponseMessage responseMessage;
+            var uri = Constants.ItemsEndpoint + $"/{itemId}";
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Put, uri);
             var json = JsonConvert.SerializeObject(item, Formatting.Indented);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+            requestMessage.Content = content;
 
             try
             {
-                responseMessage = await _client.PutAsync(Constants.ItemsEndpoint + $"/{itemId}", content);
+                response = await _client.SendAsync(requestMessage);
             }
             catch (Exception e)
             {
@@ -290,24 +266,27 @@ namespace InventorySystem.Services
                 return false;
             }
 
-            if (responseMessage.IsSuccessStatusCode) return true;
-            DependencyService.Get<IMessage>().LongAlert(Constants.SaveItemError);
-            ShowInConsole(responseMessage);
+            if (response.IsSuccessStatusCode) return true;
+            DependencyService.Get<IMessage>().LongAlert(Constants.UpdateItemError);
+            ShowInConsole(response);
             return false;
         }
+        //
+        
+        //TODO: Check if DeleteItem works
         public async Task<bool> DeleteItem(Guid itemId)
         {
-            var token = await Xamarin.Essentials.SecureStorage.GetAsync(Token);
-
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
-                return false;
-            }
+            if (!CheckForToken())
+                if (!await GetToken())
+                {
+                    DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
+                    Console.WriteLine(new KeyNotFoundException("No token found."));
+                    return false;
+                }
 
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Delete, new Uri(Constants.ItemsEndpoint + $"/{itemId}")))
             {
-                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
 
                 HttpResponseMessage responseMessage;
 
@@ -336,6 +315,21 @@ namespace InventorySystem.Services
             }
         }
 
+        public async Task<bool> AddItem(Item item)
+        {
+            if (!CheckForToken())
+                if (!await GetToken())
+                {
+                    DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
+                    Console.WriteLine(new KeyNotFoundException("No token found."));
+                    return false;
+                }
+                    
+
+
+            throw new NotImplementedException();
+        }
+
         //Additional usefull methods
         private static void SaveUserDetails(UserData userData)
         {
@@ -345,6 +339,16 @@ namespace InventorySystem.Services
             StaticValues.Username = userData.Username;
             StaticValues.Email = userData.Email;
             StaticValues.IsAdmin = userData.IsAdmin;
+        }
+        private async Task<bool> GetToken()
+        {
+            _token = await Xamarin.Essentials.SecureStorage.GetAsync(Token);
+            return CheckForToken();
+        }
+        private bool CheckForToken()
+        {
+            if (!string.IsNullOrWhiteSpace(_token)) return true;
+            return false;
         }
         private static void ShowInConsole(string message)
         {

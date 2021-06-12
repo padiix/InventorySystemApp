@@ -2,12 +2,25 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:InventorySystem.ViewModels;assembly=InventorySystem"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Class="InventorySystem.Views.ModifyItemPage"
              Title="Modyfikuj przedmiot">
 
 <ContentPage.BindingContext>
     <vm:ModifyItemPageViewModel/>
 </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="InvalidBackgroundEntry" 
+                   TargetType="Entry">
+                <Setter Property="BackgroundColor"
+                        Value="Red"/>
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.Content>
         <StackLayout Padding="20,20">
@@ -18,19 +31,40 @@
             <Entry Text="{Binding ItemId}"
                    IsEnabled="False"/>
 
-            <!-- TODO: Sprawdzanie czy nie ma przedmiotu o tej samej nazwie w bazie danych -->
             <Label Text="Nazwa:"
                    FontSize="Title"
                    HorizontalOptions="StartAndExpand"/>
-            <Entry Text="{Binding Name}"
+            <Entry Text="{Binding Name, Mode=TwoWay}"
+                   ClearButtonVisibility="WhileEditing"
                    IsSpellCheckEnabled="True"/>
 
             <!-- TODO: Sprawdzanie poprawności kodu kreskowego -->
             <Label Text="Kod kreskowy:"
                    FontSize="Title"
                    HorizontalOptions="StartAndExpand"/>
-            <Entry Text="{Binding Barcode}"
-                   IsSpellCheckEnabled="False"/>
+            <Entry x:Name="BarcodeEntry"
+                   Keyboard="Numeric"
+                   Text="{Binding Barcode, Mode=TwoWay}"
+                   IsSpellCheckEnabled="False"
+                   TextChanged="BarcodeEntry_OnTextChanged">
+
+                <Entry.Behaviors>
+
+                    <xct:CharactersValidationBehavior x:Name="CharacterQuantityValidator"  
+                                                      CharacterType="Digit"
+                                                      MinimumCharacterCount="8"
+                                                      MaximumCharacterCount="14"
+                                                      InvalidStyle="{StaticResource InvalidBackgroundEntry}"/>
+
+                </Entry.Behaviors>
+
+            </Entry>
+            <Label x:Name="BarcodeNotValidLabel" Text="Podany kod kreskowy jest niepoprawny."
+                   IsVisible="False"
+                   TextColor="Red"
+                   FontSize="Caption"
+                   FontAttributes="Bold"/>
+
 
             <Label Text="Data dodania:"
                    FontSize="Title"
@@ -38,9 +72,31 @@
             <Entry Text="{Binding DateAdded}"
                    IsEnabled="False"/>
 
+            <Grid Padding="0,20,0 ,0"
+                  HorizontalOptions="Center"
+                  IsVisible="{Binding IsVisibleMessageAndActivityIndicator}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+            <Label Text="Zapisywanie danych w API"
+                   FontSize="Subtitle"
+                   IsVisible="true"
+                   VerticalOptions="Center"/>
+            <ActivityIndicator Grid.Column="1"
+                               IsRunning="true"
+                               Scale="0.7"/>
+
+            </Grid>
+
             <StackLayout Orientation="Horizontal"
                          Padding="20,20">
-                <Button HorizontalOptions="FillAndExpand"
+                <Button x:Name="SaveButton" 
+                        HorizontalOptions="FillAndExpand"
                         Text="Zapisz"
                         Command="{Binding SaveItemCommand}"/>
 
