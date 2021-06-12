@@ -69,7 +69,6 @@ namespace InventorySystem.ViewModels
             //Test działania Bindingu
             MoveToModificationPageCommand = new Command<Item>(model =>
             {
-                DependencyService.Get<IMessage>().ShortAlert($"Przenoszę do strony modyfikacji przemiotu o nazwie {model.Name}");
                 Shell.Current.GoToAsync($"item/modify?Id={model.Id.ToString()}");
             });
 

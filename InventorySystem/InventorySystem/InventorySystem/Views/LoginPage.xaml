@@ -59,8 +59,7 @@
                            TextChanged="PasswordEntry_OnTextChanged">
                         <Entry.Behaviors>
 
-                            <xct:MultiValidationBehavior x:Name="PasswordValidationBehavior" 
-                                                         IsValid="{Binding IsPasswordValid}"
+                            <xct:MultiValidationBehavior x:Name="PasswordValidationBehavior"
                                                          Flags="ValidateOnValueChanging">
 
                                 <xct:TextValidationBehavior MinimumLength="6" 

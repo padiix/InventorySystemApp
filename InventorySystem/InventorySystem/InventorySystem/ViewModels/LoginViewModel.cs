@@ -13,44 +13,23 @@ namespace InventorySystem.ViewModels
         private string _email;
         private string _password;
         private bool _isEmailValid;
-        private bool _isPasswordValid;
-        
+
         //Binded objects
         public bool IsEmailValid
         {
             get => _isEmailValid;
-            set
-            {
-                _isEmailValid = value;
-                OnPropertyChanged(nameof(IsEmailValid));
-            }
-        }
-        public bool IsPasswordValid
-        {
-            get => _isPasswordValid;
-            set
-            {
-                _isPasswordValid = value;
-                OnPropertyChanged(nameof(IsPasswordValid));
-            }
+            set => SetProperty(ref _isEmailValid, value, nameof(IsEmailValid));
         }
         public string Email
         {
             get => _email;
-            set
-            {
-                _email = value;
-                OnPropertyChanged(nameof(Email));
-            }
+            set => SetProperty(ref _email, value, nameof(Email));
+
         }
         public string Password
         {
             get => _password;
-            set
-            {
-                _password = value;
-                OnPropertyChanged(nameof(Password));
-            }
+            set => SetProperty(ref _password, value, nameof(Password));
         }
         
         //Activity indicator
@@ -60,30 +39,15 @@ namespace InventorySystem.ViewModels
         public bool ConnectingMessageVisibility
         {
             get => _connectingMessageVisibility;
-            set
-            {
-                _connectingMessageVisibility = value;
-                OnPropertyChanged(nameof(ConnectingMessageVisibility));
-            }
+            set => SetProperty(ref _connectingMessageVisibility, value, nameof(ConnectingMessageVisibility));
         }
         public bool RunActivityIndicator
         {
             get => _runActivityIndicator;
-            set
-            {
-                _runActivityIndicator = value;
-                OnPropertyChanged(nameof(RunActivityIndicator));
-            }
+            set => SetProperty(ref _runActivityIndicator, value, nameof(RunActivityIndicator));
         }
 
         //Objects enabling/disabling elements on LoginPage.xaml
-        private bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null)
-        {
-            if (Equals(field, newValue)) return false;
-            field = newValue;
-            OnPropertyChanged(propertyName ?? string.Empty);
-            return true;
-        }
 
         private bool _isEnabledRememberMe;
 
