@@ -29,7 +29,7 @@ namespace InventorySystem.ViewModels
         //Klient pozwalający na połączenie z API
         private readonly RestService _restClient;
         
-
+        //Komendy
         public Command RefreshCommand { get; }
         public Command RefreshItemsCommand { get; }
         public Command AddItemCommand { get; }
@@ -56,39 +56,37 @@ namespace InventorySystem.ViewModels
 
         public MainPageViewModel()
         {
+            //Uruchomienie nasłuchu na wywołania o danych nazwach.
             MessagingCenter.Subscribe<object>(this, EVENT_SET_WELCOME_MESSAGE, SetWelcomeMessage);
-            //TODO: Test if this event works
             MessagingCenter.Subscribe<object>(this, EVENT_SYNCHRONIZE_ITEMS, InitCollectionView);
+            //
 
             _restClient = new RestService();
 
+
+            //Inicjalizacja Komend
             RefreshCommand = new Command(async () => await GetConnection());
-
+            //
             RefreshItemsCommand = new Command(async () => await GetItemsForUser());
-
-            //Test działania Bindingu
-            MoveToModificationPageCommand = new Command<Item>(model =>
+            //
+            MoveToModificationPageCommand = new Command<Item>(async model =>
             {
-                Shell.Current.GoToAsync($"item/modify?Id={model.Id.ToString()}");
+                await Shell.Current.GoToAsync($"item/modify?Id={model.Id.ToString()}"); //Asynchroniczne przejście na stronę modyfikowania przedmiotów z dołączonym przedmiotem w ścieżce
             });
-
-            AddItemCommand = new Command(/*async*/ () =>
+            //
+            AddItemCommand = new Command(async () =>
             {
-                DependencyService.Get<IMessage>().ShortAlert($"Dodaję przedmiot");
-                //await Shell.Current.GoToAsync($"item/add");
+                await Shell.Current.GoToAsync($"item/add"); //Asynchroniczne przejście na stronę dodawania przedmiotów
             });
-
+            //
             DeleteItemCommand = new Command<Item>(async model =>
             {
                 DependencyService.Get<IMessage>().ShortAlert($"Usuwam przedmiot o nazwie {model.Name}");
-                //await _restClient.DeleteItem(model.Id);
+                await _restClient.DeleteItem(model.Id);
+                await GetItemsForUser();
             });
+            //
         }
-
-        //private void ModifyItem(string guid = "no guid")
-        //{
-            
-        //}
 
         protected override void OnPropertyChanged(string propertyName = "")
         {
@@ -102,9 +100,9 @@ namespace InventorySystem.ViewModels
 
         private async void FilterCollectionView()
         {
-            var searchTerm = SearchValue;
+            var searchTerm = SearchValue; //Weź wartość wpisaną w wyszukiwarce
 
-            if (string.IsNullOrWhiteSpace(searchTerm))
+            if (string.IsNullOrWhiteSpace(searchTerm)) //Sprawdź czy nie jest pusta
             {
                 searchTerm = string.Empty;
                 await GetItemsForUser();
@@ -113,7 +111,7 @@ namespace InventorySystem.ViewModels
 
             searchTerm = searchTerm.ToLowerInvariant();
 
-            var filteredItems = _sourceItems.Where(item => item.Name.ToLowerInvariant().Contains(searchTerm)).ToList();
+            var filteredItems = _sourceItems.Where(item => item.Name.ToLowerInvariant().Contains(searchTerm)).ToList(); //Wyszukaj w liście zródłowej przedmioty, których nazwa zawiera wyszukiwaną wartość
 
             foreach (var item in _sourceItems)
             {
@@ -131,7 +129,6 @@ namespace InventorySystem.ViewModels
             var response = await _restClient.GetCurrentUser();
             if (response)
             {
-                //DependencyService.Get<IMessage>().ShortAlert("Połączenie nawiązane pomyślnie.");
                 IsErrorVisible = false;
                 await GetItemsForUser();
                 HideActivityIndicatorWithMessage();
@@ -150,24 +147,13 @@ namespace InventorySystem.ViewModels
 
         private async Task GetItemsForUser()
         {
-            _sourceItems.Clear();
+            _sourceItems.Clear(); //Upewnij się że lista przedmiotów jest czysta
 
             try
             {
-                var itemsFromApi = await _restClient.GetAllItems();
+                var itemsFromApi = await _restClient.GetAllItems(); //Próbuuj ściągnąć przedmioty z API
 
-                foreach (var item in itemsFromApi)
-                {
-                    _sourceItems.Add(item);
-                }
-
-                //Proponowane sprawdzanie czy elementy się powtarzają
-                //foreach (var item in itemsFromAPI)
-                //{
-                //    if (_sourceItems.Contains(item)) continue;
-                //    _sourceItems.Add(item);
-                //}
-
+                _sourceItems.AddRange(itemsFromApi); //Wrzuć je do listy
             }
             catch (TimeoutException toEx)
             {
@@ -180,18 +166,18 @@ namespace InventorySystem.ViewModels
                 Console.WriteLine(e);
             }
 
-            UserItems.Clear();
+            UserItems.Clear(); 
 
             foreach (var item in _sourceItems)
             {
-                if (!UserItems.Contains(item))
+                if (!UserItems.Contains(item)) //Jeżeli obserwowana lista nie ma danego przedmiotu, dodaj go
                     UserItems.Add(item);
 
-                else if (!_sourceItems.Contains(item))
+                else if (!_sourceItems.Contains(item)) // W przeciwnym wypadku, jeżeli lista przedmiotów nie posiada elementu z obserwowanej listy, usuń go
                     UserItems.Remove(item);
             }
 
-            IsCollectionViewRefreshing = false;
+            IsCollectionViewRefreshing = false; //Daj znać, że Collection View skończył się odświeżać
         }
 
         private async void InitCollectionView(object sender)
@@ -200,22 +186,16 @@ namespace InventorySystem.ViewModels
             await GetItemsForUser();
         }
 
+        //Metody kontrolujące widzialność indykatora aktywności
         private void ShowActivityIndicatorWithMessage()
         {
             IsVisibleMessageAndActivityIndicator = true;
         }
-
+        //
         private void HideActivityIndicatorWithMessage()
         {
             IsVisibleMessageAndActivityIndicator = false;
         }
-
-        private bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null)
-        {
-            if (Equals(field, newValue)) return false;
-            field = newValue;
-            OnPropertyChanged(propertyName ?? string.Empty);
-            return true;
-        }
+        //
     }
 }

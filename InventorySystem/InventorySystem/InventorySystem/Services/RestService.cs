@@ -251,8 +251,10 @@ namespace InventorySystem.Services
 
             var uri = Constants.ItemsEndpoint + $"/{itemId}";
             HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Put, uri);
+
             var json = JsonConvert.SerializeObject(item, Formatting.Indented);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
+
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
             requestMessage.Content = content;
 
@@ -273,7 +275,6 @@ namespace InventorySystem.Services
         }
         //
         
-        //TODO: Check if DeleteItem works
         public async Task<bool> DeleteItem(Guid itemId)
         {
             if (!CheckForToken())
@@ -314,7 +315,6 @@ namespace InventorySystem.Services
                 }
             }
         }
-
         public async Task<bool> AddItem(Item item)
         {
             if (!CheckForToken())
@@ -324,10 +324,32 @@ namespace InventorySystem.Services
                     Console.WriteLine(new KeyNotFoundException("No token found."));
                     return false;
                 }
-                    
 
+            HttpResponseMessage response;
 
-            throw new NotImplementedException();
+            var uri = Constants.ItemsEndpoint;
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, uri);
+
+            var json = JsonConvert.SerializeObject(item, Formatting.Indented);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+            requestMessage.Content = content;
+
+            try
+            {
+                response = await _client.SendAsync(requestMessage);
+            }
+            catch (Exception e)
+            {
+                ConnectionErrorMethod(e);
+                return false;
+            }
+
+            if (response.IsSuccessStatusCode) return true;
+            DependencyService.Get<IMessage>().LongAlert(Constants.AddingItemError);
+            ShowInConsole(response);
+            return false;
         }
 
         //Additional usefull methods

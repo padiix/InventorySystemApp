@@ -16,6 +16,7 @@ namespace InventorySystem
             Routing.RegisterRoute("login", typeof(LoginPage));
             Routing.RegisterRoute("account/details", typeof(AccountDetailsPage));
             Routing.RegisterRoute("item/modify", typeof(ModifyItemPage));
+            Routing.RegisterRoute("item/add", typeof(AddItemPage));
         }
     }
 }
