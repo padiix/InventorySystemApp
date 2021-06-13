@@ -38,7 +38,6 @@
                    ClearButtonVisibility="WhileEditing"
                    IsSpellCheckEnabled="True"/>
 
-            <!-- TODO: Sprawdzanie poprawności kodu kreskowego -->
             <Label Text="Kod kreskowy:"
                    FontSize="Title"
                    HorizontalOptions="StartAndExpand"/>
@@ -83,7 +82,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-            <Label Text="Zapisywanie danych w API"
+            <Label Text="Aktualizacja danych w API"
                    FontSize="Subtitle"
                    IsVisible="true"
                    VerticalOptions="Center"/>
@@ -95,10 +94,10 @@
 
             <StackLayout Orientation="Horizontal"
                          Padding="20,20">
-                <Button x:Name="SaveButton" 
+                <Button x:Name="UpdateButton" 
                         HorizontalOptions="FillAndExpand"
-                        Text="Zapisz"
-                        Command="{Binding SaveItemCommand}"/>
+                        Text="Modyfikuj"
+                        Command="{Binding UpdateItemCommand}"/>
 
                 <Button HorizontalOptions="FillAndExpand"
                         Text="Powrót"

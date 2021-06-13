@@ -45,7 +45,7 @@ namespace InventorySystem.Views
             var result = BarcodeValidate();
             CharacterQuantityValidator.IsValid = result;
             BarcodeNotValidLabel.IsVisible = !result;
-            SaveButton.IsEnabled = result;
+            UpdateButton.IsEnabled = result;
         }
 
         private bool BarcodeValidate()

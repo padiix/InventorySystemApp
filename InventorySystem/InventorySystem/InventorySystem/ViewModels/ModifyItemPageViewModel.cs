@@ -48,11 +48,11 @@ namespace InventorySystem.ViewModels
 
         private readonly RestService _restClient = new RestService();
 
-        public Command SaveItemCommand { get; }
+        public Command UpdateItemCommand { get; }
 
         public ModifyItemPageViewModel()
         {
-            SaveItemCommand = new Command(async () =>
+            UpdateItemCommand = new Command(async () =>
             {
                 IsVisibleMessageAndActivityIndicator = true;
 
@@ -63,6 +63,14 @@ namespace InventorySystem.ViewModels
                 }
 
                 IsVisibleMessageAndActivityIndicator = false;
+
+                await Task.Delay(TimeSpan.FromSeconds(2));
+
+                var result = await Shell.Current.DisplayAlert("","Czy chcesz wrócić do strony głównej?", "Nie", "Tak");
+                if (!result)
+                {
+                    await Shell.Current.GoToAsync($"..");
+                }
             });
         }
 
