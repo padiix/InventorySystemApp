@@ -9,7 +9,7 @@ namespace InventorySystem.Interfaces
     {
         Task<bool> VerifyLogin(string email, string password);
         Task<bool> Register(string username, string firstname, string lastname, string email, string password);
-        Task<bool> GetCurrentUser();
+        Task<string> CheckConnection();
         Task<List<Item>> GetAllItems();
         Task<Item> GetSpecificItem(string barcode);
         Task<bool> UpdateItem(Guid itemId, Item item);
