@@ -9,6 +9,7 @@ using InventorySystem.Interfaces;
 using InventorySystem.Models;
 using InventorySystem.Services;
 using InventorySystem.Views;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace InventorySystem.ViewModels
@@ -28,7 +29,7 @@ namespace InventorySystem.ViewModels
 
         //Klient pozwalający na połączenie z API
         private readonly RestService _restClient;
-        
+
         //Komendy
         public Command RefreshCommand { get; }
         public Command RefreshItemsCommand { get; }
@@ -67,7 +68,7 @@ namespace InventorySystem.ViewModels
             //Inicjalizacja Komend
             RefreshCommand = new Command(async () => await GetConnection());
             //
-            RefreshItemsCommand = new Command(async () => await GetItemsForUser());
+            RefreshItemsCommand = new Command(async () => await RefreshViewGetConnection());
             //
             MoveToModificationPageCommand = new Command<Item>(async model =>
             {
@@ -81,9 +82,12 @@ namespace InventorySystem.ViewModels
             //
             DeleteItemCommand = new Command<Item>(async model =>
             {
+                var result = await Shell.Current.DisplayAlert("","Czy na pewno chcesz usunąć ten przedmiot?", "Nie", "Tak");
+                if (result) return;
                 DependencyService.Get<IMessage>().ShortAlert($"Usuwam przedmiot o nazwie {model.Name}");
+
                 await _restClient.DeleteItem(model.Id);
-                await GetItemsForUser();
+                UserItems.Remove(model);
             });
             //
         }
@@ -116,28 +120,106 @@ namespace InventorySystem.ViewModels
             foreach (var item in _sourceItems)
             {
                 if (!filteredItems.Contains(item))
+                {
                     UserItems.Remove(item);
+                }
 
                 else if (!UserItems.Contains(item))
+                {
                     UserItems.Add(item);
+                }
             }
+        }
+
+        private static void DeleteUserDetails()
+        {
+            StaticValues.UserId = string.Empty;
+            StaticValues.FirstName = string.Empty;
+            StaticValues.LastName = string.Empty;
+            StaticValues.Username = string.Empty;
+            StaticValues.Email = string.Empty;
+            StaticValues.IsAdmin = false;
         }
 
         public async Task GetConnection()
         {
             ShowActivityIndicatorWithMessage();
-            var response = await _restClient.GetCurrentUser();
-            if (response)
-            {
-                IsErrorVisible = false;
-                await GetItemsForUser();
-                HideActivityIndicatorWithMessage();
-                return;
-            }
+            var response = await _restClient.CheckConnection();
 
-            IsErrorVisible = true;
-            HideActivityIndicatorWithMessage();
-            DependencyService.Get<IMessage>().ShortAlert("Błąd połączenia.");
+            switch (response)
+            {
+                case RestService.Connection_Connected:
+                    IsErrorVisible = false;
+                    await GetItemsForUser();
+                    HideActivityIndicatorWithMessage();
+                    break;
+
+                case RestService.Connection_TokenExpired:
+                    DependencyService.Get<IMessage>().LongAlert(Constants.ExpiredTokenError);
+                    HideActivityIndicatorWithMessage();
+                    
+                    SecureStorage.Remove(RestService.Token);
+                    DeleteUserDetails();
+                    await Application.Current.SavePropertiesAsync();
+
+                    ReturnUserToLoginPage();
+                    break;
+
+                case RestService.Connection_NoTokenFound:
+                    HideActivityIndicatorWithMessage();
+                    
+                    SecureStorage.Remove(RestService.Token);
+                    DeleteUserDetails();
+                    await Application.Current.SavePropertiesAsync();
+
+                    ReturnUserToLoginPage();
+                    break;
+
+                case RestService.Connection_ConnectionError:
+                    IsErrorVisible = true;
+                    HideActivityIndicatorWithMessage();
+                    break;
+
+                case RestService.Connection_StatusFailure:
+                    HideActivityIndicatorWithMessage();
+                    break;
+            }
+        }
+        public async Task RefreshViewGetConnection()
+        {
+            var response = await _restClient.CheckConnection();
+            switch (response)
+            {
+                case RestService.Connection_Connected:
+                    IsErrorVisible = false;
+                    await GetItemsForUser();
+                    break;
+
+                case RestService.Connection_TokenExpired:
+                    DependencyService.Get<IMessage>().LongAlert(Constants.ExpiredTokenError);
+
+                    SecureStorage.Remove(RestService.Token);
+                    DeleteUserDetails();
+                    await Application.Current.SavePropertiesAsync();
+
+                    ReturnUserToLoginPage();
+                    break;
+
+                case RestService.Connection_NoTokenFound:
+                    SecureStorage.Remove(RestService.Token);
+                    DeleteUserDetails();
+                    await Application.Current.SavePropertiesAsync();
+
+                    ReturnUserToLoginPage();
+                    break;
+
+                case RestService.Connection_ConnectionError:
+                    IsErrorVisible = true;
+                    break;
+
+                case RestService.Connection_StatusFailure:
+                    break;
+            }
         }
         private void SetWelcomeMessage(object sender)
         {
@@ -159,7 +241,7 @@ namespace InventorySystem.ViewModels
             {
                 Console.WriteLine(toEx);
                 IsErrorVisible = true;
-                DependencyService.Get<IMessage>().ShortAlert("Błąd połączenia.");
+                DependencyService.Get<IMessage>().ShortAlert(Constants.ConnectionError);
             }
             catch (Exception e)
             {
@@ -184,6 +266,13 @@ namespace InventorySystem.ViewModels
         {
             _sourceItems = new List<Item>();
             await GetItemsForUser();
+        }
+
+        private async void ReturnUserToLoginPage()
+        {
+            await Task.Delay(TimeSpan.FromSeconds(0.5));
+
+            Application.Current.MainPage = new EmptyAppShell();
         }
 
         //Metody kontrolujące widzialność indykatora aktywności
