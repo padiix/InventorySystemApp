@@ -22,7 +22,7 @@ namespace InventorySystem.Views
 
         private async void NavigateBack(object sender)
         {
-            await Navigation.PopAsync();
+            await Shell.Current.GoToAsync($"..");
         }
 
         protected override bool OnBackButtonPressed()
@@ -33,7 +33,7 @@ namespace InventorySystem.Views
 
         private async void Return_OnClicked(object sender, EventArgs e)
         {
-            await Navigation.PopAsync();
+            await Shell.Current.GoToAsync($"..");
             return;
         }
 
