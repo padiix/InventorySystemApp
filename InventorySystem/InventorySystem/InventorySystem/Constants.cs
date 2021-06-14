@@ -21,6 +21,8 @@
         public const string FillInFieldsError = "Pewne pola nie są wypełnione, proszę, uzupełnij je!";
         public const string RegistrationError = "Podczas rejestracji wystąpił błąd";
         public const string ConnectionError = "Wystąpił błąd podczas łączenia się z API";
+        public const string ApiRejectionError = "Zgłoszenie zostało odrzucone prez API";
+        public const string ExpiredTokenError = "Token autoryzacyjny użytkownika stracił ważność";
         public const string NoTokenError = "Brak tokena uwierzytelniającego";
         public const string ItemError = "Wystąpił błąd podczas pobierania przedmiotu z API";
         public const string ItemsError = "Wystąpił błąd podczas pobierania przedmiotów z API";
