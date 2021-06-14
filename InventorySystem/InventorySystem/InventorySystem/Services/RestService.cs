@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using InventorySystem.ViewModels;
+using InventorySystem.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -17,6 +19,12 @@ namespace InventorySystem.Services
     public class RestService : IRestService
     {
         public const string Token = "token";
+        public const string Connection_Connected = "Connected";
+        public const string Connection_NoTokenFound = "NoTokenFound";
+        public const string Connection_ConnectionError = "ConnectionError";
+        public const string Connection_StatusFailure = "StatusFailure";
+        public const string Connection_TokenExpired = "TokenExpired";
+
         private string _token;
 
         private static HttpClient _client;
@@ -118,14 +126,14 @@ namespace InventorySystem.Services
             return true;
         }
 
-        public async Task<bool> GetCurrentUser()
+        public async Task<string> CheckConnection()
         {
             if (!CheckForToken())
                 if (!await GetToken())
                 {
                     DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
                     Console.WriteLine(new KeyNotFoundException("No token found."));
-                    return false;
+                    return Connection_NoTokenFound;
                 }
 
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(Constants.AccountEndpoint)))
@@ -141,20 +149,17 @@ namespace InventorySystem.Services
                 catch (Exception ex)
                 {
                     ConnectionErrorMethod(ex);
-                    return false;
+                    return Connection_ConnectionError;
                 }
 
-                if (!responseMessage.IsSuccessStatusCode)
-                {
-                    DependencyService.Get<IMessage>().LongAlert(Constants.ConnectionError);
-                    ShowInConsole(responseMessage);
-                    return false;
-                }
+                if (responseMessage.IsSuccessStatusCode) return Connection_Connected;
+                //TODO: Zaprojektowaæ natychmiastowe wylogowanie, gdy u¿ytkownikowi wa¿noœæ tokenu siê skoñczy.
+                if (CheckIfTokenExpired(responseMessage))
+                    return Connection_TokenExpired;
 
-                var jsonAsStringAsync = await responseMessage.Content.ReadAsStringAsync();
-                var userData = JsonConvert.DeserializeObject<UserData>(jsonAsStringAsync);
-
-                return userData != null;
+                DependencyService.Get<IMessage>().LongAlert(Constants.ApiRejectionError);
+                ShowInConsole(responseMessage);
+                return Connection_StatusFailure;
             }
         }
         public async Task<List<Item>> GetAllItems()
@@ -185,7 +190,7 @@ namespace InventorySystem.Services
 
                 if (!responseMessage.IsSuccessStatusCode)
                 {
-                    DependencyService.Get<IMessage>().LongAlert(Constants.ItemsError);
+                    //DependencyService.Get<IMessage>().LongAlert(Constants.ItemsError);
                     ShowInConsole(responseMessage);
                     return null;
                 }
@@ -274,7 +279,7 @@ namespace InventorySystem.Services
             return false;
         }
         //
-        
+
         public async Task<bool> DeleteItem(Guid itemId)
         {
             if (!CheckForToken())
@@ -371,6 +376,20 @@ namespace InventorySystem.Services
         {
             if (!string.IsNullOrWhiteSpace(_token)) return true;
             return false;
+        }
+
+        private bool CheckIfTokenExpired(HttpResponseMessage response)
+        {
+            var headers = response.Headers.WwwAuthenticate.GetEnumerator();
+            headers.MoveNext();
+            var header = headers.Current;
+            headers.Dispose();
+            var result = header != null &&
+                         header.Scheme.Contains("Bearer") &&
+                         header.Parameter.Contains("error=\"invalid_token\", error_description=\"The token expired at");
+
+            ShowInConsole(response);
+            return result;
         }
         private static void ShowInConsole(string message)
         {

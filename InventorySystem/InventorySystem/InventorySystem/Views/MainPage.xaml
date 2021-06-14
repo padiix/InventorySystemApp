@@ -18,6 +18,7 @@
 
             <DataTemplate x:Key="CurrentUserItems">
                 <Grid Padding="5,10,5,15">
+
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.7*"/>
                         <ColumnDefinition Width="0.3*"/>

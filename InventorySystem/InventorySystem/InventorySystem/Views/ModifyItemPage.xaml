@@ -4,6 +4,7 @@
              xmlns:vm="clr-namespace:InventorySystem.ViewModels;assembly=InventorySystem"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Class="InventorySystem.Views.ModifyItemPage"
+             Shell.PresentationMode="Modal"
              Title="Modyfikuj przedmiot">
 
 <ContentPage.BindingContext>
