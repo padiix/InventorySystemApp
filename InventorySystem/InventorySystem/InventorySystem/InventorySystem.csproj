@@ -39,7 +39,7 @@
     <EmbeddedResource Update="Views\AddItemPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\BarcodeScanner.xaml">
+    <EmbeddedResource Update="Views\CustomScannerPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ModifyItemPage.xaml">

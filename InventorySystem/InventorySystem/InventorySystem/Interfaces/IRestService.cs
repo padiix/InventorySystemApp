@@ -11,7 +11,8 @@ namespace InventorySystem.Interfaces
         Task<bool> Register(string username, string firstname, string lastname, string email, string password);
         Task<string> CheckConnection();
         Task<List<Item>> GetAllItems();
-        Task<Item> GetSpecificItem(string barcode);
+        Task<Item> GetSpecificItem(string id);
+        Task<List<Item>> GetScannedItem(string barcode);
         Task<bool> UpdateItem(Guid itemId, Item item);
         Task<bool> DeleteItem(Guid itemId);
         Task<bool> AddItem(Item item);
