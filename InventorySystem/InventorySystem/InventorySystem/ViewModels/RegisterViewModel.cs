@@ -12,6 +12,8 @@ namespace InventorySystem.ViewModels
 {
     public class RegisterViewModel : BaseViewModel
     {
+        private static readonly RestService RestClient = new RestService();
+
         private string _username;
         private string _email;
         private string _password;
@@ -89,9 +91,7 @@ namespace InventorySystem.ViewModels
             }
 
             ShowActivityIndicator();
-
-            var restClient = new RestService();
-            var response = await restClient.Register(Username, Firstname, Lastname, Email, Password);
+            var response = await RestClient.Register(Username, Firstname, Lastname, Email, Password);
             
             if (response)
             {

@@ -4,6 +4,7 @@ using InventorySystem.Interfaces;
 using InventorySystem.Models;
 using InventorySystem.Services;
 using InventorySystem.ViewModels;
+using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -11,7 +12,7 @@ namespace InventorySystem.Views
 {
     public partial class MainPage : ContentPage
     {
-        private readonly RestService _restClient = new RestService();
+        private static readonly RestService RestClient = new RestService();
 
         public MainPage()
         {
@@ -20,7 +21,7 @@ namespace InventorySystem.Views
 
         protected override async void OnAppearing()
         {
-            var response = await _restClient.CheckConnection();
+            var response = await RestClient.CheckConnection();
             switch (response)
             {
                 case RestService.Connection_Connected:

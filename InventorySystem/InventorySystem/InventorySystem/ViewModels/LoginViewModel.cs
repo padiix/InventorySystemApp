@@ -9,6 +9,8 @@ namespace InventorySystem.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
+        private static readonly RestService RestClient = new RestService();
+
         //Values kept in ViewModel
         private string _email;
         private string _password;
@@ -129,8 +131,7 @@ namespace InventorySystem.ViewModels
             if (IsEmailAndPasswordNotNull())
             {
                 ShowActivityIndicator();
-                var restService = new RestService();
-                var isVerified = await restService.VerifyLogin(Email, Password);
+                var isVerified = await RestClient.VerifyLogin(Email, Password);
                 if (isVerified)
                 {
                     HideActivityIndicator();

@@ -46,7 +46,7 @@ namespace InventorySystem.ViewModels
             private set => SetProperty(ref _isVisibleMessageAndActivityIndicator, value, nameof(IsVisibleMessageAndActivityIndicator));
         }
 
-        private readonly RestService _restClient = new RestService();
+        private static readonly RestService RestClient = new RestService();
 
         public Command UpdateItemCommand { get; }
 
@@ -80,7 +80,7 @@ namespace InventorySystem.ViewModels
         {
             try
             {
-                var item = await _restClient.GetSpecificItem(itemId);
+                var item = await RestClient.GetSpecificItem(itemId);
 
                 Name = item.Name;
                 DateAdded = item.DateAdded;
@@ -97,7 +97,7 @@ namespace InventorySystem.ViewModels
         private async Task<bool> UpdateItem()
         {
             var item = new Item(Guid.Parse(ItemId), Name, Barcode, DateAdded);
-            var result = await _restClient.UpdateItem(Guid.Parse(ItemId), item);
+            var result = await RestClient.UpdateItem(Guid.Parse(ItemId), item);
 
             return result;
         }

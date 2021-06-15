@@ -30,7 +30,7 @@ namespace InventorySystem.ViewModels
         public string WelcomeMessage { get => _welcomeMessage; set => SetProperty(ref _welcomeMessage, value); }
 
         //Klient pozwalający na połączenie z API
-        private readonly RestService _restClient;
+        private static readonly RestService RestClient = new RestService();
 
         //Komendy
         public Command RefreshCommand { get; }
@@ -65,9 +65,6 @@ namespace InventorySystem.ViewModels
             MessagingCenter.Subscribe<object>(this, EVENT_SYNCHRONIZE_ITEMS, InitCollectionView);
             //
 
-            _restClient = new RestService();
-
-
             //Inicjalizacja Komend
             RefreshCommand = new Command(async () => await GetConnection());
             //
@@ -89,7 +86,7 @@ namespace InventorySystem.ViewModels
                 if (result) return;
                 DependencyService.Get<IMessage>().ShortAlert($"Usuwam przedmiot o nazwie {model.Name}");
 
-                await _restClient.DeleteItem(model.Id);
+                await RestClient.DeleteItem(model.Id);
                 UserItems.Remove(model);
             });
             //
@@ -152,7 +149,7 @@ namespace InventorySystem.ViewModels
         public async Task GetConnection()
         {
             ShowActivityIndicatorWithMessage();
-            var response = await _restClient.CheckConnection();
+            var response = await RestClient.CheckConnection();
 
             switch (response)
             {
@@ -195,7 +192,7 @@ namespace InventorySystem.ViewModels
         }
         public async Task RefreshViewGetConnection()
         {
-            var response = await _restClient.CheckConnection();
+            var response = await RestClient.CheckConnection();
             switch (response)
             {
                 case RestService.Connection_Connected:
@@ -241,7 +238,7 @@ namespace InventorySystem.ViewModels
 
             try
             {
-                var itemsFromApi = await _restClient.GetAllItems(); //Próbuuj ściągnąć przedmioty z API
+                var itemsFromApi = await RestClient.GetAllItems(); //Próbuuj ściągnąć przedmioty z API
 
                 _sourceItems.AddRange(itemsFromApi); //Wrzuć je do listy
             }

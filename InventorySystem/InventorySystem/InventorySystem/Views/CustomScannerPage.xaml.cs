@@ -15,7 +15,7 @@ namespace InventorySystem.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CustomScannerPage : ContentPage
     {
-        private readonly RestService _restClient = new RestService();
+        private static readonly RestService RestClient = new RestService();
 
         public CustomScannerPage()
         {
@@ -53,7 +53,7 @@ namespace InventorySystem.Views
             {
                 await Shell.Current.Navigation.PopAsync();
 
-                var items = await _restClient.GetScannedItem(result.Text);
+                var items = await RestClient.GetScannedItem(result.Text);
 
                 if (items != null)
                 {

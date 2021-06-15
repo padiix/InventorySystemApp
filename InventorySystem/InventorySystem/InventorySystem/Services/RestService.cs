@@ -11,6 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using InventorySystem.ViewModels;
 using InventorySystem.Views;
+using Xamarin.CommunityToolkit.Extensions;
+using Xamarin.CommunityToolkit.UI.Views.Options;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -18,6 +20,15 @@ namespace InventorySystem.Services
 {
     public class RestService : IRestService
     {
+        //TODO: Simplify as much as possible how request are working
+        // 
+        // Methods already done:
+        // ...
+        //
+        // Methods to improve:
+        // All of them
+        //
+
         public const string Token = "token";
         public const string Connection_Connected = "Connected";
         public const string Connection_NoTokenFound = "NoTokenFound";
@@ -56,23 +67,31 @@ namespace InventorySystem.Services
             {
                 responseMessage = await _client.PostAsync(new Uri(Constants.AccountLogin), content);
             }
+            catch (TimeoutException toex)
+            {
+                ShowErrorMessage(Constants.ConnectionError, toex.Message);
+                return false;
+            }
             catch (Exception ex)
             {
-                ConnectionErrorMethod(ex);
+                ShowErrorMessage(Constants.NotExpectedError, ex.Message);
                 return false;
             }
 
             if (!responseMessage.IsSuccessStatusCode)
             {
-                DependencyService.Get<IMessage>().LongAlert(Constants.UnauthorizedError);
-                ShowInConsole(responseMessage);
+                ShowErrorMessage(Constants.UnauthorizedError, responseMessage.ToString());
                 return false;
             }
 
             var jsonAsStringAsync = await responseMessage.Content.ReadAsStringAsync();
             var userData = JsonConvert.DeserializeObject<UserData>(jsonAsStringAsync);
 
-            if (userData == null) return false;
+            if (userData == null)
+            {
+                ShowErrorMessage(Constants.NullReturnedError, Constants.Console_NullReturnedError);
+                return false;
+            }
 
             SaveUserDetails(userData);
             await Xamarin.Essentials.SecureStorage.SetAsync(Token, userData.Token);
@@ -101,23 +120,31 @@ namespace InventorySystem.Services
             {
                 responseMessage = await _client.PostAsync(new Uri(Constants.AccountRegister), content);
             }
+            catch (TimeoutException toex)
+            {
+                ShowErrorMessage(Constants.ConnectionError, toex.Message);
+                return false;
+            }
             catch (Exception ex)
             {
-                ConnectionErrorMethod(ex);
+                ShowErrorMessage(Constants.NotExpectedError, ex.Message);
                 return false;
             }
 
             if (!responseMessage.IsSuccessStatusCode)
             {
-                DependencyService.Get<IMessage>().LongAlert(Constants.RegistrationError);
-                ShowInConsole(responseMessage);
+                ShowErrorMessage(Constants.RegistrationError, responseMessage.ToString());
                 return false;
             }
 
             var jsonAsStringAsync = await responseMessage.Content.ReadAsStringAsync();
             var userData = JsonConvert.DeserializeObject<UserData>(jsonAsStringAsync);
 
-            if (userData == null) return false;
+            if (userData == null)
+            {
+                ShowErrorMessage(Constants.NullReturnedError, Constants.Console_NullReturnedError);
+                return false;
+            }
 
             SaveUserDetails(userData);
             await Xamarin.Essentials.SecureStorage.SetAsync(Token, userData.Token);
@@ -131,8 +158,7 @@ namespace InventorySystem.Services
             if (!CheckForToken())
                 if (!await GetToken())
                 {
-                    DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
-                    Console.WriteLine(new KeyNotFoundException("No token found."));
+                    ShowErrorMessage(Constants.NoTokenError, Constants.Console_NoTokenError);
                     return Connection_NoTokenFound;
                 }
 
@@ -146,19 +172,23 @@ namespace InventorySystem.Services
                 {
                     responseMessage = await _client.SendAsync(requestMessage);
                 }
+                catch (TimeoutException toex)
+                {
+                    ShowErrorMessage(Constants.ConnectionError, toex.Message);
+                    return Connection_ConnectionError;
+                }
                 catch (Exception ex)
                 {
-                    ConnectionErrorMethod(ex);
+                    ShowErrorMessage(Constants.NotExpectedError, ex.Message);
                     return Connection_ConnectionError;
                 }
 
                 if (responseMessage.IsSuccessStatusCode) return Connection_Connected;
-                //TODO: Zaprojektowaæ natychmiastowe wylogowanie, gdy u¿ytkownikowi wa¿noœæ tokenu siê skoñczy.
-                if (CheckIfTokenExpired(responseMessage))
+
+                if (CheckIfTokenExpiredAndShowErrorMessage(responseMessage))
                     return Connection_TokenExpired;
 
-                DependencyService.Get<IMessage>().LongAlert(Constants.ApiRejectionError);
-                ShowInConsole(responseMessage);
+                ShowErrorMessage(Constants.ApiRejectionError, responseMessage.ToString());
                 return Connection_StatusFailure;
             }
         }
@@ -167,8 +197,7 @@ namespace InventorySystem.Services
             if (!CheckForToken())
                 if (!await GetToken())
                 {
-                    DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
-                    Console.WriteLine(new KeyNotFoundException("No token found."));
+                    ShowErrorMessage(Constants.NoTokenError, Constants.Console_NoTokenError);
                     return null;
                 }
 
@@ -182,16 +211,20 @@ namespace InventorySystem.Services
                 {
                     responseMessage = await _client.SendAsync(requestMessage);
                 }
+                catch (TimeoutException toex)
+                {
+                    ShowErrorMessage(Constants.ConnectionError, toex.Message);
+                    return null;
+                }
                 catch (Exception ex)
                 {
-                    ConnectionErrorMethod(ex);
+                    ShowErrorMessage(Constants.NotExpectedError, ex.Message);
                     return null;
                 }
 
                 if (!responseMessage.IsSuccessStatusCode)
                 {
-                    //DependencyService.Get<IMessage>().LongAlert(Constants.ItemsError);
-                    ShowInConsole(responseMessage);
+                    ShowErrorMessage(Constants.ItemsError, responseMessage.ToString());
                     return null;
                 }
 
@@ -208,8 +241,7 @@ namespace InventorySystem.Services
             if (!CheckForToken())
                 if (!await GetToken())
                 {
-                    DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
-                    Console.WriteLine(new KeyNotFoundException("No token found."));
+                    ShowErrorMessage(Constants.NoTokenError, Constants.NoTokenError);
                     return null;
                 }
 
@@ -223,16 +255,20 @@ namespace InventorySystem.Services
                 {
                     responseMessage = await _client.SendAsync(requestMessage);
                 }
+                catch (TimeoutException toex)
+                {
+                    ShowErrorMessage(Constants.ConnectionError, toex.Message);
+                    return null;
+                }
                 catch (Exception ex)
                 {
-                    ConnectionErrorMethod(ex);
+                    ShowErrorMessage(Constants.NotExpectedError, ex.Message);
                     return null;
                 }
 
                 if (!responseMessage.IsSuccessStatusCode)
                 {
-                    DependencyService.Get<IMessage>().LongAlert(Constants.SpecificItemError);
-                    ShowInConsole(responseMessage);
+                    ShowErrorMessage(Constants.SpecificItemError, responseMessage.ToString());
                     return null;
                 }
 
@@ -247,12 +283,11 @@ namespace InventorySystem.Services
             if (!CheckForToken())
                 if (!await GetToken())
                 {
-                    DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
-                    Console.WriteLine(new KeyNotFoundException("No token found."));
+                    ShowErrorMessage(Constants.NoTokenError, Constants.Console_NoTokenError);
                     return false;
                 }
 
-            HttpResponseMessage response;
+            HttpResponseMessage responseMessage;
 
             var uri = Constants.ItemsEndpoint + $"/{itemId}";
             HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Put, uri);
@@ -265,17 +300,22 @@ namespace InventorySystem.Services
 
             try
             {
-                response = await _client.SendAsync(requestMessage);
+                responseMessage = await _client.SendAsync(requestMessage);
             }
-            catch (Exception e)
+            catch (TimeoutException toex)
             {
-                ConnectionErrorMethod(e);
+                ShowErrorMessage(Constants.ConnectionError, toex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage(Constants.NotExpectedError, ex.Message);
                 return false;
             }
 
-            if (response.IsSuccessStatusCode) return true;
-            DependencyService.Get<IMessage>().LongAlert(Constants.UpdateItemError);
-            ShowInConsole(response);
+            if (responseMessage.IsSuccessStatusCode) return true;
+            
+            ShowErrorMessage(Constants.UpdateItemError, responseMessage.ToString());
             return false;
         }
         //
@@ -285,8 +325,7 @@ namespace InventorySystem.Services
             if (!CheckForToken())
                 if (!await GetToken())
                 {
-                    DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
-                    Console.WriteLine(new KeyNotFoundException("No token found."));
+                    ShowErrorMessage(Constants.NoTokenError, Constants.Console_NoTokenError);
                     return null;
                 }
 
@@ -300,24 +339,27 @@ namespace InventorySystem.Services
                 {
                     responseMessage = await _client.SendAsync(requestMessage);
                 }
+                catch (TimeoutException toex)
+                {
+                    ShowErrorMessage(Constants.ConnectionError, toex.Message);
+                    return null;
+                }
                 catch (Exception ex)
                 {
-                    ConnectionErrorMethod(ex);
+                    ShowErrorMessage(Constants.NotExpectedError, ex.Message);
                     return null;
                 }
 
                 if (!responseMessage.IsSuccessStatusCode)
                 {
-                    DependencyService.Get<IMessage>().LongAlert(Constants.SpecificItemError);
-                    ShowInConsole(responseMessage);
+                    ShowErrorMessage(Constants.SpecificItemError, responseMessage.ToString());
                     return null;
                 }
 
                 var jsonAsStringAsync = await responseMessage.Content.ReadAsStringAsync();
                 Items = JsonConvert.DeserializeObject<List<Item>>(jsonAsStringAsync);
 
-                if (Items == null) return null;
-                var matchingItems = Items.FindAll(item => item.Barcode.Contains(barcode));
+                var matchingItems = Items?.FindAll(item => item.Barcode.Contains(barcode));
 
                 return matchingItems;
             }
@@ -327,8 +369,7 @@ namespace InventorySystem.Services
             if (!CheckForToken())
                 if (!await GetToken())
                 {
-                    DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
-                    Console.WriteLine(new KeyNotFoundException("No token found."));
+                    ShowErrorMessage(Constants.NoTokenError, Constants.Console_NoTokenError);
                     return false;
                 }
 
@@ -342,24 +383,25 @@ namespace InventorySystem.Services
                 {
                     responseMessage = await _client.SendAsync(requestMessage);
                 }
+                catch (TimeoutException toex)
+                {
+                    ShowErrorMessage(Constants.ConnectionError, toex.Message);
+                    return false;
+                }
                 catch (Exception ex)
                 {
-                    ConnectionErrorMethod(ex);
+                    ShowErrorMessage(Constants.NotExpectedError, ex.Message);
                     return false;
                 }
 
                 if (!responseMessage.IsSuccessStatusCode)
                 {
-                    DependencyService.Get<IMessage>().LongAlert(Constants.DeletionError);
-                    ShowInConsole(responseMessage);
+                    ShowErrorMessage(Constants.DeletionError, responseMessage.ToString());
                     return false;
                 }
-                else
-                {
-                    DependencyService.Get<IMessage>().LongAlert(Constants.DeletionSuccessful);
-                    ShowInConsole(responseMessage);
-                    return true;
-                }
+
+                ShowErrorMessage(Constants.DeletionSuccessful, responseMessage.ToString());
+                return true;
             }
         }
         public async Task<bool> AddItem(Item item)
@@ -367,12 +409,11 @@ namespace InventorySystem.Services
             if (!CheckForToken())
                 if (!await GetToken())
                 {
-                    DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
-                    Console.WriteLine(new KeyNotFoundException("No token found."));
+                    ShowErrorMessage(Constants.NoTokenError, Constants.Console_NoTokenError);
                     return false;
                 }
 
-            HttpResponseMessage response;
+            HttpResponseMessage responseMessage;
 
             var uri = Constants.ItemsEndpoint;
             HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, uri);
@@ -385,17 +426,22 @@ namespace InventorySystem.Services
 
             try
             {
-                response = await _client.SendAsync(requestMessage);
+                responseMessage = await _client.SendAsync(requestMessage);
             }
-            catch (Exception e)
+            catch (TimeoutException toex)
             {
-                ConnectionErrorMethod(e);
+                ShowErrorMessage(Constants.ConnectionError, toex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage(Constants.NotExpectedError, ex.Message);
                 return false;
             }
 
-            if (response.IsSuccessStatusCode) return true;
-            DependencyService.Get<IMessage>().LongAlert(Constants.AddingItemError);
-            ShowInConsole(response);
+            if (responseMessage.IsSuccessStatusCode) return true;
+
+            ShowErrorMessage(Constants.AddingItemError, responseMessage.ToString());
             return false;
         }
 
@@ -419,8 +465,7 @@ namespace InventorySystem.Services
             if (!string.IsNullOrWhiteSpace(_token)) return true;
             return false;
         }
-
-        private bool CheckIfTokenExpired(HttpResponseMessage response)
+        private bool CheckIfTokenExpiredAndShowErrorMessage(HttpResponseMessage response)
         {
             var headers = response.Headers.WwwAuthenticate.GetEnumerator();
             headers.MoveNext();
@@ -430,21 +475,17 @@ namespace InventorySystem.Services
                          header.Scheme.Contains("Bearer") &&
                          header.Parameter.Contains("error=\"invalid_token\", error_description=\"The token expired at");
 
-            ShowInConsole(response);
+            ShowErrorMessage(Constants.ExpiredTokenError, response.ToString());
             return result;
         }
         private static void ShowInConsole(string message)
         {
             Console.WriteLine("[API Error Message] " + message);
         }
-        private static void ShowInConsole(HttpResponseMessage response)
+        private void ShowErrorMessage(string errorMessage , string consoleMessage)
         {
-            Console.WriteLine("[API Response Message] " + response.StatusCode + ", " + response.Content.ReadAsStringAsync());
-        }
-        private void ConnectionErrorMethod(Exception ex)
-        {
-            DependencyService.Get<IMessage>().LongAlert(Constants.ConnectionError);
-            ShowInConsole(ex.Message);
+            DependencyService.Get<IMessage>().LongAlert(errorMessage);
+            ShowInConsole(consoleMessage);
         }
     }
 }
