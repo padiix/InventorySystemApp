@@ -51,10 +51,7 @@
                       Route="main"
                       Icon="icon_home.png"
                       ContentTemplate="{DataTemplate local:MainPage}"/>
-        <ShellContent Title="Skaner" 
-                      Route="scanner"
-                      Icon="icon_scanner.png" 
-                      ContentTemplate="{DataTemplate local:BarcodeScanner}"/>
+
         <ShellContent Title="O Aplikacji" 
                       Route="about"
                       Icon="icon_about.png" 

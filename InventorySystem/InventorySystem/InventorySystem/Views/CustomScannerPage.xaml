@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             x:Class="InventorySystem.Views.CustomScannerPage">
+    <ContentPage.Content>
+        <Grid>
+            <forms:ZXingScannerView x:Name="zxing" 
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="FillAndExpand"
+                                OnScanResult="Zxing_OnOnScanResult"/>
+            <forms:ZXingDefaultOverlay x:Name="overlay" 
+                                   TopText="Wyrównaj kod kreskowy z linią w ramce"
+                                   BottomText="Skanowanie nastąpi automatycznie"
+                                   FlashButtonClicked="Overlay_OnFlashButtonClicked"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

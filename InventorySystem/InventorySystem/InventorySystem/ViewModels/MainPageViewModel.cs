@@ -11,6 +11,8 @@ using InventorySystem.Services;
 using InventorySystem.Views;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using ZXing.Mobile;
+using ZXing.Net.Mobile.Forms;
 
 namespace InventorySystem.ViewModels
 {
@@ -34,6 +36,7 @@ namespace InventorySystem.ViewModels
         public Command RefreshCommand { get; }
         public Command RefreshItemsCommand { get; }
         public Command AddItemCommand { get; }
+        public Command LaunchScanner { get; }
         public Command MoveToModificationPageCommand { get; }
         public Command DeleteItemCommand { get; }
 
@@ -72,7 +75,7 @@ namespace InventorySystem.ViewModels
             //
             MoveToModificationPageCommand = new Command<Item>(async model =>
             {
-                await Shell.Current.GoToAsync($"item/modify?Id={model.Id.ToString()}"); //Asynchroniczne przejście na stronę modyfikowania przedmiotów z dołączonym przedmiotem w ścieżce
+                await Shell.Current.GoToAsync($"item/modify?Id={model.Id}"); //Asynchroniczne przejście na stronę modyfikowania przedmiotów z dołączonym przedmiotem w ścieżce
             });
             //
             AddItemCommand = new Command(async () =>
@@ -90,6 +93,11 @@ namespace InventorySystem.ViewModels
                 UserItems.Remove(model);
             });
             //
+            LaunchScanner = new Command(async () =>
+            {
+                var customScannerPage = new CustomScannerPage();
+                await Shell.Current.Navigation.PushAsync(customScannerPage);
+            });
         }
 
         protected override void OnPropertyChanged(string propertyName = "")

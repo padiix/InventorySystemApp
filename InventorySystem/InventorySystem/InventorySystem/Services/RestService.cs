@@ -280,6 +280,48 @@ namespace InventorySystem.Services
         }
         //
 
+        public async Task<List<Item>> GetScannedItem(string barcode)
+        {
+            if (!CheckForToken())
+                if (!await GetToken())
+                {
+                    DependencyService.Get<IMessage>().LongAlert(Constants.NoTokenError);
+                    Console.WriteLine(new KeyNotFoundException("No token found."));
+                    return null;
+                }
+
+            var uri = new Uri(Constants.ItemsEndpoint);
+
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri))
+            {
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+                HttpResponseMessage responseMessage;
+                try
+                {
+                    responseMessage = await _client.SendAsync(requestMessage);
+                }
+                catch (Exception ex)
+                {
+                    ConnectionErrorMethod(ex);
+                    return null;
+                }
+
+                if (!responseMessage.IsSuccessStatusCode)
+                {
+                    DependencyService.Get<IMessage>().LongAlert(Constants.SpecificItemError);
+                    ShowInConsole(responseMessage);
+                    return null;
+                }
+
+                var jsonAsStringAsync = await responseMessage.Content.ReadAsStringAsync();
+                Items = JsonConvert.DeserializeObject<List<Item>>(jsonAsStringAsync);
+
+                if (Items == null) return null;
+                var matchingItems = Items.FindAll(item => item.Barcode.Contains(barcode));
+
+                return matchingItems;
+            }
+        }
         public async Task<bool> DeleteItem(Guid itemId)
         {
             if (!CheckForToken())

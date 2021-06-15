@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web;
 using InventorySystem.Interfaces;
 using InventorySystem.Models;
 using InventorySystem.Services;
@@ -10,7 +12,7 @@ using Xamarin.Forms;
 
 namespace InventorySystem.ViewModels
 {
-    public class AddItemPageViewModel : BaseViewModel
+    public class AddItemPageViewModel : BaseViewModel, IQueryAttributable
     {
         private Guid _itemId = new Guid();
         private string _name;
@@ -71,6 +73,13 @@ namespace InventorySystem.ViewModels
             var result = await _restClient.AddItem(item);
 
             return result;
+        }
+
+        public void ApplyQueryAttributes(IDictionary<string, string> query)
+        {
+            var barcode = HttpUtility.UrlDecode(query["Barcode"]);
+
+            Barcode = string.IsNullOrEmpty(barcode) ? barcode : string.Empty;
         }
     }
 }
