@@ -12,7 +12,7 @@ namespace InventorySystem.Models.CustomValidators
             if (password.Length < 6)
                 return new ValidationResult("Password must be at least 6 characters.");
 
-            if(!new Regex("[A-Z]").IsMatch(password))
+            if (!new Regex("[A-Z]").IsMatch(password))
                 return new ValidationResult("Password must contain at least 1 uppercase character.");
 
             if (!new Regex("[a-z]").IsMatch(password))

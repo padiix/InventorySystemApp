@@ -11,7 +11,7 @@ namespace InventorySystem.Views
 {
     public partial class MainPage : ContentPage
     {
-        private readonly RestService _restClient = new RestService();
+        private static readonly RestService RestClient = new RestService();
 
         public MainPage()
         {
@@ -20,7 +20,7 @@ namespace InventorySystem.Views
 
         protected override async void OnAppearing()
         {
-            var response = await _restClient.CheckConnection();
+            var response = await RestClient.CheckConnection();
             switch (response)
             {
                 case RestService.Connection_Connected:
@@ -62,7 +62,7 @@ namespace InventorySystem.Views
 
             await Application.Current.SavePropertiesAsync();
 
-            Xamarin.Essentials.SecureStorage.Remove(RestService.Token);
+            SecureStorage.Remove(RestService.Token);
 
             MessagingCenter.Send<object>(this, App.EVENT_NAVIGATE_TO_LOGIN_PAGE);
         }
@@ -71,6 +71,7 @@ namespace InventorySystem.Views
         {
             Shell.Current.GoToAsync("account/details");
         }
+
         private static void DeleteUserDetails()
         {
             Settings.RememberMe = false;
@@ -81,6 +82,7 @@ namespace InventorySystem.Views
             StaticValues.Email = string.Empty;
             StaticValues.IsAdmin = false;
         }
+
         private async void ReturnUserToLoginPage()
         {
             await Task.Delay(TimeSpan.FromSeconds(0.5));

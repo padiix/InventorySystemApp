@@ -1,7 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             xmlns:viewmodels="clr-namespace:InventorySystem.ViewModels" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:InventorySystem.ViewModels"
              x:DataType="viewmodels:AccountDetailsBindingObject"
              x:Class="InventorySystem.Views.AccountDetailsPage">
     <ContentPage.Content>
@@ -11,20 +12,20 @@
                    Text="Szczegóły konta"
                    TextColor="Black"
                    FontSize="Title"
-                   HorizontalOptions="CenterAndExpand"/>
+                   HorizontalOptions="CenterAndExpand" />
 
             <Grid Padding="10">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <!--Kolumna z stałym tekstem-->
@@ -35,7 +36,7 @@
                        FontSize="Subtitle"
                        FontAttributes="Bold"
                        HorizontalOptions="End"
-                       VerticalOptions="Center"/>
+                       VerticalOptions="Center" />
 
                 <Label Grid.Row="1"
                        Grid.Column="0"
@@ -44,7 +45,7 @@
                        FontSize="Subtitle"
                        FontAttributes="Bold"
                        HorizontalOptions="End"
-                       VerticalOptions="Center"/>
+                       VerticalOptions="Center" />
 
                 <Label Grid.Row="2"
                        Grid.Column="0"
@@ -53,7 +54,7 @@
                        FontSize="Subtitle"
                        FontAttributes="Bold"
                        HorizontalOptions="End"
-                       VerticalOptions="Center"/>
+                       VerticalOptions="Center" />
 
                 <Label Grid.Row="3"
                        Grid.Column="0"
@@ -62,7 +63,7 @@
                        FontSize="Subtitle"
                        FontAttributes="Bold"
                        HorizontalOptions="End"
-                       VerticalOptions="Center"/>
+                       VerticalOptions="Center" />
 
                 <Label Grid.Row="4"
                        Grid.Column="0"
@@ -71,7 +72,7 @@
                        FontSize="Subtitle"
                        FontAttributes="Bold"
                        HorizontalOptions="End"
-                       VerticalOptions="Center"/>
+                       VerticalOptions="Center" />
 
                 <Label Grid.Row="5"
                        Grid.Column="0"
@@ -80,7 +81,7 @@
                        FontAttributes="Bold"
                        FontSize="Subtitle"
                        HorizontalOptions="End"
-                       VerticalOptions="Center"/>
+                       VerticalOptions="Center" />
 
                 <!--Kolumna z danymi na temat konta użytkownika-->
                 <Label Grid.Row="0"
@@ -88,42 +89,42 @@
                        Text="{Binding Id}"
                        HorizontalOptions="Start"
                        VerticalOptions="Center"
-                       FontSize="Medium"/>
+                       FontSize="Medium" />
 
                 <Label Grid.Row="1"
                        Grid.Column="1"
                        Text="{Binding Username}"
                        HorizontalOptions="Start"
                        VerticalOptions="Center"
-                       FontSize="Medium"/>
+                       FontSize="Medium" />
 
                 <Label Grid.Row="2"
                        Grid.Column="1"
                        Text="{Binding Email}"
                        HorizontalOptions="Start"
                        VerticalOptions="Center"
-                       FontSize="Medium"/>
+                       FontSize="Medium" />
 
                 <Label Grid.Row="3"
                        Grid.Column="1"
                        Text="{Binding FirstName}"
                        HorizontalOptions="Start"
                        VerticalOptions="Center"
-                       FontSize="Medium"/>
+                       FontSize="Medium" />
 
                 <Label Grid.Row="4"
                        Grid.Column="1"
                        Text="{Binding LastName}"
                        HorizontalOptions="Start"
                        VerticalOptions="Center"
-                       FontSize="Medium"/>
+                       FontSize="Medium" />
 
                 <Label Grid.Row="5"
                        Grid.Column="1"
                        Text="{Binding AccountType}"
                        HorizontalOptions="Start"
                        VerticalOptions="Center"
-                       FontSize="Medium"/>
+                       FontSize="Medium" />
 
             </Grid>
 

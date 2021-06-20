@@ -2,24 +2,16 @@
 {
     public static class Constants
     {
-        
-
-        //TODO: Change the "10.0.2.2" part to working address, as this one is a loopback to dev machine localhost
-        public const string AccountEndpoint = "http://10.0.2.2:5000/api/account";
-        public const string ItemsEndpoint = "http://10.0.2.2:5000/api/items";
-
-        //Endpoints for specific things
-        public const string AccountLogin = AccountEndpoint + "/login";
-        public const string AccountRegister = AccountEndpoint + "/register";
-
         //Success messages
         public const string DeletionSuccessful = "Pomyślnie usunięto przedmiot z bazy danych";
         public const string UpdateSuccessful = "Pomyślnie zaktualizowano przedmiot w bazie danych";
         public const string AddingItemSuccessful = "Pomyślnie dodano przedmiot do bazy danych";
 
-        //Errors messages
+        //User errors messages
         public const string FillInFieldsError = "Pewne pola nie są wypełnione, proszę, uzupełnij je!";
-        public const string RegistrationError = "Podczas rejestracji wystąpił błąd";
+        public const string NullReturnedError = "API nie zwróciło danych.";
+        public const string NotExpectedError = "Podczas wykonywania zgłoszenia do API wystąpił nieprzewidziany wyjątek";
+        public const string RegistrationError = "Podczas procesu rejestracji wystąpił błąd";
         public const string ConnectionError = "Wystąpił błąd podczas łączenia się z API";
         public const string ApiRejectionError = "Zgłoszenie zostało odrzucone prez API";
         public const string ExpiredTokenError = "Token autoryzacyjny użytkownika stracił ważność";
@@ -32,5 +24,9 @@
         public const string DeletionError = "Wystąpił błąd podczas usuwania przedmiotu z bazy danych";
         public const string UpdateItemError = "Wystąpił błąd podczas zapisywania zmian przedmiotu w bazie danych";
         public const string AddingItemError = "Wystąpił błąd podczas dodawania przedmiotu do bazy danych";
+
+        //Console errors messages
+        public const string Console_NoTokenError = "No token found";
+        public const string Console_NullReturnedError = "No data was returned from API";
     }
 }

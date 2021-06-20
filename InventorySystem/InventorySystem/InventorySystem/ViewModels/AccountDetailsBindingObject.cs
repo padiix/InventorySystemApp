@@ -12,6 +12,5 @@ namespace InventorySystem.ViewModels
         public string LastName => StaticValues.LastName;
 
         public string AccountType => StaticValues.IsAdmin.Equals(true) ? "Administrator" : "Użytkownik";
-
     }
 }

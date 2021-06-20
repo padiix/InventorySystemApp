@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
@@ -7,16 +8,16 @@
              Shell.PresentationMode="Modal"
              Title="Dodaj przedmiot">
     <ContentPage.BindingContext>
-        <vm:AddItemPageViewModel/>
+        <vm:AddItemPageViewModel />
     </ContentPage.BindingContext>
-    
+
     <ContentPage.Resources>
         <ResourceDictionary>
 
-            <Style x:Key="InvalidBackgroundEntry" 
+            <Style x:Key="InvalidBackgroundEntry"
                    TargetType="Entry">
                 <Setter Property="BackgroundColor"
-                        Value="Red"/>
+                        Value="Red" />
             </Style>
 
         </ResourceDictionary>
@@ -26,14 +27,14 @@
         <StackLayout Padding="20,20">
             <Label Text="Nazwa:"
                    FontSize="Title"
-                   HorizontalOptions="StartAndExpand"/>
+                   HorizontalOptions="StartAndExpand" />
             <Entry Text="{Binding Name, Mode=TwoWay}"
                    ClearButtonVisibility="WhileEditing"
-                   IsSpellCheckEnabled="True"/>
+                   IsSpellCheckEnabled="True" />
 
             <Label Text="Kod kreskowy:"
                    FontSize="Title"
-                   HorizontalOptions="StartAndExpand"/>
+                   HorizontalOptions="StartAndExpand" />
             <Entry x:Name="BarcodeEntry"
                    Keyboard="Numeric"
                    Text="{Binding Barcode, Mode=TwoWay}"
@@ -42,11 +43,11 @@
 
                 <Entry.Behaviors>
 
-                    <xct:CharactersValidationBehavior x:Name="CharacterQuantityValidator"  
+                    <xct:CharactersValidationBehavior x:Name="CharacterQuantityValidator"
                                                       CharacterType="Digit"
                                                       MinimumCharacterCount="8"
                                                       MaximumCharacterCount="14"
-                                                      InvalidStyle="{StaticResource InvalidBackgroundEntry}"/>
+                                                      InvalidStyle="{StaticResource InvalidBackgroundEntry}" />
 
                 </Entry.Behaviors>
 
@@ -55,42 +56,42 @@
                    IsVisible="False"
                    TextColor="Red"
                    FontSize="Caption"
-                   FontAttributes="Bold"/>
+                   FontAttributes="Bold" />
 
             <Grid Padding="0,20,0 ,0"
                   HorizontalOptions="Center"
                   VerticalOptions="End"
                   IsVisible="{Binding IsVisibleMessageAndActivityIndicator}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-            <Label Text="Dodawanie danych do API"
-                   FontSize="Subtitle"
-                   IsVisible="true"
-                   VerticalOptions="Center"/>
-            <ActivityIndicator Grid.Column="1"
-                               IsRunning="true"
-                               Scale="0.7"/>
+                <Label Text="Dodawanie danych do API"
+                       FontSize="Subtitle"
+                       IsVisible="true"
+                       VerticalOptions="Center" />
+                <ActivityIndicator Grid.Column="1"
+                                   IsRunning="true"
+                                   Scale="0.7" />
 
             </Grid>
 
             <StackLayout Orientation="Horizontal"
                          Padding="20,20">
-                <Button x:Name="AddButton" 
+                <Button x:Name="AddButton"
                         HorizontalOptions="FillAndExpand"
                         VerticalOptions="End"
                         Text="Dodaj"
-                        Command="{Binding AddItemCommand}"/>
+                        Command="{Binding AddItemCommand}" />
 
                 <Button HorizontalOptions="FillAndExpand"
                         VerticalOptions="EndAndExpand"
                         Text="Powrót"
-                        Clicked="Return_OnClicked"/>
+                        Clicked="Return_OnClicked" />
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

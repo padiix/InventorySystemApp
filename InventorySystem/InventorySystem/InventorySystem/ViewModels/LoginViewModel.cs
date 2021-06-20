@@ -1,77 +1,37 @@
 using System.Threading.Tasks;
 using InventorySystem.Interfaces;
+using InventorySystem.Models;
 using InventorySystem.Services;
 using MvvmHelpers;
+using Xamarin.Essentials;
 using Xamarin.Forms;
-using System.Runtime.CompilerServices;
 
 namespace InventorySystem.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-        //Values kept in ViewModel
-        private string _email;
-        private string _password;
-        private bool _isEmailValid;
+        private static readonly RestService RestClient = new RestService();
 
-        //Binded objects
-        public bool IsEmailValid
-        {
-            get => _isEmailValid;
-            set => SetProperty(ref _isEmailValid, value, nameof(IsEmailValid));
-        }
-        public string Email
-        {
-            get => _email;
-            set => SetProperty(ref _email, value, nameof(Email));
-
-        }
-        public string Password
-        {
-            get => _password;
-            set => SetProperty(ref _password, value, nameof(Password));
-        }
-        
         //Activity indicator
         private bool _connectingMessageVisibility;
-        private bool _runActivityIndicator;
 
-        public bool ConnectingMessageVisibility
-        {
-            get => _connectingMessageVisibility;
-            set => SetProperty(ref _connectingMessageVisibility, value, nameof(ConnectingMessageVisibility));
-        }
-        public bool RunActivityIndicator
-        {
-            get => _runActivityIndicator;
-            set => SetProperty(ref _runActivityIndicator, value, nameof(RunActivityIndicator));
-        }
+        //Values kept in ViewModel
+        private string _email;
+        private bool _isEmailValid;
+
+        private bool _isEnabledLoginButton;
+
+        private bool _isEnabledRegisterButton;
 
         //Objects enabling/disabling elements on LoginPage.xaml
 
         private bool _isEnabledRememberMe;
 
-        public bool IsEnabledRememberMe { get => _isEnabledRememberMe; set => SetProperty(ref _isEnabledRememberMe, value); }
-
-        private bool _isEnabledLoginButton;
-
-        public bool IsEnabledLoginButton { get => _isEnabledLoginButton; set => SetProperty(ref _isEnabledLoginButton, value); }
-
-        private bool _isEnabledRegisterButton;
-
-        public bool IsEnabledRegisterButton { get => _isEnabledRegisterButton; set => SetProperty(ref _isEnabledRegisterButton, value); }
-
-        private bool _isReadOnlyPasswordEntry;
-
-        public bool IsReadOnlyPasswordEntry { get => _isReadOnlyPasswordEntry; set => SetProperty(ref _isReadOnlyPasswordEntry, value); }
-
         private bool _isReadOnlyEmailEntry;
 
-        public bool IsReadOnlyEmailEntry { get => _isReadOnlyEmailEntry; set => SetProperty(ref _isReadOnlyEmailEntry, value); }
-
-
-        //Commands
-        public Command LoginCommand { get; }
+        private bool _isReadOnlyPasswordEntry;
+        private string _password;
+        private bool _runActivityIndicator;
 
 
         public LoginViewModel()
@@ -81,6 +41,71 @@ namespace InventorySystem.ViewModels
             LoginCommand = new Command(async () => await OnLoginClicked());
         }
 
+        //Binded objects
+        public bool IsEmailValid
+        {
+            get => _isEmailValid;
+            set => SetProperty(ref _isEmailValid, value, nameof(IsEmailValid));
+        }
+
+        public string Email
+        {
+            get => _email;
+            set => SetProperty(ref _email, value, nameof(Email));
+        }
+
+        public string Password
+        {
+            get => _password;
+            set => SetProperty(ref _password, value, nameof(Password));
+        }
+
+        public bool ConnectingMessageVisibility
+        {
+            get => _connectingMessageVisibility;
+            set => SetProperty(ref _connectingMessageVisibility, value, nameof(ConnectingMessageVisibility));
+        }
+
+        public bool RunActivityIndicator
+        {
+            get => _runActivityIndicator;
+            set => SetProperty(ref _runActivityIndicator, value, nameof(RunActivityIndicator));
+        }
+
+        public bool IsEnabledRememberMe
+        {
+            get => _isEnabledRememberMe;
+            set => SetProperty(ref _isEnabledRememberMe, value);
+        }
+
+        public bool IsEnabledLoginButton
+        {
+            get => _isEnabledLoginButton;
+            set => SetProperty(ref _isEnabledLoginButton, value);
+        }
+
+        public bool IsEnabledRegisterButton
+        {
+            get => _isEnabledRegisterButton;
+            set => SetProperty(ref _isEnabledRegisterButton, value);
+        }
+
+        public bool IsReadOnlyPasswordEntry
+        {
+            get => _isReadOnlyPasswordEntry;
+            set => SetProperty(ref _isReadOnlyPasswordEntry, value);
+        }
+
+        public bool IsReadOnlyEmailEntry
+        {
+            get => _isReadOnlyEmailEntry;
+            set => SetProperty(ref _isReadOnlyEmailEntry, value);
+        }
+
+
+        //Commands
+        public Command LoginCommand { get; }
+
         public bool IsEmailAndPasswordNotNull()
         {
             if (string.IsNullOrWhiteSpace(Email)) return false;
@@ -89,7 +114,6 @@ namespace InventorySystem.ViewModels
 
         private void EnableElements()
         {
-            //TODO: Figure out how to ENABLE/DISABLE elements in a runtime
             IsEnabledLoginButton = true;
             IsEnabledRegisterButton = true;
             IsEnabledRememberMe = true;
@@ -129,13 +153,14 @@ namespace InventorySystem.ViewModels
             if (IsEmailAndPasswordNotNull())
             {
                 ShowActivityIndicator();
-                var restService = new RestService();
-                var isVerified = await restService.VerifyLogin(Email, Password);
+
+                var data = new Login {Email = Email, Password = Password};
+                var isVerified = await RestClient.VerifyLogin(data);
                 if (isVerified)
                 {
                     HideActivityIndicator();
 
-                    var token = Xamarin.Essentials.SecureStorage.GetAsync(RestService.Token);
+                    var token = await SecureStorage.GetAsync(RestService.Token);
 
                     if (token == null)
                     {
@@ -148,15 +173,14 @@ namespace InventorySystem.ViewModels
                     if (Settings.FirstRun)
                     {
                         Settings.FirstRun = false;
-                        await Shell.Current.GoToAsync($"//about");
+                        await Shell.Current.GoToAsync("//about");
                     }
                     else
                     {
-                        await Shell.Current.GoToAsync($"//main");
+                        await Shell.Current.GoToAsync("//main");
                     }
-
                 }
-                
+
                 HideActivityIndicator();
             }
             else

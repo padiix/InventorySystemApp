@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
-
-namespace InventorySystem.Models
+﻿namespace InventorySystem.Models
 {
-    class Register
+    public class Register
     {
         public string UserName { get; set; }
         public string FirstName { get; set; }

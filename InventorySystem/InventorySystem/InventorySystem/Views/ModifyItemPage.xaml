@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:InventorySystem.ViewModels;assembly=InventorySystem"
@@ -7,17 +8,17 @@
              Shell.PresentationMode="Modal"
              Title="Modyfikuj przedmiot">
 
-<ContentPage.BindingContext>
-    <vm:ModifyItemPageViewModel/>
-</ContentPage.BindingContext>
+    <ContentPage.BindingContext>
+        <vm:ModifyItemPageViewModel />
+    </ContentPage.BindingContext>
 
     <ContentPage.Resources>
         <ResourceDictionary>
 
-            <Style x:Key="InvalidBackgroundEntry" 
+            <Style x:Key="InvalidBackgroundEntry"
                    TargetType="Entry">
                 <Setter Property="BackgroundColor"
-                        Value="Red"/>
+                        Value="Red" />
             </Style>
 
         </ResourceDictionary>
@@ -28,20 +29,20 @@
 
             <Label Text="Id:"
                    FontSize="Title"
-                   HorizontalOptions="StartAndExpand"/>
+                   HorizontalOptions="StartAndExpand" />
             <Entry Text="{Binding ItemId}"
-                   IsEnabled="False"/>
+                   IsEnabled="False" />
 
             <Label Text="Nazwa:"
                    FontSize="Title"
-                   HorizontalOptions="StartAndExpand"/>
+                   HorizontalOptions="StartAndExpand" />
             <Entry Text="{Binding Name, Mode=TwoWay}"
                    ClearButtonVisibility="WhileEditing"
-                   IsSpellCheckEnabled="True"/>
+                   IsSpellCheckEnabled="True" />
 
             <Label Text="Kod kreskowy:"
                    FontSize="Title"
-                   HorizontalOptions="StartAndExpand"/>
+                   HorizontalOptions="StartAndExpand" />
             <Entry x:Name="BarcodeEntry"
                    Keyboard="Numeric"
                    Text="{Binding Barcode, Mode=TwoWay}"
@@ -50,11 +51,11 @@
 
                 <Entry.Behaviors>
 
-                    <xct:CharactersValidationBehavior x:Name="CharacterQuantityValidator"  
+                    <xct:CharactersValidationBehavior x:Name="CharacterQuantityValidator"
                                                       CharacterType="Digit"
                                                       MinimumCharacterCount="8"
                                                       MaximumCharacterCount="14"
-                                                      InvalidStyle="{StaticResource InvalidBackgroundEntry}"/>
+                                                      InvalidStyle="{StaticResource InvalidBackgroundEntry}" />
 
                 </Entry.Behaviors>
 
@@ -63,48 +64,48 @@
                    IsVisible="False"
                    TextColor="Red"
                    FontSize="Caption"
-                   FontAttributes="Bold"/>
+                   FontAttributes="Bold" />
 
 
             <Label Text="Data dodania:"
                    FontSize="Title"
-                   HorizontalOptions="StartAndExpand"/>
+                   HorizontalOptions="StartAndExpand" />
             <Entry Text="{Binding DateAdded}"
-                   IsEnabled="False"/>
+                   IsEnabled="False" />
 
             <Grid Padding="0,20,0 ,0"
                   HorizontalOptions="Center"
                   IsVisible="{Binding IsVisibleMessageAndActivityIndicator}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-            <Label Text="Aktualizacja danych w API"
-                   FontSize="Subtitle"
-                   IsVisible="true"
-                   VerticalOptions="Center"/>
-            <ActivityIndicator Grid.Column="1"
-                               IsRunning="true"
-                               Scale="0.7"/>
+                <Label Text="Aktualizacja danych w API"
+                       FontSize="Subtitle"
+                       IsVisible="true"
+                       VerticalOptions="Center" />
+                <ActivityIndicator Grid.Column="1"
+                                   IsRunning="true"
+                                   Scale="0.7" />
 
             </Grid>
 
             <StackLayout Orientation="Horizontal"
                          Padding="20,20">
-                <Button x:Name="UpdateButton" 
+                <Button x:Name="UpdateButton"
                         HorizontalOptions="FillAndExpand"
                         Text="Modyfikuj"
-                        Command="{Binding UpdateItemCommand}"/>
+                        Command="{Binding UpdateItemCommand}" />
 
                 <Button HorizontalOptions="FillAndExpand"
                         Text="Powrót"
-                        Clicked="Return_OnClicked"/>
+                        Clicked="Return_OnClicked" />
             </StackLayout>
-            
+
 
         </StackLayout>
     </ContentPage.Content>

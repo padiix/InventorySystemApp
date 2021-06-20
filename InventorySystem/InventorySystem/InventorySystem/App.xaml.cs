@@ -15,25 +15,21 @@ namespace InventorySystem
             MessagingCenter.Subscribe<object>(this, EVENT_NAVIGATE_TO_LOGIN_PAGE, NavigateToLoginPage);
             MessagingCenter.Subscribe<object>(this, EVENT_NAVIGATE_TO_MAIN_PAGE, NavigateToMainPage);
 
-            if (Settings.RememberMe == true)
-            {
+            if (Settings.RememberMe)
                 MainPage = new AppShell();
-            }
             else
-            {
                 MainPage = new EmptyAppShell();
-            }
         }
 
         public void NavigateToLoginPage(object sender)
         {
             MainPage = new EmptyAppShell();
         }
-        
+
         public async void NavigateToMainPage(object sender)
         {
             MainPage = new AppShell();
-            await Shell.Current.GoToAsync($"//main");
+            await Shell.Current.GoToAsync("//main");
         }
 
         protected override void OnStart()

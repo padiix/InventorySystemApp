@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InventorySystem.Views.MainPage"
@@ -14,87 +15,85 @@
     <ContentPage.Resources>
         <ResourceDictionary>
 
-            <Color x:Key="Accent">LightGray</Color>
-
             <DataTemplate x:Key="CurrentUserItems">
                 <Grid Padding="5,10,5,15">
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.7*"/>
-                        <ColumnDefinition Width="0.3*"/>
+                        <ColumnDefinition Width="0.7*" />
+                        <ColumnDefinition Width="0.3*" />
                     </Grid.ColumnDefinitions>
 
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="0.1*"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="0.1*" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
                     <Label Grid.Column="0"
-                       Grid.Row="0"
-                       Grid.ColumnSpan="2"
-                       Text="{Binding Name}"
-                       TextColor="Black"
-                       HorizontalTextAlignment="Center"
-                       TextTransform="Uppercase"
-                       FontSize="20"
-                       FontAttributes="Bold"/>
+                           Grid.Row="0"
+                           Grid.ColumnSpan="2"
+                           Text="{Binding Name}"
+                           TextColor="Black"
+                           HorizontalTextAlignment="Center"
+                           TextTransform="Uppercase"
+                           FontSize="20"
+                           FontAttributes="Bold" />
 
                     <StackLayout Grid.Column="0"
-                             Grid.Row="1"
-                             Padding="5,10,10,0">
+                                 Grid.Row="1"
+                                 Padding="5,10,10,0">
 
                         <Label Text="Kod kreskowy:"
-                           FontSize="15"
-                           FontAttributes="Bold"/>
+                               FontSize="15"
+                               FontAttributes="Bold" />
 
                         <Label Text="{Binding Barcode}"
-                                       FontSize="20"
-                                       TextDecorations="Underline"/>
+                               FontSize="20"
+                               TextDecorations="Underline" />
 
                         <Label Text="Data dodania:"
-                                       FontSize="15"
-                                       FontAttributes="Bold"/>
+                               FontSize="15"
+                               FontAttributes="Bold" />
 
                         <Label Text="{Binding DateAdded}"
-                                       FontSize="16"
-                                       Padding="0,0,0,10"/>
+                               FontSize="16"
+                               Padding="0,0,0,10" />
 
                         <Label Text="Dodany przez:"
-                                       FontSize="15"
-                                       FontAttributes="Bold"/>
+                               FontSize="15"
+                               FontAttributes="Bold" />
 
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <Label Grid.Column="0" 
-                                           Text="{Binding User.FirstName}"
-                                           FontSize="16"/>
+                            <Label Grid.Column="0"
+                                   Text="{Binding User.FirstName}"
+                                   FontSize="16" />
 
                             <Label Grid.Column="1"
-                                           Text="{Binding User.LastName}"
-                                           FontSize="16"/>
+                                   Text="{Binding User.LastName}"
+                                   FontSize="16" />
 
                         </Grid>
 
                     </StackLayout>
 
                     <StackLayout Grid.Column="1"
-                             Grid.Row="1"
-                             VerticalOptions="Start"
-                             Padding="0,15,0,0">
+                                 Grid.Row="1"
+                                 VerticalOptions="Start"
+                                 Padding="0,15,0,0">
 
-                        <Label Text="Dostępne opcje:"/>
+                        <Label Text="Dostępne opcje:" />
 
                         <Button Text="Modyfikuj"
                                 Command="{Binding Path=BindingContext.MoveToModificationPageCommand, Source={Reference UserItems}}"
-                                CommandParameter="{Binding .}"/>
+                                CommandParameter="{Binding .}" />
 
                         <Button Text="Usuń"
                                 Command="{Binding Path=BindingContext.DeleteItemCommand, Source={Reference UserItems}}"
-                                CommandParameter="{Binding .}"/>
+                                CommandParameter="{Binding .}" />
 
                     </StackLayout>
 
@@ -104,74 +103,74 @@
             <DataTemplate x:Key="OtherUsersItems">
                 <Grid Padding="5,10,5,15">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.7*"/>
-                        <ColumnDefinition Width="0.3*"/>
+                        <ColumnDefinition Width="0.7*" />
+                        <ColumnDefinition Width="0.3*" />
                     </Grid.ColumnDefinitions>
 
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="0.1*"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="0.1*" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
                     <Label Grid.Column="0"
-                       Grid.Row="0"
-                       Grid.ColumnSpan="2"
-                       Text="{Binding Name}"
-                       TextColor="Black"
-                       HorizontalTextAlignment="Center"
-                       TextTransform="Uppercase"
-                       FontSize="20"
-                       FontAttributes="Bold"/>
+                           Grid.Row="0"
+                           Grid.ColumnSpan="2"
+                           Text="{Binding Name}"
+                           TextColor="Black"
+                           HorizontalTextAlignment="Center"
+                           TextTransform="Uppercase"
+                           FontSize="20"
+                           FontAttributes="Bold" />
 
                     <StackLayout Grid.Column="0"
-                             Grid.Row="1"
-                             Padding="5,10,10,0">
+                                 Grid.Row="1"
+                                 Padding="5,10,10,0">
 
                         <Label Text="Kod kreskowy:"
-                           FontSize="15"
-                           FontAttributes="Bold"/>
+                               FontSize="15"
+                               FontAttributes="Bold" />
 
                         <Label Text="{Binding Barcode}"
-                                       FontSize="20"
-                                       TextDecorations="Underline"/>
+                               FontSize="20"
+                               TextDecorations="Underline" />
 
                         <Label Text="Data dodania:"
-                                       FontSize="15"
-                                       FontAttributes="Bold"/>
+                               FontSize="15"
+                               FontAttributes="Bold" />
 
                         <Label Text="{Binding DateAdded}"
-                                       FontSize="16"
-                                       Padding="0,0,0,10"/>
+                               FontSize="16"
+                               Padding="0,0,0,10" />
 
                         <Label Text="Dodany przez:"
-                                       FontSize="15"
-                                       FontAttributes="Bold"/>
+                               FontSize="15"
+                               FontAttributes="Bold" />
 
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <Label Grid.Column="0" 
-                                           Text="{Binding User.FirstName}"
-                                           FontSize="16"/>
+                            <Label Grid.Column="0"
+                                   Text="{Binding User.FirstName}"
+                                   FontSize="16" />
 
                             <Label Grid.Column="1"
-                                           Text="{Binding User.LastName}"
-                                           FontSize="16"/>
+                                   Text="{Binding User.LastName}"
+                                   FontSize="16" />
 
                         </Grid>
 
                     </StackLayout>
 
                     <StackLayout Grid.Column="1"
-                             Grid.Row="1"
-                             VerticalOptions="Start"
-                             Padding="0,15,0,0">
+                                 Grid.Row="1"
+                                 VerticalOptions="Start"
+                                 Padding="0,15,0,0">
 
                         <Label Text="Nie można modyfikować przedmiotów innych użytkowników."
-                           TextColor="DarkGray"/>
+                               TextColor="DarkGray" />
 
                     </StackLayout>
 
@@ -179,8 +178,8 @@
             </DataTemplate>
 
             <services:UserItemsDataTemplateSelector x:Key="UserItemsSelector"
-                                                CurrentUser="{StaticResource CurrentUserItems}"
-                                                OtherUsers="{StaticResource OtherUsersItems}"/>
+                                                    CurrentUser="{StaticResource CurrentUserItems}"
+                                                    OtherUsers="{StaticResource OtherUsersItems}" />
 
         </ResourceDictionary>
 
@@ -189,10 +188,10 @@
     <ContentPage.ToolbarItems>
 
         <ToolbarItem Text="Konto"
-                     Clicked="Account_OnClicked"/>
+                     Clicked="Account_OnClicked" />
 
-        <ToolbarItem Text="Wyloguj" 
-                     Clicked="Logout_OnClicked"/>
+        <ToolbarItem Text="Wyloguj"
+                     Clicked="Logout_OnClicked" />
 
     </ContentPage.ToolbarItems>
 
@@ -205,21 +204,22 @@
                      Padding="10"
                      IsVisible="{Binding IsErrorVisible}">
 
-            <Label Text="Wygląda na to, że wystąpił błąd z połączeniem, kliknij przycisk po prawej, żeby spróbować ponownie."
-                   FontSize="Caption"
-                   FontAttributes="Bold"/>
+            <Label
+                Text="Wygląda na to, że wystąpił błąd z połączeniem, kliknij przycisk po prawej, żeby spróbować ponownie."
+                FontSize="Caption"
+                FontAttributes="Bold" />
 
             <Button Text="Odśwież"
-                    Command="{Binding RefreshCommand}"/>
+                    Command="{Binding RefreshCommand}" />
 
         </StackLayout>
 
-        <StackLayout VerticalOptions="FillAndExpand" 
-                     HorizontalOptions="Center" 
+        <StackLayout VerticalOptions="FillAndExpand"
+                     HorizontalOptions="Center"
                      Padding="0,20,0,20">
 
-            <Label Text="{Binding WelcomeMessage}" 
-                   FontSize="Title"/>
+            <Label Text="{Binding WelcomeMessage}"
+                   FontSize="Title" />
 
         </StackLayout>
 
@@ -227,26 +227,26 @@
 
             <SearchBar Scale="0.9"
                        Placeholder="Nazwa przedmiotu"
-                       Text="{Binding SearchValue}"/>
+                       Text="{Binding SearchValue}" />
 
             <Grid Padding="0,20,0 ,0"
                   HorizontalOptions="Center"
                   IsVisible="{Binding IsVisibleMessageAndActivityIndicator}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Label Text="Ładowanie danych"
                        FontSize="Subtitle"
                        IsVisible="true"
-                       VerticalOptions="Center"/>
+                       VerticalOptions="Center" />
                 <ActivityIndicator Grid.Column="1"
                                    IsRunning="true"
-                                   Scale="0.7"/>
+                                   Scale="0.7" />
             </Grid>
 
             <Grid Padding="0,10,0, 10"
@@ -259,32 +259,30 @@
                              BackgroundColor="Transparent"
                              WidthRequest="50"
                              HeightRequest="50"
-                             Command="{Binding AddItemCommand}"/>
+                             Command="{Binding AddItemCommand}" />
 
                 <ImageButton Grid.Column="1"
                              Source="refresh_button50x50.png"
                              BackgroundColor="Transparent"
                              WidthRequest="50"
                              HeightRequest="50"
-                             Command="{Binding RefreshCommand}"/>
+                             Command="{Binding RefreshCommand}" />
 
                 <ImageButton Grid.Column="2"
                              Source="scanner_button50x50.png"
                              BackgroundColor="Transparent"
                              WidthRequest="50"
                              HeightRequest="50"
-                             Command="{Binding LaunchScanner}"/>
+                             Command="{Binding LaunchScanner}" />
 
             </Grid>
 
             <RefreshView IsRefreshing="{Binding IsCollectionViewRefreshing}"
                          Command="{Binding RefreshItemsCommand}">
                 <CollectionView x:Name="UserItems"
-                            ItemsSource="{Binding UserItems}"
-                            ItemTemplate="{StaticResource UserItemsSelector}"
-                            BackgroundColor="GhostWhite">
-
-                </CollectionView>
+                                ItemsSource="{Binding UserItems}"
+                                ItemTemplate="{StaticResource UserItemsSelector}"
+                                BackgroundColor="GhostWhite" />
             </RefreshView>
 
 

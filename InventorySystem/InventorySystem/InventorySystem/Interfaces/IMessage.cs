@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace InventorySystem.Interfaces
+﻿namespace InventorySystem.Interfaces
 {
     public interface IMessage
     {
