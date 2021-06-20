@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InventorySystem.ViewModels;
+﻿using InventorySystem.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,7 +9,7 @@ namespace InventorySystem.Views
     {
         public AboutApp()
         {
-            this.BindingContext = new AboutAppViewModel();
+            BindingContext = new AboutAppViewModel();
             InitializeComponent();
         }
     }

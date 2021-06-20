@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using InventorySystem.Models;
 using InventorySystem.Services;
 using Xamarin.Forms;
@@ -24,15 +21,15 @@ namespace InventorySystem.Views
             zxing.AutomationId = "zxingScannerView";
             overlay.AutomationId = "zxingDefaultOverlay";
 
-            zxing.Options = new MobileBarcodeScanningOptions()
+            zxing.Options = new MobileBarcodeScanningOptions
             {
                 DelayBetweenContinuousScans = 2000,
-                AutoRotate = false,  
+                AutoRotate = false,
                 UseFrontCameraIfAvailable = false,
                 TryHarder = true,
-                PossibleFormats = new List<ZXing.BarcodeFormat>
-                { 
-                    ZXing.BarcodeFormat.EAN_8, ZXing.BarcodeFormat.EAN_13, ZXing.BarcodeFormat.UPC_A 
+                PossibleFormats = new List<BarcodeFormat>
+                {
+                    BarcodeFormat.EAN_8, BarcodeFormat.EAN_13, BarcodeFormat.UPC_A
                 }
             };
 
@@ -57,11 +54,12 @@ namespace InventorySystem.Views
 
                 if (items != null)
                 {
-                    Dictionary<string, string> dictionaryOfChoices = new Dictionary<string, string>();
-                    List<string> choices = new List<string>();
+                    var dictionaryOfChoices = new Dictionary<string, string>();
+                    var choices = new List<string>();
                     foreach (var itemInItems in items)
                     {
-                        dictionaryOfChoices.Add($"{itemInItems.Name} - {itemInItems.DateAdded}", itemInItems.Id.ToString());
+                        dictionaryOfChoices.Add($"{itemInItems.Name} - {itemInItems.DateAdded}",
+                            itemInItems.Id.ToString());
                         choices.Add($"{itemInItems.Name} - {itemInItems.DateAdded}");
                     }
 

@@ -16,16 +16,19 @@ namespace InventorySystem.Models
             get => Preferences.Get(nameof(FirstName), string.Empty);
             set => Preferences.Set(nameof(FirstName), value);
         }
+
         public static string LastName
         {
             get => Preferences.Get(nameof(LastName), string.Empty);
             set => Preferences.Set(nameof(LastName), value);
         }
+
         public static string Username
         {
             get => Preferences.Get(nameof(Username), string.Empty);
             set => Preferences.Set(nameof(Username), value);
         }
+
         public static string Email
         {
             get => Preferences.Get(nameof(Email), string.Empty);

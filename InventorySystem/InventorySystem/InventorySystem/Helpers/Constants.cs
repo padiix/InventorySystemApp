@@ -1,19 +1,7 @@
-﻿using System.Globalization;
-
-namespace InventorySystem
+﻿namespace InventorySystem
 {
     public static class Constants
     {
-        
-
-        //TODO: Change the "10.0.2.2" part to working address, as this one is a loopback to dev machine localhost
-        public const string AccountEndpoint = "http://10.0.2.2:5000/api/account";
-        public const string ItemsEndpoint = "http://10.0.2.2:5000/api/items";
-
-        //Endpoints for specific things
-        public const string AccountLogin = AccountEndpoint + "/login";
-        public const string AccountRegister = AccountEndpoint + "/register";
-
         //Success messages
         public const string DeletionSuccessful = "Pomyślnie usunięto przedmiot z bazy danych";
         public const string UpdateSuccessful = "Pomyślnie zaktualizowano przedmiot w bazie danych";
@@ -23,7 +11,7 @@ namespace InventorySystem
         public const string FillInFieldsError = "Pewne pola nie są wypełnione, proszę, uzupełnij je!";
         public const string NullReturnedError = "API nie zwróciło danych.";
         public const string NotExpectedError = "Podczas wykonywania zgłoszenia do API wystąpił nieprzewidziany wyjątek";
-        public const string RegistrationError = "Podczas rejestracji wystąpił błąd";
+        public const string RegistrationError = "Podczas procesu rejestracji wystąpił błąd";
         public const string ConnectionError = "Wystąpił błąd podczas łączenia się z API";
         public const string ApiRejectionError = "Zgłoszenie zostało odrzucone prez API";
         public const string ExpiredTokenError = "Token autoryzacyjny użytkownika stracił ważność";

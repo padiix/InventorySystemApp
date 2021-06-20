@@ -4,7 +4,6 @@ using InventorySystem.Interfaces;
 using InventorySystem.Models;
 using InventorySystem.Services;
 using InventorySystem.ViewModels;
-using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -63,7 +62,7 @@ namespace InventorySystem.Views
 
             await Application.Current.SavePropertiesAsync();
 
-            Xamarin.Essentials.SecureStorage.Remove(RestService.Token);
+            SecureStorage.Remove(RestService.Token);
 
             MessagingCenter.Send<object>(this, App.EVENT_NAVIGATE_TO_LOGIN_PAGE);
         }
@@ -72,6 +71,7 @@ namespace InventorySystem.Views
         {
             Shell.Current.GoToAsync("account/details");
         }
+
         private static void DeleteUserDetails()
         {
             Settings.RememberMe = false;
@@ -82,6 +82,7 @@ namespace InventorySystem.Views
             StaticValues.Email = string.Empty;
             StaticValues.IsAdmin = false;
         }
+
         private async void ReturnUserToLoginPage()
         {
             await Task.Delay(TimeSpan.FromSeconds(0.5));

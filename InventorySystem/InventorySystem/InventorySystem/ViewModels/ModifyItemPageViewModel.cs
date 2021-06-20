@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Web;
 using InventorySystem.Interfaces;
 using InventorySystem.Models;
 using InventorySystem.Services;
-using InventorySystem.Views;
 using MvvmHelpers;
 using Xamarin.Forms;
 
@@ -15,40 +12,12 @@ namespace InventorySystem.ViewModels
 {
     public class ModifyItemPageViewModel : BaseViewModel, IQueryAttributable
     {
+        private static readonly RestService RestClient = new RestService();
+        private string _barcode;
+        private DateTimeOffset _dateAdded;
+        private bool _isVisibleMessageAndActivityIndicator;
         private string _itemId;
         private string _name;
-        private DateTimeOffset _dateAdded;
-        private string _barcode;
-        private bool _isVisibleMessageAndActivityIndicator;
-        public string ItemId
-        {
-            get => _itemId;
-            private set => SetProperty(ref _itemId, value, nameof(ItemId));
-        }
-        public string Name
-        {
-            get => _name;
-            set => SetProperty(ref _name, value, nameof(Name));
-        }
-        public DateTimeOffset DateAdded
-        {
-            get => _dateAdded;
-            private set => SetProperty(ref _dateAdded, value);
-        }
-        public string Barcode
-        {
-            get => _barcode;
-            set => SetProperty(ref _barcode, value, nameof(Barcode));
-        }
-        public bool IsVisibleMessageAndActivityIndicator
-        {
-            get => _isVisibleMessageAndActivityIndicator;
-            private set => SetProperty(ref _isVisibleMessageAndActivityIndicator, value, nameof(IsVisibleMessageAndActivityIndicator));
-        }
-
-        private static readonly RestService RestClient = new RestService();
-
-        public Command UpdateItemCommand { get; }
 
         public ModifyItemPageViewModel()
         {
@@ -64,17 +33,52 @@ namespace InventorySystem.ViewModels
 
                 IsVisibleMessageAndActivityIndicator = false;
 
-                await Task.Delay(TimeSpan.FromSeconds(2));
+                await Task.Delay(TimeSpan.FromSeconds(1));
 
-                var result = await Shell.Current.DisplayAlert("","Czy chcesz wrócić do strony głównej?", "Nie", "Tak");
-                if (!result)
-                {
-                    await Shell.Current.GoToAsync($"..");
-                }
+                var result = await Shell.Current.DisplayAlert("", "Czy chcesz wrócić do strony głównej?", "Nie", "Tak");
+                if (!result) await Shell.Current.GoToAsync("..");
             });
         }
 
+        public string ItemId
+        {
+            get => _itemId;
+            private set => SetProperty(ref _itemId, value, nameof(ItemId));
+        }
 
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value, nameof(Name));
+        }
+
+        public DateTimeOffset DateAdded
+        {
+            get => _dateAdded;
+            private set => SetProperty(ref _dateAdded, value);
+        }
+
+        public string Barcode
+        {
+            get => _barcode;
+            set => SetProperty(ref _barcode, value, nameof(Barcode));
+        }
+
+        public bool IsVisibleMessageAndActivityIndicator
+        {
+            get => _isVisibleMessageAndActivityIndicator;
+            private set => SetProperty(ref _isVisibleMessageAndActivityIndicator, value,
+                nameof(IsVisibleMessageAndActivityIndicator));
+        }
+
+        public Command UpdateItemCommand { get; }
+
+        public void ApplyQueryAttributes(IDictionary<string, string> query)
+        {
+            ItemId = HttpUtility.UrlDecode(query["Id"]);
+
+            LoadItem(ItemId);
+        }
 
         private async void LoadItem(string itemId)
         {
@@ -97,16 +101,9 @@ namespace InventorySystem.ViewModels
         private async Task<bool> UpdateItem()
         {
             var item = new Item(Guid.Parse(ItemId), Name, Barcode, DateAdded);
-            var result = await RestClient.UpdateItem(Guid.Parse(ItemId), item);
+            var result = await RestClient.UpdateItem(item);
 
             return result;
-        }
-
-        public void ApplyQueryAttributes(IDictionary<string, string> query)
-        {
-            ItemId = HttpUtility.UrlDecode(query["Id"]);
-
-            LoadItem(ItemId);
         }
     }
 }

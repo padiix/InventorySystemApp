@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:InventorySystem.ViewModels"
@@ -12,48 +13,50 @@
 
         <ResourceDictionary>
 
-            <xct:InvertedBoolConverter x:Key="InvertedBoolConverter"/>
+            <xct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
 
         </ResourceDictionary>
 
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <StackLayout Padding="10,0,10,0" 
+        <StackLayout Padding="10,0,10,0"
                      VerticalOptions="Center">
-            <Label Text="Inventory System" 
-                   HorizontalOptions="Center" 
-                   Padding="0,0,0,100" 
-                   FontSize="Title"/>
+            <Label Text="Inventory System"
+                   HorizontalOptions="Center"
+                   Padding="0,0,0,100"
+                   FontSize="Title" />
 
-            <Frame BackgroundColor="SeaShell" 
+            <Frame BackgroundColor="SeaShell"
                    CornerRadius="7">
                 <StackLayout>
 
-                    <Entry x:Name="EmailEntry" 
-                           Placeholder="E-mail" 
-                           FontSize="Medium" 
-                           IsSpellCheckEnabled="False" 
+                    <Entry x:Name="EmailEntry"
+                           Placeholder="E-mail"
+                           FontSize="Medium"
+                           IsSpellCheckEnabled="False"
                            Text="{Binding Email}"
                            IsReadOnly="{Binding IsReadOnlyEmailEntry}">
                         <Entry.Behaviors>
 
-                            <xct:EmailValidationBehavior Flags="ValidateOnValueChanging" 
-                                                         IsValid="{Binding IsEmailValid}"/>
+                            <xct:CharactersValidationBehavior Flags="ValidateOnValueChanging"
+                                                              RegexPattern="(^$|^.*@.*\..*$)"
+                                                              IsValid="{Binding IsEmailValid}" />
 
                         </Entry.Behaviors>
                     </Entry>
 
-                    <Label Text="Email jest niepoprawny" 
-                           IsVisible="{Binding IsEmailValid, Converter={StaticResource InvertedBoolConverter}}" 
+                    <Label x:Name="EmailError"
+                           Text="E-mail jest niepoprawny"
+                           IsVisible="{Binding IsEmailValid, Converter={StaticResource InvertedBoolConverter}}"
                            TextColor="Red"
                            FontSize="Caption"
-                           FontAttributes="Bold"/>
+                           FontAttributes="Bold" />
 
-                    <Entry x:Name="PasswordEntry" 
-                           Placeholder="Hasło" 
-                           FontSize="Medium" 
-                           IsPassword="True" 
+                    <Entry x:Name="PasswordEntry"
+                           Placeholder="Hasło"
+                           FontSize="Medium"
+                           IsPassword="True"
                            Text="{Binding Password}"
                            IsReadOnly="{Binding IsReadOnlyPasswordEntry}"
                            TextChanged="PasswordEntry_OnTextChanged">
@@ -62,19 +65,19 @@
                             <xct:MultiValidationBehavior x:Name="PasswordValidationBehavior"
                                                          Flags="ValidateOnValueChanging">
 
-                                <xct:TextValidationBehavior MinimumLength="6" 
+                                <xct:TextValidationBehavior MinimumLength="6"
                                                             xct:MultiValidationBehavior.Error="* conajmniej 6 znaków" />
 
-                                <xct:CharactersValidationBehavior RegexPattern="[A-Z]" 
-                                                                  xct:MultiValidationBehavior.Error="* conamjniej 1 dużą literę"/>
+                                <xct:CharactersValidationBehavior RegexPattern="[A-Z]"
+                                                                  xct:MultiValidationBehavior.Error="* conamjniej 1 dużą literę" />
 
-                                <xct:CharactersValidationBehavior RegexPattern="[a-z]" 
-                                                                  xct:MultiValidationBehavior.Error="* conajmniej 1 małą literę"/>
+                                <xct:CharactersValidationBehavior RegexPattern="[a-z]"
+                                                                  xct:MultiValidationBehavior.Error="* conajmniej 1 małą literę" />
 
-                                <xct:CharactersValidationBehavior RegexPattern="[0-9]" 
-                                                                  xct:MultiValidationBehavior.Error="* conajmniej 1 cyfrę"/>
+                                <xct:CharactersValidationBehavior RegexPattern="[0-9]"
+                                                                  xct:MultiValidationBehavior.Error="* conajmniej 1 cyfrę" />
 
-                                <xct:CharactersValidationBehavior RegexPattern="[^a-zA-Z0-9]" 
+                                <xct:CharactersValidationBehavior RegexPattern="[^a-zA-Z0-9]"
                                                                   xct:MultiValidationBehavior.Error="* conajmniej 1 znak specjalny" />
 
                             </xct:MultiValidationBehavior>
@@ -82,48 +85,48 @@
                         </Entry.Behaviors>
                     </Entry>
 
-                    <Label x:Name="PasswordError" 
-                           IsVisible="False" 
+                    <Label x:Name="PasswordError"
+                           IsVisible="False"
                            TextColor="Red"
                            FontSize="Caption"
-                           FontAttributes="Bold"/>
+                           FontAttributes="Bold" />
 
-                    <FlexLayout AlignItems="Center" 
+                    <FlexLayout AlignItems="Center"
                                 JustifyContent="End">
 
-                        <Label Text="Zapamiętaj mnie"/>
+                        <Label Text="Zapamiętaj mnie" />
 
-                        <CheckBox x:Name="RememberMeChkbox" 
+                        <CheckBox x:Name="RememberMeChkbox"
                                   IsChecked="False"
                                   IsEnabled="{Binding IsEnabledRememberMe}"
-                                  CheckedChanged="RememberMeChkbox_OnCheckedChanged"/>
+                                  CheckedChanged="RememberMeChkbox_OnCheckedChanged" />
 
                     </FlexLayout>
 
-                    <Button VerticalOptions="Center" 
-                            Text="Zaloguj" 
+                    <Button VerticalOptions="Center"
+                            Text="Zaloguj"
                             Command="{Binding LoginCommand}"
-                            IsEnabled="{Binding IsEnabledLoginButton}"/>
+                            IsEnabled="{Binding IsEnabledLoginButton}" />
 
                     <Button VerticalOptions="Center"
                             Text="Zarejestruj się"
                             Clicked="UserRegisterButton_OnClick"
-                            IsEnabled="{Binding IsEnabledRegisterButton}"/>
+                            IsEnabled="{Binding IsEnabledRegisterButton}" />
 
                 </StackLayout>
             </Frame>
 
             <StackLayout Orientation="Horizontal"
                          HorizontalOptions="Center"
-                         
+
                          Padding="0,50,0,0">
 
                 <Label IsVisible="{Binding ConnectingMessageVisibility}"
                        Text="Łączenie z API"
                        FontSize="Subtitle"
-                       Padding="0,15,10,0"/>
+                       Padding="0,15,10,0" />
 
-                <ActivityIndicator IsRunning="{Binding RunActivityIndicator}"/>
+                <ActivityIndicator IsRunning="{Binding RunActivityIndicator}" />
 
             </StackLayout>
 

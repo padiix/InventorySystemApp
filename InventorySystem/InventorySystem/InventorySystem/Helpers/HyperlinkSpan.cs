@@ -3,16 +3,10 @@ using Xamarin.Forms;
 
 namespace InventorySystem.Helpers
 {
-    class HyperlinkSpan : Span
+    internal class HyperlinkSpan : Span
     {
         public static readonly BindableProperty UrlProperty =
-            BindableProperty.Create(nameof(Url), typeof(string), typeof(HyperlinkSpan), null);
-
-        public string Url
-        {
-            get => (string)GetValue(UrlProperty);
-            set => SetValue(UrlProperty, value);
-        }
+            BindableProperty.Create(nameof(Url), typeof(string), typeof(HyperlinkSpan));
 
         public HyperlinkSpan()
         {
@@ -23,6 +17,12 @@ namespace InventorySystem.Helpers
                 // Launcher.OpenAsync is provided by Xamarin.Essentials.
                 Command = new Command(async () => await Launcher.OpenAsync(Url))
             });
+        }
+
+        public string Url
+        {
+            get => (string) GetValue(UrlProperty);
+            set => SetValue(UrlProperty, value);
         }
     }
 }

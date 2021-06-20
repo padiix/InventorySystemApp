@@ -10,10 +10,9 @@ namespace InventorySystem.Services
 
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
         {
-            if (StaticValues.IsAdmin.Equals(true)) 
+            if (StaticValues.IsAdmin.Equals(true))
                 return CurrentUser;
-            else
-                return ((Item) item).User.Id.ToString().Equals(StaticValues.UserId) ? CurrentUser : OtherUsers;
+            return ((Item) item).User.Id.ToString().Equals(StaticValues.UserId) ? CurrentUser : OtherUsers;
         }
     }
 }
