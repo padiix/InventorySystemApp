@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
+
+<Shell xmlns="http://xamarin.com/schemas/2014/forms"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:InventorySystem.Views"
        Title="Inventory System"
-       x:Class="InventorySystem.AppShell">
+       x:Class="InventorySystem.AppShell"
+       FlyoutBehavior="Disabled">
 
     <!--
         The overall app visual hierarchy is defined here, along with navigation.
@@ -13,25 +15,54 @@
 
     <Shell.Resources>
         <ResourceDictionary>
-            <Style x:Key="BaseStyle" TargetType="Element">
-                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
-                <Setter Property="Shell.ForegroundColor" Value="White" />
-                <Setter Property="Shell.TitleColor" Value="White" />
-                <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
-                <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
-                <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
-                <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
-                <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
-                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
+
+            <Style x:Key="BaseStyle"
+                   TargetType="Element">
+                <Setter Property="Shell.BackgroundColor"
+                        Value="{StaticResource Primary}" />
+                <Setter Property="Shell.ForegroundColor"
+                        Value="White" />
+                <Setter Property="Shell.TitleColor"
+                        Value="White" />
+                <Setter Property="Shell.DisabledColor"
+                        Value="#B4FFFFFF" />
+                <Setter Property="Shell.UnselectedColor"
+                        Value="#95FFFFFF" />
+                <Setter Property="Shell.TabBarBackgroundColor"
+                        Value="{StaticResource Primary}" />
+                <Setter Property="Shell.TabBarForegroundColor"
+                        Value="White" />
+                <Setter Property="Shell.TabBarUnselectedColor"
+                        Value="#95FFFFFF" />
+                <Setter Property="Shell.TabBarTitleColor"
+                        Value="White" />
             </Style>
-            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
-            <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
+
+            <Style TargetType="TabBar"
+                   BasedOn="{StaticResource BaseStyle}" />
+            <Style TargetType="FlyoutItem"
+                   BasedOn="{StaticResource BaseStyle}" />
+
         </ResourceDictionary>
     </Shell.Resources>
 
     <TabBar>
-        <ShellContent Title="Główna" Route="MainPage" ContentTemplate="{DataTemplate local:MainPage}"/>
-        <ShellContent Title="Skaner Kodów Kreskowych" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:BarcodeScanner}"/>
-        <ShellContent Title="O Aplikacji" Icon="icon_about.png" Route="AboutApp" ContentTemplate="{DataTemplate local:AboutApp}"/>
+
+        <ShellContent Title="Strona główna"
+                      Route="main"
+                      Icon="icon_home.png"
+                      ContentTemplate="{DataTemplate local:MainPage}" />
+
+        <ShellContent Title="O Aplikacji"
+                      Route="about"
+                      Icon="icon_about.png"
+                      ContentTemplate="{DataTemplate local:AboutApp}" />
+
     </TabBar>
+
+    <ShellItem>
+
+        <ShellContent ContentTemplate="{DataTemplate local:LoginPage}" />
+
+    </ShellItem>
 </Shell>

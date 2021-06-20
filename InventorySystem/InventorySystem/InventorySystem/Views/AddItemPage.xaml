@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:vm="clr-namespace:InventorySystem.ViewModels;assembly=InventorySystem"
+             x:Class="InventorySystem.Views.AddItemPage"
+             Shell.PresentationMode="Modal"
+             Title="Dodaj przedmiot">
+    <ContentPage.BindingContext>
+        <vm:AddItemPageViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="InvalidBackgroundEntry"
+                   TargetType="Entry">
+                <Setter Property="BackgroundColor"
+                        Value="Red" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout Padding="20,20">
+            <Label Text="Nazwa:"
+                   FontSize="Title"
+                   HorizontalOptions="StartAndExpand" />
+            <Entry Text="{Binding Name, Mode=TwoWay}"
+                   ClearButtonVisibility="WhileEditing"
+                   IsSpellCheckEnabled="True" />
+
+            <Label Text="Kod kreskowy:"
+                   FontSize="Title"
+                   HorizontalOptions="StartAndExpand" />
+            <Entry x:Name="BarcodeEntry"
+                   Keyboard="Numeric"
+                   Text="{Binding Barcode, Mode=TwoWay}"
+                   IsSpellCheckEnabled="False"
+                   TextChanged="BarcodeEntry_OnTextChanged">
+
+                <Entry.Behaviors>
+
+                    <xct:CharactersValidationBehavior x:Name="CharacterQuantityValidator"
+                                                      CharacterType="Digit"
+                                                      MinimumCharacterCount="8"
+                                                      MaximumCharacterCount="14"
+                                                      InvalidStyle="{StaticResource InvalidBackgroundEntry}" />
+
+                </Entry.Behaviors>
+
+            </Entry>
+            <Label x:Name="BarcodeNotValidLabel" Text="Podany kod kreskowy jest niepoprawny."
+                   IsVisible="False"
+                   TextColor="Red"
+                   FontSize="Caption"
+                   FontAttributes="Bold" />
+
+            <Grid Padding="0,20,0 ,0"
+                  HorizontalOptions="Center"
+                  VerticalOptions="End"
+                  IsVisible="{Binding IsVisibleMessageAndActivityIndicator}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Label Text="Dodawanie danych do API"
+                       FontSize="Subtitle"
+                       IsVisible="true"
+                       VerticalOptions="Center" />
+                <ActivityIndicator Grid.Column="1"
+                                   IsRunning="true"
+                                   Scale="0.7" />
+
+            </Grid>
+
+            <StackLayout Orientation="Horizontal"
+                         Padding="20,20">
+                <Button x:Name="AddButton"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="End"
+                        Text="Dodaj"
+                        Command="{Binding AddItemCommand}" />
+
+                <Button HorizontalOptions="FillAndExpand"
+                        VerticalOptions="EndAndExpand"
+                        Text="Powrót"
+                        Clicked="Return_OnClicked" />
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

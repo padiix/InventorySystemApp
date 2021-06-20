@@ -1,17 +1,22 @@
-﻿using InventorySystem.ViewModels;
-using InventorySystem.Views;
-using System;
-using System.Collections.Generic;
+﻿using InventorySystem.Views;
 using Xamarin.Forms;
 
 namespace InventorySystem
 {
-    public partial class AppShell : Xamarin.Forms.Shell
+    public partial class AppShell : Shell
     {
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(BarcodeScanner), typeof(BarcodeScanner));
+            RegisterRoutes();
+        }
+
+        private void RegisterRoutes()
+        {
+            Routing.RegisterRoute("login", typeof(LoginPage));
+            Routing.RegisterRoute("account/details", typeof(AccountDetailsPage));
+            Routing.RegisterRoute("item/modify", typeof(ModifyItemPage));
+            Routing.RegisterRoute("item/add", typeof(AddItemPage));
         }
     }
 }

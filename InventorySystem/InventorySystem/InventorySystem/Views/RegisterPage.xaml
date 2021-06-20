@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:viewmodels="clr-namespace:InventorySystem.ViewModels"
+             x:DataType="viewmodels:RegisterViewModel"
+             x:Class="InventorySystem.Views.RegisterPage"
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasNavigationBar="false">
+
+    <ContentPage.Resources>
+
+        <ResourceDictionary>
+
+            <xct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+
+        </ResourceDictionary>
+
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout Padding="0,20, 0, 0"
+                     HorizontalOptions="Center">
+
+            <Label Text="Rejestracja"
+                   HorizontalTextAlignment="Center"
+                   FontSize="Title"
+                   TextTransform="Uppercase" />
+
+            <StackLayout Padding="0,10">
+
+                <Label Text="Imię:" />
+                <Entry Text="{Binding Firstname}"
+                       Placeholder="np. Jan"
+                       FontSize="Medium"
+                       IsReadOnly="{Binding IsReadOnlyFirstname}" />
+
+                <Label Text="Nazwisko:" />
+                <Entry Text="{Binding Lastname}"
+                       Placeholder="np. Kowalski"
+                       FontSize="Medium"
+                       IsReadOnly="{Binding IsReadOnlyLastname}" />
+
+            </StackLayout>
+            <StackLayout Padding="0,10">
+
+                <Label Text="Nazwa użytkownika:" />
+                <Entry Text="{Binding Username}"
+                       Placeholder="np. jkowalski97"
+                       FontSize="Medium"
+                       IsReadOnly="{Binding IsReadOnlyUsername}" />
+
+                <Label Text="E-mail:" />
+                <Entry x:Name="EmailEntry"
+                       Placeholder="np. JanKowalski@gmail.com"
+                       FontSize="Medium"
+                       IsSpellCheckEnabled="False"
+                       IsReadOnly="{Binding IsReadOnlyEmail}"
+                       Text="{Binding Email}">
+                    <Entry.Behaviors>
+
+                        <xct:EmailValidationBehavior Flags="ValidateOnUnfocusing"
+                                                     IsValid="{Binding IsEmailValid}" />
+
+                    </Entry.Behaviors>
+                </Entry>
+
+                <Label Text="Email jest niepoprawny"
+                       IsVisible="{Binding IsEmailValid, Converter={StaticResource InvertedBoolConverter}}"
+                       TextColor="Red"
+                       FontSize="Caption"
+                       FontAttributes="Bold" />
+
+                <Label Text="Hasło:" />
+                <Entry x:Name="PasswordEntry"
+                       FontSize="Medium"
+                       IsPassword="True"
+                       IsReadOnly="{Binding IsReadOnlyPassword}"
+                       Text="{Binding Password}"
+                       TextChanged="PasswordEntry_OnTextChanged">
+                    <Entry.Behaviors>
+
+                        <xct:MultiValidationBehavior x:Name="PasswordValidationBehavior"
+                                                     IsValid="{Binding IsPasswordValid}"
+                                                     Flags="ValidateOnValueChanging">
+
+                            <xct:TextValidationBehavior MinimumLength="6"
+                                                        xct:MultiValidationBehavior.Error="* conajmniej 6 znaków" />
+
+                            <xct:CharactersValidationBehavior RegexPattern="[A-Z]"
+                                                              xct:MultiValidationBehavior.Error="* conamjniej 1 dużą literę" />
+
+                            <xct:CharactersValidationBehavior RegexPattern="[a-z]"
+                                                              xct:MultiValidationBehavior.Error="* conajmniej 1 małą literę" />
+
+                            <xct:CharactersValidationBehavior RegexPattern="[0-9]"
+                                                              xct:MultiValidationBehavior.Error="* conajmniej 1 cyfrę" />
+
+                            <xct:CharactersValidationBehavior RegexPattern="[^a-zA-Z0-9]"
+                                                              xct:MultiValidationBehavior.Error="* conajmniej 1 znak specjalny" />
+
+                        </xct:MultiValidationBehavior>
+
+                    </Entry.Behaviors>
+                </Entry>
+
+                <Label x:Name="PasswordError"
+                       IsVisible="False"
+                       TextColor="Red"
+                       FontSize="Caption"
+                       FontAttributes="Bold" />
+
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="Center"
+                         Padding="0,30,0,20">
+
+                <Button Text="Zarejestruj"
+                        Padding="10"
+                        Command="{Binding RegisterCommand}"
+                        IsEnabled="{Binding IsEnabledRegisterButton}" />
+
+                <Button Text="Powrót do ekranu logowania"
+                        Padding="10"
+                        Clicked="GoBackButton_OnClick"
+                        IsEnabled="{Binding IsEnabledReturnButton}" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="Center"
+                         Padding="0">
+
+                <StackLayout Orientation="Vertical"
+                             VerticalOptions="Center">
+
+                    <Label Text="Rejestrowanie użytkownika"
+                           Padding="10"
+                           FontSize="Subtitle"
+                           IsVisible="{Binding IsRegistrationMessageVisible}" />
+
+                </StackLayout>
+
+                <ActivityIndicator IsRunning="{Binding IsActivityIndicatorRunning}" />
+
+            </StackLayout>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

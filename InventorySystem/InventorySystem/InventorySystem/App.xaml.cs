@@ -1,29 +1,36 @@
-﻿using InventorySystem.Views;
-using System;
+﻿using InventorySystem.Services;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace InventorySystem
 {
     public partial class App : Application
     {
+        public const string EVENT_NAVIGATE_TO_MAIN_PAGE = "EVENT_NAVIGATE_TO_MAIN_PAGE";
+        public const string EVENT_NAVIGATE_TO_LOGIN_PAGE = "EVENT_NAVIGATE_TO_LOGIN_PAGE";
 
         public App()
         {
             InitializeComponent();
 
-            var isLogged = Xamarin.Essentials.SecureStorage.GetAsync("isLogged").Result;
+            MessagingCenter.Subscribe<object>(this, EVENT_NAVIGATE_TO_LOGIN_PAGE, NavigateToLoginPage);
+            MessagingCenter.Subscribe<object>(this, EVENT_NAVIGATE_TO_MAIN_PAGE, NavigateToMainPage);
 
-            if (isLogged == "1")
-            {
+            if (Settings.RememberMe)
                 MainPage = new AppShell();
-            }
             else
-            {
-                MainPage = new LoginPage();
-            }
+                MainPage = new EmptyAppShell();
         }
 
+        public void NavigateToLoginPage(object sender)
+        {
+            MainPage = new EmptyAppShell();
+        }
+
+        public async void NavigateToMainPage(object sender)
+        {
+            MainPage = new AppShell();
+            await Shell.Current.GoToAsync("//main");
+        }
 
         protected override void OnStart()
         {

@@ -1,32 +1,292 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InventorySystem.Views.MainPage"
              xmlns:vm="clr-namespace:InventorySystem.ViewModels"
+             xmlns:services="clr-namespace:InventorySystem.Services;assembly=InventorySystem"
              Shell.TabBarIsVisible="True"
-             Title="{Binding Title}">
+             Title="Strona główna">
+
     <ContentPage.BindingContext>
         <vm:MainPageViewModel />
     </ContentPage.BindingContext>
-    
+
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Color x:Key="Accent">LightGray</Color>
+
+            <DataTemplate x:Key="CurrentUserItems">
+                <Grid Padding="5,10,5,15">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.7*" />
+                        <ColumnDefinition Width="0.3*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.1*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Column="0"
+                           Grid.Row="0"
+                           Grid.ColumnSpan="2"
+                           Text="{Binding Name}"
+                           TextColor="Black"
+                           HorizontalTextAlignment="Center"
+                           TextTransform="Uppercase"
+                           FontSize="20"
+                           FontAttributes="Bold" />
+
+                    <StackLayout Grid.Column="0"
+                                 Grid.Row="1"
+                                 Padding="5,10,10,0">
+
+                        <Label Text="Kod kreskowy:"
+                               FontSize="15"
+                               FontAttributes="Bold" />
+
+                        <Label Text="{Binding Barcode}"
+                               FontSize="20"
+                               TextDecorations="Underline" />
+
+                        <Label Text="Data dodania:"
+                               FontSize="15"
+                               FontAttributes="Bold" />
+
+                        <Label Text="{Binding DateAdded}"
+                               FontSize="16"
+                               Padding="0,0,0,10" />
+
+                        <Label Text="Dodany przez:"
+                               FontSize="15"
+                               FontAttributes="Bold" />
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0"
+                                   Text="{Binding User.FirstName}"
+                                   FontSize="16" />
+
+                            <Label Grid.Column="1"
+                                   Text="{Binding User.LastName}"
+                                   FontSize="16" />
+
+                        </Grid>
+
+                    </StackLayout>
+
+                    <StackLayout Grid.Column="1"
+                                 Grid.Row="1"
+                                 VerticalOptions="Start"
+                                 Padding="0,15,0,0">
+
+                        <Label Text="Dostępne opcje:" />
+
+                        <Button Text="Modyfikuj"
+                                Command="{Binding Path=BindingContext.MoveToModificationPageCommand, Source={Reference UserItems}}"
+                                CommandParameter="{Binding .}" />
+
+                        <Button Text="Usuń"
+                                Command="{Binding Path=BindingContext.DeleteItemCommand, Source={Reference UserItems}}"
+                                CommandParameter="{Binding .}" />
+
+                    </StackLayout>
+
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="OtherUsersItems">
+                <Grid Padding="5,10,5,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.7*" />
+                        <ColumnDefinition Width="0.3*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.1*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Column="0"
+                           Grid.Row="0"
+                           Grid.ColumnSpan="2"
+                           Text="{Binding Name}"
+                           TextColor="Black"
+                           HorizontalTextAlignment="Center"
+                           TextTransform="Uppercase"
+                           FontSize="20"
+                           FontAttributes="Bold" />
+
+                    <StackLayout Grid.Column="0"
+                                 Grid.Row="1"
+                                 Padding="5,10,10,0">
+
+                        <Label Text="Kod kreskowy:"
+                               FontSize="15"
+                               FontAttributes="Bold" />
+
+                        <Label Text="{Binding Barcode}"
+                               FontSize="20"
+                               TextDecorations="Underline" />
+
+                        <Label Text="Data dodania:"
+                               FontSize="15"
+                               FontAttributes="Bold" />
+
+                        <Label Text="{Binding DateAdded}"
+                               FontSize="16"
+                               Padding="0,0,0,10" />
+
+                        <Label Text="Dodany przez:"
+                               FontSize="15"
+                               FontAttributes="Bold" />
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0"
+                                   Text="{Binding User.FirstName}"
+                                   FontSize="16" />
+
+                            <Label Grid.Column="1"
+                                   Text="{Binding User.LastName}"
+                                   FontSize="16" />
+
+                        </Grid>
+
+                    </StackLayout>
+
+                    <StackLayout Grid.Column="1"
+                                 Grid.Row="1"
+                                 VerticalOptions="Start"
+                                 Padding="0,15,0,0">
+
+                        <Label Text="Nie można modyfikować przedmiotów innych użytkowników."
+                               TextColor="DarkGray" />
+
+                    </StackLayout>
+
+                </Grid>
+            </DataTemplate>
+
+            <services:UserItemsDataTemplateSelector x:Key="UserItemsSelector"
+                                                    CurrentUser="{StaticResource CurrentUserItems}"
+                                                    OtherUsers="{StaticResource OtherUsersItems}" />
+
         </ResourceDictionary>
+
     </ContentPage.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="Center" Padding="40">
-            <Label Text="{Binding WelcomeMessage}" FontSize="Title"/>
+    <ContentPage.ToolbarItems>
+
+        <ToolbarItem Text="Konto"
+                     Clicked="Account_OnClicked" />
+
+        <ToolbarItem Text="Wyloguj"
+                     Clicked="Logout_OnClicked" />
+
+    </ContentPage.ToolbarItems>
+
+    <StackLayout>
+
+        <StackLayout x:Name="DisconnectedMessage"
+                     Orientation="Horizontal"
+                     HorizontalOptions="CenterAndExpand"
+                     BackgroundColor="Cyan"
+                     Padding="10"
+                     IsVisible="{Binding IsErrorVisible}">
+
+            <Label
+                Text="Wygląda na to, że wystąpił błąd z połączeniem, kliknij przycisk po prawej, żeby spróbować ponownie."
+                FontSize="Caption"
+                FontAttributes="Bold" />
+
+            <Button Text="Odśwież"
+                    Command="{Binding RefreshCommand}" />
+
         </StackLayout>
-        <StackLayout Grid.Row="1" Padding="30">
-            <Label Text="Ostatnio inwentaryzowane przedmioty przez Ciebie:"/>
-            <ListView BackgroundColor="GhostWhite"/>
+
+        <StackLayout VerticalOptions="FillAndExpand"
+                     HorizontalOptions="Center"
+                     Padding="0,20,0,20">
+
+            <Label Text="{Binding WelcomeMessage}"
+                   FontSize="Title" />
+
         </StackLayout>
-    </Grid>
+
+        <StackLayout Padding="10,20">
+
+            <SearchBar Scale="0.9"
+                       Placeholder="Nazwa przedmiotu"
+                       Text="{Binding SearchValue}" />
+
+            <Grid Padding="0,20,0 ,0"
+                  HorizontalOptions="Center"
+                  IsVisible="{Binding IsVisibleMessageAndActivityIndicator}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Label Text="Ładowanie danych"
+                       FontSize="Subtitle"
+                       IsVisible="true"
+                       VerticalOptions="Center" />
+                <ActivityIndicator Grid.Column="1"
+                                   IsRunning="true"
+                                   Scale="0.7" />
+            </Grid>
+
+            <Grid Padding="0,10,0, 10"
+                  ColumnDefinitions="Auto"
+                  RowDefinitions="*"
+                  HorizontalOptions="End">
+
+                <ImageButton Grid.Column="0"
+                             Source="add_button50x50.png"
+                             BackgroundColor="Transparent"
+                             WidthRequest="50"
+                             HeightRequest="50"
+                             Command="{Binding AddItemCommand}" />
+
+                <ImageButton Grid.Column="1"
+                             Source="refresh_button50x50.png"
+                             BackgroundColor="Transparent"
+                             WidthRequest="50"
+                             HeightRequest="50"
+                             Command="{Binding RefreshCommand}" />
+
+                <ImageButton Grid.Column="2"
+                             Source="scanner_button50x50.png"
+                             BackgroundColor="Transparent"
+                             WidthRequest="50"
+                             HeightRequest="50"
+                             Command="{Binding LaunchScanner}" />
+
+            </Grid>
+
+            <RefreshView IsRefreshing="{Binding IsCollectionViewRefreshing}"
+                         Command="{Binding RefreshItemsCommand}">
+                <CollectionView x:Name="UserItems"
+                                ItemsSource="{Binding UserItems}"
+                                ItemTemplate="{StaticResource UserItemsSelector}"
+                                BackgroundColor="GhostWhite" />
+            </RefreshView>
+
+
+        </StackLayout>
+    </StackLayout>
 
 </ContentPage>
