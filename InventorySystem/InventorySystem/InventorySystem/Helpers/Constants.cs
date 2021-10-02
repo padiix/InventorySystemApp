@@ -18,6 +18,7 @@
         public const string NoTokenError = "Brak tokena uwierzytelniającego";
         public const string ItemError = "Wystąpił błąd podczas pobierania przedmiotu z API";
         public const string ItemsError = "Wystąpił błąd podczas pobierania przedmiotów z API";
+        public const string NoItemsError = "Brak przedmiotów w bazie danych";
         public const string SpecificItemError = "Wystąpił błąd podczas pobierania wybranego przedmiotu z API";
         public const string EmailAndPasswordFillInError = "Uzupełnij pola \"Email\" oraz \"Hasło\" !";
         public const string UnauthorizedError = "Błędny login lub hasło!";

@@ -24,8 +24,8 @@
                      VerticalOptions="Center">
             <Label Text="Inventory System"
                    HorizontalOptions="Center"
-                   Padding="0,0,0,100"
-                   FontSize="Title" />
+                   FontSize="Title"
+                   Padding="0,30"/>
 
             <Frame BackgroundColor="SeaShell"
                    CornerRadius="7">
@@ -94,7 +94,7 @@
                     <FlexLayout AlignItems="Center"
                                 JustifyContent="End">
 
-                        <Label Text="Zapamiętaj mnie" />
+                        <Label Text="Zapamiętaj mnie"/>
 
                         <CheckBox x:Name="RememberMeChkbox"
                                   IsChecked="False"

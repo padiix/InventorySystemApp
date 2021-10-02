@@ -1,11 +1,12 @@
-﻿namespace InventorySystem.Models
+﻿// ReSharper disable InconsistentNaming
+namespace InventorySystem.Models
 {
     public class Register
     {
-        public string UserName { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public string username { get; set; }
+        public string firstname { get; set; }
+        public string lastname { get; set; }
+        public string email { get; set; }
+        public string password { get; set; }
     }
 }

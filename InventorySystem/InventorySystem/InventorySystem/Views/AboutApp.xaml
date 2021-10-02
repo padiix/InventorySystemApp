@@ -23,12 +23,26 @@
                 <Label Text="Witaj w Inventory System!"
                        FontSize="Title" />
 
-                <Label
-                    Text="Aplikacja &quot;Inventory System&quot; ma na celu wygodniejszą inwentaryzację w firmie, bez potrzeby korzystania z komputera.
-                    &quot;&quot;Aplikacja Inventory System została wykonana w Xamarin.Forms z użyciem paczek NuGet."
-                    FontSize="16" />
+                <Label FontSize="16">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <FormattedString.Spans>
+                                <Span Text="Aplikacja &quot;Inventory System&quot; ma na celu wygodniejszą inwentaryzację w firmie, bez potrzeby korzystania z komputera."/>
+                                <Span Text="&#x0a;&#x0a;Aplikacja &quot;Inventory System&quot; została wykonana w "/>
+                                <Span Text="Xamarin.Forms"
+                                      FontSize="16"
+                                      FontAttributes="Bold"/>
+                                <Span Text=" z użyciem paczek "/>
+                                <Span Text="NuGet"
+                                      FontSize="16"
+                                      FontAttributes="Bold"/>
+                                <Span Text="."/>
+                            </FormattedString.Spans>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
 
-                <Label Text="&#x0a;&#x0a;Poniżej znajdziesz opcje, które mogą Ci w niej pomóc!"
+                <Label Text="&#x0a;Poniżej znajdziesz opcje, które mogą Ci w niej pomóc!"
                        FontSize="16"
                        FontAttributes="Bold" />
 

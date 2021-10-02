@@ -87,7 +87,7 @@
 
                         <Label Text="Dostępne opcje:" />
 
-                        <Button Text="Modyfikuj"
+                        <Button Text="Edytuj"
                                 Command="{Binding Path=BindingContext.MoveToModificationPageCommand, Source={Reference UserItems}}"
                                 CommandParameter="{Binding .}" />
 

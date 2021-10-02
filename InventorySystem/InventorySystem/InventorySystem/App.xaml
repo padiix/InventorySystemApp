@@ -9,6 +9,14 @@
     <Application.Resources>
         <ResourceDictionary>
             <Color x:Key="Primary">DarkCyan</Color>
+            <Color x:Key="AppBackgroundColor">#EEFFF5</Color>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="Black"></Setter>
+            </Style>
+            <Style TargetType="Entry">
+                <Setter Property="PlaceholderColor" Value="LightGray"></Setter>
+                <Setter Property="TextColor" Value="Black"></Setter>
+            </Style>
             <Style TargetType="Button">
                 <Setter Property="TextColor" Value="White" />
                 <Setter Property="VisualStateManager.VisualStateGroups">
@@ -27,6 +35,14 @@
                         </VisualStateGroup>
                     </VisualStateGroupList>
                 </Setter>
+            </Style>
+            <Style TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="SeaShell"></Setter>
+            </Style>
+            <Style TargetType="{x:Type ContentPage}"
+                   ApplyToDerivedTypes="True">
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource AppBackgroundColor}" />
             </Style>
         </ResourceDictionary>
     </Application.Resources>

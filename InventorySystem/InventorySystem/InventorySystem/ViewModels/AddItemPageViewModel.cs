@@ -28,7 +28,7 @@ namespace InventorySystem.ViewModels
 
                 IsVisibleMessageAndActivityIndicator = false;
 
-                await Task.Delay(TimeSpan.FromSeconds(2));
+                await Task.Delay(TimeSpan.FromSeconds(1));
 
                 var result = await Shell.Current.DisplayAlert("",
                     "Czy chcesz dodać więcej przedmiotów?",
@@ -70,9 +70,10 @@ namespace InventorySystem.ViewModels
             {
                 var barcode = HttpUtility.UrlDecode(query?["Barcode"]);
 
-                Barcode = string.IsNullOrEmpty(barcode)
-                    ? barcode
-                    : string.Empty;
+                var foundBarcode = string.IsNullOrEmpty(barcode);
+
+                Barcode = foundBarcode ? string.Empty : barcode;
+
             }
             catch (KeyNotFoundException e)
             {

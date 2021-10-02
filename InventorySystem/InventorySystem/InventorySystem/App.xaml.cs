@@ -5,7 +5,7 @@ namespace InventorySystem
 {
     public partial class App : Application
     {
-        public const string EVENT_NAVIGATE_TO_MAIN_PAGE = "EVENT_NAVIGATE_TO_MAIN_PAGE";
+        public const string EVENT_NAVIGATE_TO_ABOUT_PAGE = "EVENT_NAVIGATE_TO_ABOUT_PAGE";
         public const string EVENT_NAVIGATE_TO_LOGIN_PAGE = "EVENT_NAVIGATE_TO_LOGIN_PAGE";
 
         public App()
@@ -13,7 +13,7 @@ namespace InventorySystem
             InitializeComponent();
 
             MessagingCenter.Subscribe<object>(this, EVENT_NAVIGATE_TO_LOGIN_PAGE, NavigateToLoginPage);
-            MessagingCenter.Subscribe<object>(this, EVENT_NAVIGATE_TO_MAIN_PAGE, NavigateToMainPage);
+            MessagingCenter.Subscribe<object>(this, EVENT_NAVIGATE_TO_ABOUT_PAGE, NavigateToAboutPage);
 
             if (Settings.RememberMe)
                 MainPage = new AppShell();
@@ -26,10 +26,10 @@ namespace InventorySystem
             MainPage = new EmptyAppShell();
         }
 
-        public async void NavigateToMainPage(object sender)
+        public async void NavigateToAboutPage(object sender)
         {
             MainPage = new AppShell();
-            await Shell.Current.GoToAsync("//main");
+            await Shell.Current.GoToAsync("//about");
         }
 
         protected override void OnStart()

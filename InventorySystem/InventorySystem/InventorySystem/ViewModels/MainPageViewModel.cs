@@ -264,6 +264,10 @@ namespace InventorySystem.ViewModels
                 IsErrorVisible = true;
                 DependencyService.Get<IMessage>().ShortAlert(Constants.ConnectionError);
             }
+            catch (NullReferenceException)
+            {
+                DependencyService.Get<IMessage>().ShortAlert(Constants.ItemsError);
+            }
             catch (Exception e)
             {
                 Console.WriteLine(e);
