@@ -52,7 +52,7 @@ namespace InventorySystem.Views
 
                 var items = await RestClient.GetScannedItem(result.Text);
 
-                if (items != null)
+                if (items != null && items.Count > 0)
                 {
                     var dictionaryOfChoices = new Dictionary<string, string>();
                     var choices = new List<string>();

@@ -179,7 +179,7 @@ namespace InventorySystem.ViewModels
 
             ShowActivityIndicator();
             var data = new Register
-                {Email = Email, FirstName = Firstname, LastName = Lastname, Password = Password, UserName = Username};
+                {email = Email, firstname = Firstname, lastname = Lastname, password = Password, username = Username};
             var response = await RestClient.RegisterUser(data);
 
             if (response)
@@ -188,13 +188,14 @@ namespace InventorySystem.ViewModels
                     "OK");
 
                 HideActivityIndicator();
-                //Automatically logs user in
-                MessagingCenter.Send<object>(this, App.EVENT_NAVIGATE_TO_MAIN_PAGE);
+                //Inform the telephone about the fact, that this is not a first time, the user logged in
+                Settings.FirstRun = false;
+                //Automatically logs user in and shows the about page
+                MessagingCenter.Send<object>(this, App.EVENT_NAVIGATE_TO_ABOUT_PAGE);
             }
             else
             {
                 HideActivityIndicator();
-                DependencyService.Get<IMessage>().LongAlert(Constants.ConnectionError);
             }
         }
 

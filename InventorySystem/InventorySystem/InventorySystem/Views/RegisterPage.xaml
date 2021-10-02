@@ -20,113 +20,129 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <StackLayout Padding="0,20, 0, 0"
+        <StackLayout Padding="5,20, 0, 5"
                      HorizontalOptions="Center">
 
             <Label Text="Rejestracja"
                    HorizontalTextAlignment="Center"
                    FontSize="Title"
-                   TextTransform="Uppercase" />
+                   TextTransform="Uppercase" 
+                   Padding="0,0,0,10"/>
 
-            <StackLayout Padding="0,10">
+            <Frame CornerRadius="15">
 
-                <Label Text="Imię:" />
-                <Entry Text="{Binding Firstname}"
+                <StackLayout Spacing="5">
+
+                    <StackLayout>
+                        <Label Text="Imię:" />
+                        <Entry Text="{Binding Firstname}"
                        Placeholder="np. Jan"
                        FontSize="Medium"
                        IsReadOnly="{Binding IsReadOnlyFirstname}" />
+                    </StackLayout>
 
-                <Label Text="Nazwisko:" />
-                <Entry Text="{Binding Lastname}"
+                    <StackLayout>
+                        <Label Text="Nazwisko:" />
+                        <Entry Text="{Binding Lastname}"
                        Placeholder="np. Kowalski"
                        FontSize="Medium"
                        IsReadOnly="{Binding IsReadOnlyLastname}" />
+                    </StackLayout>
 
-            </StackLayout>
-            <StackLayout Padding="0,10">
 
-                <Label Text="Nazwa użytkownika:" />
-                <Entry Text="{Binding Username}"
+                    <StackLayout>
+                        <Label Text="Nazwa użytkownika:" />
+                        <Entry Text="{Binding Username}"
                        Placeholder="np. jkowalski97"
                        FontSize="Medium"
                        IsReadOnly="{Binding IsReadOnlyUsername}" />
+                    </StackLayout>
 
-                <Label Text="E-mail:" />
-                <Entry x:Name="EmailEntry"
+                    <StackLayout>
+                        <Label Text="E-mail:" />
+                        <Entry x:Name="EmailEntry"
                        Placeholder="np. JanKowalski@gmail.com"
                        FontSize="Medium"
                        IsSpellCheckEnabled="False"
                        IsReadOnly="{Binding IsReadOnlyEmail}"
                        Text="{Binding Email}">
-                    <Entry.Behaviors>
+                            <Entry.Behaviors>
 
-                        <xct:EmailValidationBehavior Flags="ValidateOnUnfocusing"
+                                <xct:EmailValidationBehavior Flags="ValidateOnUnfocusing"
                                                      IsValid="{Binding IsEmailValid}" />
 
-                    </Entry.Behaviors>
-                </Entry>
+                            </Entry.Behaviors>
+                        </Entry>
 
-                <Label Text="Email jest niepoprawny"
+                        <Label Text="Email jest niepoprawny"
                        IsVisible="{Binding IsEmailValid, Converter={StaticResource InvertedBoolConverter}}"
                        TextColor="Red"
                        FontSize="Caption"
                        FontAttributes="Bold" />
 
-                <Label Text="Hasło:" />
-                <Entry x:Name="PasswordEntry"
+                    </StackLayout>
+
+                    <StackLayout>
+                        <Label Text="Hasło:" />
+                        <Entry x:Name="PasswordEntry"
                        FontSize="Medium"
                        IsPassword="True"
                        IsReadOnly="{Binding IsReadOnlyPassword}"
                        Text="{Binding Password}"
                        TextChanged="PasswordEntry_OnTextChanged">
-                    <Entry.Behaviors>
+                            <Entry.Behaviors>
 
-                        <xct:MultiValidationBehavior x:Name="PasswordValidationBehavior"
+                                <xct:MultiValidationBehavior x:Name="PasswordValidationBehavior"
                                                      IsValid="{Binding IsPasswordValid}"
                                                      Flags="ValidateOnValueChanging">
 
-                            <xct:TextValidationBehavior MinimumLength="6"
+                                    <xct:TextValidationBehavior MinimumLength="6"
                                                         xct:MultiValidationBehavior.Error="* conajmniej 6 znaków" />
 
-                            <xct:CharactersValidationBehavior RegexPattern="[A-Z]"
+                                    <xct:CharactersValidationBehavior RegexPattern="[A-Z]"
                                                               xct:MultiValidationBehavior.Error="* conamjniej 1 dużą literę" />
 
-                            <xct:CharactersValidationBehavior RegexPattern="[a-z]"
+                                    <xct:CharactersValidationBehavior RegexPattern="[a-z]"
                                                               xct:MultiValidationBehavior.Error="* conajmniej 1 małą literę" />
 
-                            <xct:CharactersValidationBehavior RegexPattern="[0-9]"
+                                    <xct:CharactersValidationBehavior RegexPattern="[0-9]"
                                                               xct:MultiValidationBehavior.Error="* conajmniej 1 cyfrę" />
 
-                            <xct:CharactersValidationBehavior RegexPattern="[^a-zA-Z0-9]"
+                                    <xct:CharactersValidationBehavior RegexPattern="[^a-zA-Z0-9]"
                                                               xct:MultiValidationBehavior.Error="* conajmniej 1 znak specjalny" />
 
-                        </xct:MultiValidationBehavior>
+                                </xct:MultiValidationBehavior>
 
-                    </Entry.Behaviors>
-                </Entry>
+                            </Entry.Behaviors>
+                        </Entry>
 
-                <Label x:Name="PasswordError"
+                        <Label x:Name="PasswordError"
                        IsVisible="False"
                        TextColor="Red"
                        FontSize="Caption"
                        FontAttributes="Bold" />
+                    </StackLayout>
 
-            </StackLayout>
 
-            <StackLayout Orientation="Horizontal"
+
+                    <StackLayout Orientation="Horizontal"
                          HorizontalOptions="Center"
                          Padding="0,30,0,20">
 
-                <Button Text="Zarejestruj"
-                        Padding="10"
+                        <Button Text="Zarejestruj"
+                                
+                        Padding="5,0,5,0"
                         Command="{Binding RegisterCommand}"
                         IsEnabled="{Binding IsEnabledRegisterButton}" />
 
-                <Button Text="Powrót do ekranu logowania"
-                        Padding="10"
+                        <Button Text="Powrót do okna logowania"
+                        Padding="5,0,5,0"
                         Clicked="GoBackButton_OnClick"
                         IsEnabled="{Binding IsEnabledReturnButton}" />
-            </StackLayout>
+                    </StackLayout>
+
+                </StackLayout>
+            </Frame>
 
             <StackLayout Orientation="Horizontal"
                          HorizontalOptions="Center"

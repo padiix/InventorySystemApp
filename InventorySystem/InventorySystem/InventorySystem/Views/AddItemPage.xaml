@@ -29,6 +29,7 @@
                    FontSize="Title"
                    HorizontalOptions="StartAndExpand" />
             <Entry Text="{Binding Name, Mode=TwoWay}"
+                   Placeholder="Przedmiot"
                    ClearButtonVisibility="WhileEditing"
                    IsSpellCheckEnabled="True" />
 
@@ -37,6 +38,7 @@
                    HorizontalOptions="StartAndExpand" />
             <Entry x:Name="BarcodeEntry"
                    Keyboard="Numeric"
+                   Placeholder="Ciąg cyfr"
                    Text="{Binding Barcode, Mode=TwoWay}"
                    IsSpellCheckEnabled="False"
                    TextChanged="BarcodeEntry_OnTextChanged">
