@@ -25,20 +25,39 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
+        <ScrollView>
         <StackLayout Padding="20,20">
+            
+            <Label Text="Modyfikacja przedmiotów"
+                   HorizontalOptions="Center"
+                   FontAttributes="Bold"
+                   FontSize="Large"
+                   Padding="0,0,0,40"/>
 
             <Label Text="Id:"
                    FontSize="Title"
                    HorizontalOptions="StartAndExpand" />
             <Entry Text="{Binding ItemId}"
-                   IsEnabled="False" />
+                   IsReadOnly="True" />
 
             <Label Text="Nazwa:"
                    FontSize="Title"
+                   FontAttributes="Bold"
                    HorizontalOptions="StartAndExpand" />
             <Entry Text="{Binding Name, Mode=TwoWay}"
                    ClearButtonVisibility="WhileEditing"
+                   FontAttributes="Bold"
                    IsSpellCheckEnabled="True" />
+
+            <Label Text="Opis:"
+                   FontSize="Title"
+                   FontAttributes="Bold"
+                   HorizontalOptions="StartAndExpand" />
+            <Editor Text="{Binding Description, Mode=TwoWay}"
+                    IsSpellCheckEnabled="True"
+                    FontAttributes="Bold"
+                    AutoSize="TextChanges"
+                    Keyboard="Text"/>
 
             <Label Text="Kod kreskowy:"
                    FontSize="Title"
@@ -47,6 +66,7 @@
                    Keyboard="Numeric"
                    Text="{Binding Barcode, Mode=TwoWay}"
                    IsSpellCheckEnabled="False"
+                   FontAttributes="Bold"
                    TextChanged="BarcodeEntry_OnTextChanged">
 
                 <Entry.Behaviors>
@@ -71,7 +91,7 @@
                    FontSize="Title"
                    HorizontalOptions="StartAndExpand" />
             <Entry Text="{Binding DateAdded}"
-                   IsEnabled="False" />
+                   IsReadOnly="True" />
 
             <Grid Padding="0,20,0 ,0"
                   HorizontalOptions="Center"
@@ -108,5 +128,6 @@
 
 
         </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

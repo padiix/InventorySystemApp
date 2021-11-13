@@ -5,10 +5,11 @@ namespace InventorySystem.Models
 {
     public class Item
     {
-        public Item(Guid id, string name, string barcode, DateTimeOffset dateAdded)
+        public Item(Guid id, string name, string description, string barcode, DateTimeOffset dateAdded)
         {
             Id = id;
             Name = name;
+            Description = description;
             Barcode = barcode;
             DateAdded = dateAdded;
         }
@@ -16,6 +17,8 @@ namespace InventorySystem.Models
         [JsonProperty("id")] public Guid Id { get; set; }
 
         [JsonProperty("name")] public string Name { get; set; }
+
+        [JsonProperty("description")] public string Description { get; set; }
 
         [JsonProperty("dateAdded")] public DateTimeOffset DateAdded { get; set; }
 
