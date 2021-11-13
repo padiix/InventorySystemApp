@@ -40,16 +40,14 @@ namespace InventorySystem.Views
                 AddButton.IsEnabled = false;
             }
 
-            var result = BarcodeValidate();
+            var result = BarcodeValidate(BarcodeEntry.Text);
             CharacterQuantityValidator.IsValid = result;
             BarcodeNotValidLabel.IsVisible = !result;
             AddButton.IsEnabled = result;
         }
 
-        private bool BarcodeValidate()
+        private bool BarcodeValidate(string barcode)
         {
-            var barcode = BarcodeEntry.Text;
-
             if (string.IsNullOrEmpty(barcode)) return false;
 
             if (barcode.Length < 8 && barcode.Length > 14) return false;

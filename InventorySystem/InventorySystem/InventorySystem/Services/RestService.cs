@@ -3,6 +3,7 @@ using InventorySystem.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -53,18 +54,18 @@ namespace InventorySystem.Services
             }
             catch (TimeoutException toex)
             {
-                ShowErrorMessage(Constants.ConnectionError, toex.Message);
+                ShowMessage(Constants.ConnectionError, toex.Message);
                 return false;
             }
             catch (Exception ex)
             {
-                ShowErrorMessage(Constants.NotExpectedError, ex.Message);
+                ShowMessage(Constants.NotExpectedError, ex.Message);
                 return false;
             }
 
             if (!responseMessage.IsSuccessStatusCode)
             {
-                ShowErrorMessage(Constants.UnauthorizedError, responseMessage.ToString());
+                ShowMessage(Constants.UnauthorizedError, responseMessage.ToString());
                 return false;
             }
 
@@ -73,7 +74,7 @@ namespace InventorySystem.Services
 
             if (userData == null)
             {
-                ShowErrorMessage(Constants.NullReturnedError, Constants.Console_NullReturnedError);
+                ShowMessage(Constants.NullReturnedError, Constants.Console_NullReturnedError);
                 return false;
             }
 
@@ -97,22 +98,22 @@ namespace InventorySystem.Services
             }
             catch (TimeoutException toex)
             {
-                ShowErrorMessage(Constants.ConnectionError, toex.Message);
+                ShowMessage(Constants.ConnectionError, toex.Message);
                 return false;
             }
             catch (System.OperationCanceledException operationCanceledException)
             {
-                ShowErrorMessage(Constants.ConnectionError, operationCanceledException.Message);
+                ShowMessage(Constants.ConnectionError, operationCanceledException.Message);
             }
             catch (Exception ex)
             {
-                ShowErrorMessage(Constants.NotExpectedError, ex.Message);
+                ShowMessage(Constants.NotExpectedError, ex.Message);
                 return false;
             }
 
             if (responseMessage != null && !responseMessage.IsSuccessStatusCode)
             {
-                ShowErrorMessage(Constants.RegistrationError, responseMessage.ToString());
+                ShowMessage(Constants.RegistrationError, responseMessage.ToString());
                 return false;
             }
 
@@ -122,7 +123,7 @@ namespace InventorySystem.Services
 
             if (userData == null)
             {
-                ShowErrorMessage(Constants.NullReturnedError, Constants.Console_NullReturnedError);
+                ShowMessage(Constants.NullReturnedError, Constants.Console_NullReturnedError);
                 return false;
             }
 
@@ -137,7 +138,7 @@ namespace InventorySystem.Services
             if (!CheckForToken())
                 if (!await GetToken())
                 {
-                    ShowErrorMessage(Constants.NoTokenError, Constants.Console_NoTokenError);
+                    ShowMessage(Constants.NoTokenError, Constants.Console_NoTokenError);
                     return Connection_NoTokenFound;
                 }
 
@@ -152,16 +153,16 @@ namespace InventorySystem.Services
             }
             catch (TimeoutException toex)
             {
-                ShowErrorMessage(Constants.ConnectionError, toex.Message);
+                ShowMessage(Constants.ConnectionError, toex.Message);
                 return Connection_ConnectionError;
             }
             catch (System.OperationCanceledException operationCanceledException)
             {
-                ShowErrorMessage(Constants.ConnectionError, operationCanceledException.Message);
+                ShowMessage(Constants.ConnectionError, operationCanceledException.Message);
             }
             catch (Exception ex)
             {
-                ShowErrorMessage(Constants.NotExpectedError, ex.Message);
+                ShowMessage(Constants.NotExpectedError, ex.Message);
                 return Connection_ConnectionError;
             }
 
@@ -170,7 +171,7 @@ namespace InventorySystem.Services
             if (CheckIfTokenExpiredAndShowErrorMessage(responseMessage))
                 return Connection_TokenExpired;
 
-            ShowErrorMessage(Constants.ApiRejectionError, responseMessage.ToString());
+            ShowMessage(Constants.ApiRejectionError, responseMessage.ToString());
             return Connection_StatusFailure;
         }
 
@@ -179,7 +180,7 @@ namespace InventorySystem.Services
             if (!CheckForToken())
                 if (!await GetToken())
                 {
-                    ShowErrorMessage(Constants.NoTokenError, Constants.Console_NoTokenError);
+                    ShowMessage(Constants.NoTokenError, Constants.Console_NoTokenError);
                     return null;
                 }
 
@@ -194,22 +195,23 @@ namespace InventorySystem.Services
             }
             catch (TimeoutException toex)
             {
-                ShowErrorMessage(Constants.ConnectionError, toex.Message);
+                ShowMessage(Constants.ConnectionError, toex.Message);
                 return null;
             }
             catch (System.OperationCanceledException operationCanceledException)
             {
-                ShowErrorMessage(Constants.ConnectionError, operationCanceledException.Message);
+                ShowMessage(Constants.ConnectionError, operationCanceledException.Message);
+                throw;
             }
             catch (Exception ex)
             {
-                ShowErrorMessage(Constants.NotExpectedError, ex.Message);
+                ShowMessage(Constants.NotExpectedError, ex.Message);
                 return null;
             }
 
             if (responseMessage != null && !responseMessage.IsSuccessStatusCode)
             {
-                ShowErrorMessage(Constants.ItemsError, responseMessage.ToString());
+                ShowMessage(Constants.ItemsError, responseMessage.ToString());
                 return null;
             }
 
@@ -226,7 +228,7 @@ namespace InventorySystem.Services
             if (!CheckForToken())
                 if (!await GetToken())
                 {
-                    ShowErrorMessage(Constants.NoTokenError, Constants.NoTokenError);
+                    ShowMessage(Constants.NoTokenError, Constants.NoTokenError);
                     return null;
                 }
 
@@ -241,22 +243,22 @@ namespace InventorySystem.Services
             }
             catch (TimeoutException toex)
             {
-                ShowErrorMessage(Constants.ConnectionError, toex.Message);
+                ShowMessage(Constants.ConnectionError, toex.Message);
                 return null;
             }
             catch (System.OperationCanceledException operationCanceledException)
             {
-                ShowErrorMessage(Constants.ConnectionError, operationCanceledException.Message);
+                ShowMessage(Constants.ConnectionError, operationCanceledException.Message);
             }
             catch (Exception ex)
             {
-                ShowErrorMessage(Constants.NotExpectedError, ex.Message);
+                ShowMessage(Constants.NotExpectedError, ex.Message);
                 return null;
             }
 
             if (responseMessage != null && !responseMessage.IsSuccessStatusCode)
             {
-                ShowErrorMessage(Constants.SpecificItemError, responseMessage.ToString());
+                ShowMessage(Constants.SpecificItemError, responseMessage.ToString());
                 return null;
             }
 
@@ -272,7 +274,7 @@ namespace InventorySystem.Services
             if (!CheckForToken())
                 if (!await GetToken())
                 {
-                    ShowErrorMessage(Constants.NoTokenError, Constants.Console_NoTokenError);
+                    ShowMessage(Constants.NoTokenError, Constants.Console_NoTokenError);
                     return false;
                 }
 
@@ -292,22 +294,22 @@ namespace InventorySystem.Services
             }
             catch (TimeoutException toex)
             {
-                ShowErrorMessage(Constants.ConnectionError, toex.Message);
+                ShowMessage(Constants.ConnectionError, toex.Message);
                 return false;
             }
             catch (System.OperationCanceledException operationCanceledException)
             {
-                ShowErrorMessage(Constants.ConnectionError, operationCanceledException.Message);
+                ShowMessage(Constants.ConnectionError, operationCanceledException.Message);
             }
             catch (Exception ex)
             {
-                ShowErrorMessage(Constants.NotExpectedError, ex.Message);
+                ShowMessage(Constants.NotExpectedError, ex.Message);
                 return false;
             }
 
             if (responseMessage != null && responseMessage.IsSuccessStatusCode) return true;
 
-            ShowErrorMessage(Constants.UpdateItemError, responseMessage?.ToString());
+            ShowMessage(Constants.UpdateItemError, responseMessage?.ToString());
             return false;
             }
         //
@@ -317,7 +319,7 @@ namespace InventorySystem.Services
             if (!CheckForToken())
                 if (!await GetToken())
                 {
-                    ShowErrorMessage(Constants.NoTokenError, Constants.Console_NoTokenError);
+                    ShowMessage(Constants.NoTokenError, Constants.Console_NoTokenError);
                     return null;
                 }
 
@@ -332,22 +334,22 @@ namespace InventorySystem.Services
             }
             catch (TimeoutException toex)
             {
-                ShowErrorMessage(Constants.ConnectionError, toex.Message);
+                ShowMessage(Constants.ConnectionError, toex.Message);
                 return null;
             }
             catch (System.OperationCanceledException operationCanceledException)
             {
-                ShowErrorMessage(Constants.ConnectionError, operationCanceledException.Message);
+                ShowMessage(Constants.ConnectionError, operationCanceledException.Message);
             }
             catch (Exception ex)
             {
-                ShowErrorMessage(Constants.NotExpectedError, ex.Message);
+                ShowMessage(Constants.NotExpectedError, ex.Message);
                 return null;
             }
 
             if (responseMessage != null && !responseMessage.IsSuccessStatusCode)
             {
-                ShowErrorMessage(Constants.SpecificItemError, responseMessage.ToString());
+                ShowMessage(Constants.SpecificItemError, responseMessage.ToString());
                 return null;
             }
 
@@ -367,7 +369,7 @@ namespace InventorySystem.Services
             if (!CheckForToken())
                 if (!await GetToken())
                 {
-                    ShowErrorMessage(Constants.NoTokenError, Constants.Console_NoTokenError);
+                    ShowMessage(Constants.NoTokenError, Constants.Console_NoTokenError);
                     return false;
                 }
 
@@ -383,26 +385,26 @@ namespace InventorySystem.Services
             }
             catch (TimeoutException toex)
             {
-                ShowErrorMessage(Constants.ConnectionError, toex.Message);
+                ShowMessage(Constants.ConnectionError, toex.Message);
                 return false;
             }
             catch (System.OperationCanceledException operationCanceledException)
             {
-                ShowErrorMessage(Constants.ConnectionError, operationCanceledException.Message);
+                ShowMessage(Constants.ConnectionError, operationCanceledException.Message);
             }
             catch (Exception ex)
             {
-                ShowErrorMessage(Constants.NotExpectedError, ex.Message);
+                ShowMessage(Constants.NotExpectedError, ex.Message);
                 return false;
             }
 
             if (responseMessage != null && !responseMessage.IsSuccessStatusCode)
             {
-                ShowErrorMessage(Constants.DeletionError, responseMessage.ToString());
+                ShowMessage(Constants.DeletionError, responseMessage.ToString());
                 return false;
             }
 
-            ShowErrorMessage(Constants.DeletionSuccessful, responseMessage?.ToString());
+            ShowMessage(Constants.DeletionSuccessful, responseMessage?.ToString());
             return true;
         }
 
@@ -411,7 +413,7 @@ namespace InventorySystem.Services
             if (!CheckForToken())
                 if (!await GetToken())
                 {
-                    ShowErrorMessage(Constants.NoTokenError, Constants.Console_NoTokenError);
+                    ShowMessage(Constants.NoTokenError, Constants.Console_NoTokenError);
                     return false;
                 }
 
@@ -430,34 +432,34 @@ namespace InventorySystem.Services
             }
             catch (TimeoutException toex)
             {
-                ShowErrorMessage(Constants.ConnectionError, toex.Message);
+                ShowMessage(Constants.ConnectionError, toex.Message);
                 return false;
             }
             catch (Exception ex)
             {
-                ShowErrorMessage(Constants.NotExpectedError, ex.Message);
+                ShowMessage(Constants.NotExpectedError, ex.Message);
                 return false;
             }
 
             if (responseMessage != null && !responseMessage.IsSuccessStatusCode)
             {
-                ShowErrorMessage(Constants.AddingItemError, responseMessage.ToString());
+                ShowMessage(Constants.AddingItemError, responseMessage.ToString());
                 return false;
             }
 
-            ShowErrorMessage(Constants.AddingItemSuccessful, responseMessage?.ToString());
+            ShowMessage(Constants.AddingItemSuccessful, responseMessage?.ToString());
             return true;
         }
 
         //Helpers
         private void GetEndpoints()
         {
-#if DEBUG
+#if !DEBUG
             AccountEndpoint = "http://10.0.2.2:5000/api/account";
             ItemsEndpoint = "http://10.0.2.2:5000/api/Items";
 #else
-            AccountEndpoint = "https://inventorymanagementsystemapi20210613140659.azurewebsites.net/api/account";
-            ItemsEndpoint = "https://inventorymanagementsystemapi20210613140659.azurewebsites.net/api/Items";
+            AccountEndpoint = "https://newinventorymanagementsystemapi20211010162307.azurewebsites.net/api/account";
+            ItemsEndpoint = "https://newinventorymanagementsystemapi20211010162307.azurewebsites.net/api/Items";
 #endif
         }
 
@@ -493,18 +495,18 @@ namespace InventorySystem.Services
                          header.Scheme.Contains("Bearer") &&
                          header.Parameter.Contains("error=\"invalid_token\", error_description=\"The token expired at");
 
-            ShowErrorMessage(Constants.ExpiredTokenError, response.ToString());
+            ShowMessage(Constants.ExpiredTokenError, response.ToString());
             return result;
         }
 
         private static void ShowInConsole(string message)
         {
-            Console.WriteLine("[API Error Message] " + message);
+            Debug.WriteLine("[REST Service] " + message);
         }
 
-        private static void ShowErrorMessage(string errorMessage, string consoleMessage)
+        private static void ShowMessage(string message, string consoleMessage)
         {
-            DependencyService.Get<IMessage>().LongAlert(errorMessage);
+            DependencyService.Get<IMessage>().LongAlert(message);
             ShowInConsole(consoleMessage);
         }
     }

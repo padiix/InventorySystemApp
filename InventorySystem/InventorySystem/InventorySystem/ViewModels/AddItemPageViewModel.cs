@@ -16,6 +16,7 @@ namespace InventorySystem.ViewModels
 
         private bool _isVisibleMessageAndActivityIndicator;
         private string _name;
+        private string _description;
 
         public AddItemPageViewModel()
         {
@@ -28,7 +29,7 @@ namespace InventorySystem.ViewModels
 
                 IsVisibleMessageAndActivityIndicator = false;
 
-                await Task.Delay(TimeSpan.FromSeconds(1));
+                await Task.Delay(TimeSpan.FromSeconds(0.5));
 
                 var result = await Shell.Current.DisplayAlert("",
                     "Czy chcesz dodać więcej przedmiotów?",
@@ -47,7 +48,13 @@ namespace InventorySystem.ViewModels
             set => SetProperty(ref _name, value, nameof(Name));
         }
 
-        private DateTimeOffset DateAdded { get; } = DateTimeOffset.Now;
+        public string Description
+        {
+            get => _description;
+            set => SetProperty(ref _description, value, nameof(Description));
+        }
+
+        private DateTimeOffset DateAdded { get; } = DateTimeOffset.Now.LocalDateTime;
 
         public string Barcode
         {
@@ -84,7 +91,7 @@ namespace InventorySystem.ViewModels
 
         private async Task<bool> CreateItem()
         {
-            var item = new Item(ItemId, Name, Barcode, DateAdded);
+            var item = new Item(ItemId, Name, Description, Barcode, DateAdded);
             var result = await RestClient.AddItem(item);
 
             return result;

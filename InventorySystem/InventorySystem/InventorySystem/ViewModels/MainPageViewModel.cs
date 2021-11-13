@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using InventorySystem.Interfaces;
@@ -258,19 +259,27 @@ namespace InventorySystem.ViewModels
 
                 _sourceItems.AddRange(itemsFromApi);
             }
-            catch (TimeoutException toEx)
+            catch (TimeoutException)
             {
-                Console.WriteLine(toEx);
                 IsErrorVisible = true;
                 DependencyService.Get<IMessage>().ShortAlert(Constants.ConnectionError);
+                return;
+            }
+            catch (System.OperationCanceledException)
+            {
+                IsErrorVisible = true;
+                DependencyService.Get<IMessage>().ShortAlert(Constants.ConnectionError);
+                return;
             }
             catch (NullReferenceException)
             {
                 DependencyService.Get<IMessage>().ShortAlert(Constants.ItemsError);
+                return;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
+                return;
             }
 
             UserItems.Clear();

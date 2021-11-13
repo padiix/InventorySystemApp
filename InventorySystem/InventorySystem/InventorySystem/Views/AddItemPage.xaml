@@ -24,77 +24,101 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <StackLayout Padding="20,20">
-            <Label Text="Nazwa:"
-                   FontSize="Title"
-                   HorizontalOptions="StartAndExpand" />
-            <Entry Text="{Binding Name, Mode=TwoWay}"
-                   Placeholder="Przedmiot"
-                   ClearButtonVisibility="WhileEditing"
-                   IsSpellCheckEnabled="True" />
+        <ScrollView>
+            <StackLayout Padding="20,20">
+                
+                <Label Text="Dodawanie przedmiotów"
+                       HorizontalOptions="Center"
+                       FontAttributes="Bold"
+                       FontSize="Large"
+                       Padding="0,0,0,40"/>
 
-            <Label Text="Kod kreskowy:"
+                <Label Text="Nazwa:"
+                       FontSize="Title"
+                       FontAttributes="Bold"
+                       HorizontalOptions="StartAndExpand" />
+                <Entry Text="{Binding Name, Mode=TwoWay}"
+                       Placeholder="Przedmiot"
+                       FontAttributes="Bold"
+                       ClearButtonVisibility="WhileEditing"
+                       IsSpellCheckEnabled="True" />
+
+                <Label Text="Opis:"
+                   FontSize="Title"
+                   FontAttributes="Bold"
+                   HorizontalOptions="StartAndExpand" />
+                <Editor Text="{Binding Description, Mode=TwoWay}"
+                    Placeholder="Opis przedmiotu"
+                    FontAttributes="Bold"
+                    IsSpellCheckEnabled="True"
+                    Keyboard="Text"
+                    AutoSize="TextChanges"/>
+
+                <Label Text="Kod kreskowy:"
                    FontSize="Title"
                    HorizontalOptions="StartAndExpand" />
-            <Entry x:Name="BarcodeEntry"
+                <Entry x:Name="BarcodeEntry"
                    Keyboard="Numeric"
                    Placeholder="Ciąg cyfr"
                    Text="{Binding Barcode, Mode=TwoWay}"
+                   FontAttributes="Bold"
                    IsSpellCheckEnabled="False"
                    TextChanged="BarcodeEntry_OnTextChanged">
 
-                <Entry.Behaviors>
+                    <Entry.Behaviors>
 
-                    <xct:CharactersValidationBehavior x:Name="CharacterQuantityValidator"
+                        <xct:CharactersValidationBehavior x:Name="CharacterQuantityValidator"
                                                       CharacterType="Digit"
                                                       MinimumCharacterCount="8"
                                                       MaximumCharacterCount="14"
                                                       InvalidStyle="{StaticResource InvalidBackgroundEntry}" />
 
-                </Entry.Behaviors>
+                    </Entry.Behaviors>
 
-            </Entry>
-            <Label x:Name="BarcodeNotValidLabel" Text="Podany kod kreskowy jest niepoprawny."
+                </Entry>
+
+                <Label x:Name="BarcodeNotValidLabel" Text="Podany kod kreskowy jest niepoprawny."
                    IsVisible="False"
                    TextColor="Red"
                    FontSize="Caption"
                    FontAttributes="Bold" />
 
-            <Grid Padding="0,20,0 ,0"
+                <Grid Padding="0,20,0 ,0"
                   HorizontalOptions="Center"
                   VerticalOptions="End"
                   IsVisible="{Binding IsVisibleMessageAndActivityIndicator}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                <Label Text="Dodawanie danych do API"
+                    <Label Text="Dodawanie danych do API"
                        FontSize="Subtitle"
                        IsVisible="true"
                        VerticalOptions="Center" />
-                <ActivityIndicator Grid.Column="1"
+                    <ActivityIndicator Grid.Column="1"
                                    IsRunning="true"
                                    Scale="0.7" />
 
-            </Grid>
+                </Grid>
 
-            <StackLayout Orientation="Horizontal"
+                <StackLayout Orientation="Horizontal"
                          Padding="20,20">
-                <Button x:Name="AddButton"
+                    <Button x:Name="AddButton"
                         HorizontalOptions="FillAndExpand"
                         VerticalOptions="End"
                         Text="Dodaj"
                         Command="{Binding AddItemCommand}" />
 
-                <Button HorizontalOptions="FillAndExpand"
+                    <Button HorizontalOptions="FillAndExpand"
                         VerticalOptions="EndAndExpand"
                         Text="Powrót"
                         Clicked="Return_OnClicked" />
+                </StackLayout>
             </StackLayout>
-        </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

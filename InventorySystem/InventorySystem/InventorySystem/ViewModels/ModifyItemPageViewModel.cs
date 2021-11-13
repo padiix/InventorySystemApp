@@ -18,6 +18,7 @@ namespace InventorySystem.ViewModels
         private bool _isVisibleMessageAndActivityIndicator;
         private string _itemId;
         private string _name;
+        private string _description;
 
         public ModifyItemPageViewModel()
         {
@@ -33,7 +34,7 @@ namespace InventorySystem.ViewModels
 
                 IsVisibleMessageAndActivityIndicator = false;
 
-                await Task.Delay(TimeSpan.FromSeconds(1));
+                await Task.Delay(TimeSpan.FromSeconds(0.5));
 
                 var result = await Shell.Current.DisplayAlert("", "Czy chcesz wrócić do strony głównej?", "Nie", "Tak");
                 if (!result) await Shell.Current.GoToAsync("..");
@@ -50,6 +51,12 @@ namespace InventorySystem.ViewModels
         {
             get => _name;
             set => SetProperty(ref _name, value, nameof(Name));
+        }
+
+        public string Description
+        {
+            get => _description;
+            set => SetProperty(ref _description, value, nameof(Description));
         }
 
         public DateTimeOffset DateAdded
@@ -87,6 +94,7 @@ namespace InventorySystem.ViewModels
                 var item = await RestClient.GetSpecificItem(itemId);
 
                 Name = item.Name;
+                Description = item.Description;
                 DateAdded = item.DateAdded;
                 Barcode = item.Barcode;
                 DateAdded = item.DateAdded;
@@ -100,7 +108,7 @@ namespace InventorySystem.ViewModels
 
         private async Task<bool> UpdateItem()
         {
-            var item = new Item(Guid.Parse(ItemId), Name, Barcode, DateAdded);
+            var item = new Item(Guid.Parse(ItemId), Name, Description, Barcode, DateAdded);
             var result = await RestClient.UpdateItem(item);
 
             return result;
