@@ -454,13 +454,8 @@ namespace InventorySystem.Services
         //Helpers
         private void GetEndpoints()
         {
-#if !DEBUG
-            AccountEndpoint = "http://10.0.2.2:5000/api/account";
-            ItemsEndpoint = "http://10.0.2.2:5000/api/Items";
-#else
             AccountEndpoint = "https://newinventorymanagementsystemapi20211010162307.azurewebsites.net/api/account";
             ItemsEndpoint = "https://newinventorymanagementsystemapi20211010162307.azurewebsites.net/api/Items";
-#endif
         }
 
         private static void SaveUserDetails(UserData userData)
