@@ -13,7 +13,7 @@ using Xamarin.Forms;
 
 namespace InventorySystem.Services
 {
-    public class RestService : IRestService
+    public class RestService
     {
         public const string Token = "token";
         public const string Connection_Connected = "Connected";

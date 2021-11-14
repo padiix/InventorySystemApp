@@ -178,8 +178,7 @@ namespace InventorySystem.ViewModels
             }
 
             ShowActivityIndicator();
-            var data = new Register
-                {email = Email, firstname = Firstname, lastname = Lastname, password = Password, username = Username};
+            var data = new Register(Username, Firstname, Lastname, Email, Password);
             var response = await RestClient.RegisterUser(data);
 
             if (response)
@@ -188,7 +187,7 @@ namespace InventorySystem.ViewModels
                     "OK");
 
                 HideActivityIndicator();
-                //Inform the telephone about the fact, that this is not a first time, the user logged in
+                //Inform app about the fact, that this is a first time, the user logged in
                 Settings.FirstRun = false;
                 //Automatically logs user in and shows the about page
                 MessagingCenter.Send<object>(this, App.EVENT_NAVIGATE_TO_ABOUT_PAGE);

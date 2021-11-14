@@ -154,7 +154,7 @@ namespace InventorySystem.ViewModels
             {
                 ShowActivityIndicator();
 
-                var data = new Login {Email = Email, Password = Password};
+                var data = new Login(Email, Password);
                 var isVerified = await RestClient.VerifyLogin(data);
                 if (isVerified)
                 {

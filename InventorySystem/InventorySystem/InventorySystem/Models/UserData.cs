@@ -5,6 +5,8 @@ namespace InventorySystem
 {
     public class UserData
     {
+        // Class modeling data about user from LoginVerify
+
         [JsonProperty("id")] public Guid Id { get; set; }
 
         [JsonProperty("token")] public string Token { get; set; }

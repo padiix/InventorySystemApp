@@ -9,7 +9,6 @@ namespace InventorySystem.Views
     {
         public AboutApp()
         {
-            BindingContext = new AboutAppViewModel();
             InitializeComponent();
         }
     }

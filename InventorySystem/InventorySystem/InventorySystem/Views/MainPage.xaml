@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InventorySystem.Views.MainPage"
              xmlns:vm="clr-namespace:InventorySystem.ViewModels"
+             xmlns:helpers="clr-namespace:InventorySystem.;assembly=InventorySystem"
              xmlns:services="clr-namespace:InventorySystem.Services;assembly=InventorySystem"
              Shell.TabBarIsVisible="True"
              Title="Strona główna">
@@ -16,7 +17,7 @@
         <ResourceDictionary>
 
             <DataTemplate x:Key="CurrentUserItems">
-                <Grid Padding="5,10,5,15">
+                <Grid Padding="5,10,5,10">
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.7*" />
@@ -32,60 +33,55 @@
                            Grid.Row="0"
                            Grid.ColumnSpan="2"
                            Text="{Binding Name}"
-                           TextColor="Black"
                            HorizontalTextAlignment="Center"
                            TextTransform="Uppercase"
-                           FontSize="20"
+                           FontSize="22"
                            FontAttributes="Bold" />
 
                     <StackLayout Grid.Column="0"
                                  Grid.Row="1"
-                                 Padding="5,10,10,0">
-
-                        <Label Text="Kod kreskowy:"
-                               FontSize="15"
+                                 Padding="5">
+                        
+                        <Label Text="Opis:"
+                               FontSize="13"
                                FontAttributes="Bold" />
 
-                        <Label Text="{Binding Barcode}"
-                               FontSize="20"
-                               TextDecorations="Underline" />
+                        <Label Text="{Binding Description}"
+                               LineBreakMode="TailTruncation"
+                               MaxLines="4"
+                               FontSize="15" />
+
+                        <Label Text="Kod kreskowy:"
+                               FontSize="13"
+                               FontAttributes="Bold" />
+
+                        <Label Text="{Binding FormattedBarcode}"
+                               FontSize="20" />
 
                         <Label Text="Data dodania:"
-                               FontSize="15"
+                               FontSize="13"
                                FontAttributes="Bold" />
 
                         <Label Text="{Binding DateAdded}"
-                               FontSize="16"
-                               Padding="0,0,0,10" />
+                               FontSize="14"/>
 
                         <Label Text="Dodany przez:"
-                               FontSize="15"
+                               FontSize="13"
                                FontAttributes="Bold" />
 
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <Label Grid.Column="0"
-                                   Text="{Binding User.FirstName}"
-                                   FontSize="16" />
-
-                            <Label Grid.Column="1"
-                                   Text="{Binding User.LastName}"
-                                   FontSize="16" />
-
-                        </Grid>
+                        <Label Text="{Binding User.FirstAndLastName}"
+                               FontSize="14" />
+                        
 
                     </StackLayout>
 
                     <StackLayout Grid.Column="1"
                                  Grid.Row="1"
                                  VerticalOptions="Start"
-                                 Padding="0,15,0,0">
+                                 Padding="0,15,5,0">
 
-                        <Label Text="Dostępne opcje:" />
+                        <Label Text="Dostępne opcje:" 
+                               FontSize="12" />
 
                         <Button Text="Edytuj"
                                 Command="{Binding Path=BindingContext.MoveToModificationPageCommand, Source={Reference UserItems}}"
@@ -116,61 +112,55 @@
                            Grid.Row="0"
                            Grid.ColumnSpan="2"
                            Text="{Binding Name}"
-                           TextColor="Black"
                            HorizontalTextAlignment="Center"
                            TextTransform="Uppercase"
-                           FontSize="20"
+                           FontSize="22"
                            FontAttributes="Bold" />
 
                     <StackLayout Grid.Column="0"
                                  Grid.Row="1"
-                                 Padding="5,10,10,0">
+                                 Padding="5">
 
-                        <Label Text="Kod kreskowy:"
-                               FontSize="15"
+                        <Label Text="Opis:"
+                               FontSize="13"
                                FontAttributes="Bold" />
 
-                        <Label Text="{Binding Barcode}"
-                               FontSize="20"
-                               TextDecorations="Underline" />
+                        <Label Text="{Binding Description}"
+                               FontSize="15"
+                               MaxLines="4"
+                               LineBreakMode="TailTruncation"
+                               HeightRequest="20"/>
+
+                        <Label Text="Kod kreskowy:"
+                               FontSize="13"
+                               FontAttributes="Bold" />
+
+                        <Label Text="{Binding FormattedBarcode}"
+                               FontSize="20" />
 
                         <Label Text="Data dodania:"
-                               FontSize="15"
+                               FontSize="13"
                                FontAttributes="Bold" />
 
                         <Label Text="{Binding DateAdded}"
-                               FontSize="16"
-                               Padding="0,0,0,10" />
+                               FontSize="14"/>
 
                         <Label Text="Dodany przez:"
-                               FontSize="15"
+                               FontSize="13"
                                FontAttributes="Bold" />
 
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <Label Grid.Column="0"
-                                   Text="{Binding User.FirstName}"
-                                   FontSize="16" />
-
-                            <Label Grid.Column="1"
-                                   Text="{Binding User.LastName}"
-                                   FontSize="16" />
-
-                        </Grid>
+                        <Label Text="{Binding User.FirstAndLastName}"
+                               FontSize="14" />
 
                     </StackLayout>
 
                     <StackLayout Grid.Column="1"
                                  Grid.Row="1"
                                  VerticalOptions="Start"
-                                 Padding="0,15,0,0">
+                                 Padding="0,15,5,0">
 
                         <Label Text="Nie można modyfikować przedmiotów innych użytkowników."
-                               TextColor="DarkGray" />
+                               TextColor="Gray" />
 
                     </StackLayout>
 

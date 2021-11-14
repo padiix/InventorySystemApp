@@ -2,9 +2,7 @@
 
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewmodels="clr-namespace:InventorySystem.ViewModels"
              xmlns:helpers="clr-namespace:InventorySystem.Helpers;assembly=InventorySystem"
-             x:DataType="viewmodels:AboutAppViewModel"
              x:Class="InventorySystem.Views.AboutApp"
              Shell.TabBarIsVisible="True"
              Title="O Aplikacji">

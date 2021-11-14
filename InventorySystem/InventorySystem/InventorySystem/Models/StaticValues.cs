@@ -40,5 +40,15 @@ namespace InventorySystem.Models
             get => Preferences.Get(nameof(IsAdmin), false);
             set => Preferences.Set(nameof(IsAdmin), value);
         }
+
+        public static void RemoveUserData()
+        {
+            Preferences.Remove(nameof(UserId));
+            Preferences.Remove(nameof(FirstName));
+            Preferences.Remove(nameof(LastName));
+            Preferences.Remove(nameof(Username));
+            Preferences.Remove(nameof(Email));
+            Preferences.Remove(nameof(IsAdmin));
+        }
     }
 }

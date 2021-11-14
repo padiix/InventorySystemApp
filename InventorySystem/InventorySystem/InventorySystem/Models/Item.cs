@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.Design;
 using Newtonsoft.Json;
 
 namespace InventorySystem.Models
@@ -25,5 +26,27 @@ namespace InventorySystem.Models
         [JsonProperty("barcode")] public string Barcode { get; set; }
 
         [JsonProperty("user")] public User User { get; set; }
+
+        public string FormattedBarcode
+        {
+            get
+            {
+                var output = "";
+                for (var i = 0; i < Barcode.Length; i++)
+                {
+                    var modulo = i % 4;
+                    if (modulo == 3 && ((Barcode.Length - (i + 1)) > 1))
+                    {
+                        output += Barcode[i] + " ";
+                    }
+                    else
+                    {
+                        output += Barcode[i];
+                    }
+                }
+
+                return output;
+            }
+        }
     }
 }

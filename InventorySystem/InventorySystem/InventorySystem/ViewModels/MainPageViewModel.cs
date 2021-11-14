@@ -50,7 +50,7 @@ namespace InventorySystem.ViewModels
                 InitCollectionView); //Called by OnAppearing of MainPage.xaml
             //
 
-            //Inicjalizacja Komend
+            //Command Initialize
             RefreshCommand = new Command(async () => await GetConnection());
             //
             RefreshItemsCommand = new Command(async () => await RefreshViewGetConnection());
@@ -70,8 +70,7 @@ namespace InventorySystem.ViewModels
                 DependencyService.Get<IMessage>().ShortAlert($"Usuwam przedmiot o nazwie {model.Name}");
 
                 await RestClient.DeleteItem(model.Id);
-                UserItems.Remove(
-                    model); //Used for animated deletion of item and to keep up with deleted items by current user
+                UserItems.Remove(model); //Used for animated deletion of item and to keep up with deleted items by current user
             });
             //
             LaunchScanner = new Command(async () =>
@@ -151,16 +150,6 @@ namespace InventorySystem.ViewModels
                 else if (!UserItems.Contains(item)) UserItems.Add(item);
         }
 
-        private static void DeleteUserDetails()
-        {
-            StaticValues.UserId = string.Empty;
-            StaticValues.FirstName = string.Empty;
-            StaticValues.LastName = string.Empty;
-            StaticValues.Username = string.Empty;
-            StaticValues.Email = string.Empty;
-            StaticValues.IsAdmin = false;
-        }
-
         public async Task GetConnection()
         {
             ShowActivityIndicatorWithMessage();
@@ -179,7 +168,7 @@ namespace InventorySystem.ViewModels
                     HideActivityIndicatorWithMessage();
 
                     SecureStorage.Remove(RestService.Token);
-                    DeleteUserDetails();
+                    StaticValues.RemoveUserData();
                     await Application.Current.SavePropertiesAsync();
 
                     ReturnUserToLoginPage();
@@ -189,7 +178,7 @@ namespace InventorySystem.ViewModels
                     HideActivityIndicatorWithMessage();
 
                     SecureStorage.Remove(RestService.Token);
-                    DeleteUserDetails();
+                    StaticValues.RemoveUserData();
                     await Application.Current.SavePropertiesAsync();
 
                     ReturnUserToLoginPage();
@@ -220,7 +209,7 @@ namespace InventorySystem.ViewModels
                     DependencyService.Get<IMessage>().LongAlert(Constants.ExpiredTokenError);
 
                     SecureStorage.Remove(RestService.Token);
-                    DeleteUserDetails();
+                    StaticValues.RemoveUserData();
                     await Application.Current.SavePropertiesAsync();
 
                     ReturnUserToLoginPage();
@@ -228,7 +217,7 @@ namespace InventorySystem.ViewModels
 
                 case RestService.Connection_NoTokenFound:
                     SecureStorage.Remove(RestService.Token);
-                    DeleteUserDetails();
+                    StaticValues.RemoveUserData();
                     await Application.Current.SavePropertiesAsync();
 
                     ReturnUserToLoginPage();

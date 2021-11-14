@@ -10,7 +10,6 @@
         <StackLayout>
             <Label Padding="20"
                    Text="Szczegóły konta"
-                   TextColor="Black"
                    FontSize="Title"
                    HorizontalOptions="CenterAndExpand" />
 

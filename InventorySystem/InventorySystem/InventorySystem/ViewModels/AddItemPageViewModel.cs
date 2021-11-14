@@ -84,7 +84,7 @@ namespace InventorySystem.ViewModels
             }
             catch (KeyNotFoundException e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine($"{this.GetType().Name}: Barcode not found!\nMeaning: Manual add or error with query\nError message:\n{e.Message}");
                 Barcode = string.Empty;
             }
         }

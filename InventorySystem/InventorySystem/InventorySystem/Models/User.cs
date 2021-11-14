@@ -5,6 +5,8 @@ namespace InventorySystem.Models
 {
     public class User
     {
+        //Class modeling data about user which added an item
+
         [JsonProperty("id")] public Guid Id { get; set; }
 
         [JsonProperty("firstName")] public string FirstName { get; set; }
@@ -12,5 +14,10 @@ namespace InventorySystem.Models
         [JsonProperty("lastName")] public string LastName { get; set; }
 
         [JsonProperty("email")] public string Email { get; set; }
+
+        public string FirstAndLastName
+        {
+            get => FirstName + " " + LastName;
+        }
     }
 }

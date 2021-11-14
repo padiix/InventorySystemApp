@@ -102,7 +102,7 @@ namespace InventorySystem.ViewModels
             catch (Exception e)
             {
                 DependencyService.Get<IMessage>().LongAlert(Constants.ItemError);
-                Console.WriteLine(new Exception($"Failed to load item ... + {e}"));
+                Console.WriteLine(new Exception($"{this.GetType().Name}: Failed to load item ...\r\n\r\n {e.Message}"));
             }
         }
 
