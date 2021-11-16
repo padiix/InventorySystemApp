@@ -120,15 +120,16 @@
                     <StackLayout Grid.Column="0"
                                  Grid.Row="1"
                                  Padding="5">
-                        
+
                         <Label Text="Opis:"
                                FontSize="13"
                                FontAttributes="Bold" />
 
                         <Label Text="{Binding Description}"
-                               LineBreakMode="TailTruncation"
+                               FontSize="15"
                                MaxLines="4"
-                               FontSize="15" />
+                               LineBreakMode="TailTruncation"
+                               HeightRequest="20"/>
 
                         <Label Text="Kod kreskowy:"
                                FontSize="13"
@@ -150,7 +151,6 @@
 
                         <Label Text="{Binding User.FirstAndLastName}"
                                FontSize="14" />
-                        
 
                     </StackLayout>
 
