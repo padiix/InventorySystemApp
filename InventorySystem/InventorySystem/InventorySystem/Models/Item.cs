@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel.Design;
 using Newtonsoft.Json;
 
@@ -10,7 +10,7 @@ namespace InventorySystem.Models
         {
             Id = id;
             Name = name;
-            Description = description;
+            Description = string.IsNullOrEmpty(description) ? "Brak" : description;
             Barcode = barcode;
             DateAdded = dateAdded;
         }
