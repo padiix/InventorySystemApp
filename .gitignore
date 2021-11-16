@@ -193,3 +193,5 @@ UpgradeLog*.htm
 FakesAssemblies/
 .vscode/settings.json
 
+
+InventorySystem/InventorySystem/InventorySystem.Android/InventorySystem.Android.csproj
