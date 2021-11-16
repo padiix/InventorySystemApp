@@ -42,6 +42,10 @@ namespace InventorySystem
 
         protected override void OnResume()
         {
+            if (Settings.RememberMe)
+                MainPage = new AppShell();
+            else
+                MainPage = new EmptyAppShell();
         }
     }
 }
