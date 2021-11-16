@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.Design;
 using Newtonsoft.Json;
 
@@ -31,11 +31,11 @@ namespace InventorySystem.Models
         {
             get
             {
-                var output = "";
-                for (var i = 0; i < Barcode.Length; i++)
+                var output = Barcode[0] + " ";
+                for (var i = 1; i < Barcode.Length; i++)
                 {
-                    var modulo = i % 4;
-                    if (modulo == 3 && ((Barcode.Length - (i + 1)) > 1))
+                    var modulo = i % 6;
+                    if (modulo == 0)
                     {
                         output += Barcode[i] + " ";
                     }
