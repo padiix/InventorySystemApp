@@ -19,6 +19,7 @@ namespace InventorySystem.Services
         public const string Token = "token";
         public const string Connection_Connected = "Connected";
         public const string Connection_NoTokenFound = "NoTokenFound";
+        public const string Connection_NoResponse = "NoResponse";
         public const string Connection_ConnectionError = "ConnectionError";
         public const string Connection_StatusFailure = "StatusFailure";
         public const string Connection_TokenExpired = "TokenExpired";
@@ -546,16 +547,25 @@ namespace InventorySystem.Services
 
         private bool CheckIfTokenExpiredAndShowErrorMessage(HttpResponseMessage response)
         {
-            var headers = response.Headers.WwwAuthenticate.GetEnumerator();
-            headers.MoveNext();
-            var header = headers.Current;
-            headers.Dispose();
-            var result = header != null &&
-                         header.Scheme.Contains("Bearer") &&
-                         header.Parameter.Contains("error=\"invalid_token\", error_description=\"The token expired at");
+            var headers = response?.Headers.WwwAuthenticate.GetEnumerator();
+            if (headers != null)
+            {
+                headers.MoveNext();
+                var header = headers.Current;
+                headers.Dispose();
+                var result = header != null &&
+                             header.Scheme.Contains("Bearer") &&
+                             header.Parameter.Contains(
+                                 "error=\"invalid_token\", error_description=\"The token expired at");
 
-            ShowMessage(Constants.ExpiredTokenError, response.ToString());
-            return result;
+                ShowMessage(Constants.ExpiredTokenError, response.ToString());
+                return result;
+            }
+            else
+            {
+                ShowMessage(Connection_NoResponse, response.ToString());
+                return false;
+            }
         }
 
         private static void ShowInConsole(string message)
