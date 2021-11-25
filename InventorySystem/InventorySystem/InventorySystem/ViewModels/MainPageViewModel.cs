@@ -75,7 +75,7 @@ namespace InventorySystem.ViewModels
             //
             LaunchScanner = new Command(async () =>
             {
-                var customScannerPage = new CustomScannerPage();
+                var customScannerPage = new SearchForScannerPage();
                 await Shell.Current.Navigation.PushAsync(customScannerPage);
             });
         }
