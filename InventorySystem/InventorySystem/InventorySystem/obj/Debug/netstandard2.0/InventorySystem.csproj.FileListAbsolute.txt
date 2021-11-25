@@ -40,7 +40,6 @@ C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\Inv
 C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\InventorySystem\obj\Debug\netstandard2.0\Views\AboutApp.xaml.g.cs
 C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\InventorySystem\obj\Debug\netstandard2.0\Views\AccountDetailsPage.xaml.g.cs
 C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\InventorySystem\obj\Debug\netstandard2.0\Views\AddItemPage.xaml.g.cs
-C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\InventorySystem\obj\Debug\netstandard2.0\Views\CustomScannerPage.xaml.g.cs
 C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\InventorySystem\obj\Debug\netstandard2.0\Views\LoginPage.xaml.g.cs
 C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\InventorySystem\obj\Debug\netstandard2.0\Views\MainPage.xaml.g.cs
 C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\InventorySystem\obj\Debug\netstandard2.0\Views\ModifyItemPage.xaml.g.cs
@@ -54,3 +53,4 @@ C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\Inv
 C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\InventorySystem\obj\Debug\netstandard2.0\InventorySystem.pdb
 C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\InventorySystem\obj\Debug\netstandard2.0\InventorySystem.csprojAssemblyReference.cache
 C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\InventorySystem\obj\Debug\netstandard2.0\Views\AddBarcodeScannerPage.xaml.g.cs
+C:\Users\chudy\Documents\InventorySystem_App\InventorySystem\InventorySystem\InventorySystem\obj\Debug\netstandard2.0\Views\SearchForScannerPage.xaml.g.cs
