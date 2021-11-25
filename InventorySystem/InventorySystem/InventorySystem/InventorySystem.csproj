@@ -24,6 +24,9 @@
     <Compile Update="Views\AddBarcodeScannerPage.xaml.cs">
       <DependentUpon>AddBarcodeScannerPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\SearchForScannerPage.xaml.cs">
+      <DependentUpon>SearchForScannerPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -42,7 +45,7 @@
     <EmbeddedResource Update="Views\AddItemPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\CustomScannerPage.xaml">
+    <EmbeddedResource Update="Views\SearchForScannerPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ModifyItemPage.xaml">

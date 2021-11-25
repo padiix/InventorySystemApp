@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -18,6 +19,7 @@ namespace InventorySystem.Services
         public const string Token = "token";
         public const string Connection_Connected = "Connected";
         public const string Connection_NoTokenFound = "NoTokenFound";
+        public const string Connection_NoResponse = "NoResponse";
         public const string Connection_ConnectionError = "ConnectionError";
         public const string Connection_StatusFailure = "StatusFailure";
         public const string Connection_TokenExpired = "TokenExpired";
@@ -45,15 +47,21 @@ namespace InventorySystem.Services
         {
             var json = JsonConvert.SerializeObject(valuesLogin, Formatting.Indented);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-
+            var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15));
             HttpResponseMessage responseMessage;
 
             try
             {
                 responseMessage = await _client.PostAsync(new Uri(AccountEndpoint + "/login"), content);
             }
-            catch (TimeoutException toex)
+            catch (TaskCanceledException toex)
             {
+                if(toex.CancellationToken == cts.Token)
+                {
+                    ShowMessage(Constants.ConnectionError, "Cancelled by CancellationTokenSource");
+                    return false;
+                }
+
                 ShowMessage(Constants.ConnectionError, toex.Message);
                 return false;
             }
@@ -89,15 +97,21 @@ namespace InventorySystem.Services
         {
             var json = JsonConvert.SerializeObject(valuesRegister, Formatting.Indented);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-
+            var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15));
             HttpResponseMessage responseMessage = null;
 
             try
             {
-                responseMessage = await _client.PostAsync(new Uri(AccountEndpoint + "/register"), content);
+                responseMessage = await _client.PostAsync(new Uri(AccountEndpoint + "/register"), content, cts.Token);
             }
-            catch (TimeoutException toex)
+            catch (TaskCanceledException toex)
             {
+                if(toex.CancellationToken == cts.Token)
+                {
+                    ShowMessage(Constants.ConnectionError, "Cancelled by CancellationTokenSource");
+                    return false;
+                }
+
                 ShowMessage(Constants.ConnectionError, toex.Message);
                 return false;
             }
@@ -146,13 +160,20 @@ namespace InventorySystem.Services
 
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(AccountEndpoint));
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+            var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15));
 
             try
             {
-                responseMessage = await _client.SendAsync(requestMessage);
+                responseMessage = await _client.SendAsync(requestMessage, cts.Token);
             }
-            catch (TimeoutException toex)
+            catch (TaskCanceledException toex)
             {
+                if(toex.CancellationToken == cts.Token)
+                {
+                    ShowMessage(Constants.ConnectionError, "Cancelled by CancellationTokenSource");
+                    return Connection_ConnectionError;
+                }
+
                 ShowMessage(Constants.ConnectionError, toex.Message);
                 return Connection_ConnectionError;
             }
@@ -168,7 +189,8 @@ namespace InventorySystem.Services
 
             if (responseMessage != null && responseMessage.IsSuccessStatusCode) return Connection_Connected;
 
-            if (CheckIfTokenExpiredAndShowErrorMessage(responseMessage))
+            var tokenExpiration = CheckIfTokenExpiredAndShowErrorMessage(responseMessage);
+            if (tokenExpiration)
                 return Connection_TokenExpired;
 
             ShowMessage(Constants.ApiRejectionError, responseMessage.ToString());
@@ -189,12 +211,20 @@ namespace InventorySystem.Services
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(ItemsEndpoint));
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
 
+            var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15));
+
             try
             {
-                responseMessage = await _client.SendAsync(requestMessage);
+                responseMessage = await _client.SendAsync(requestMessage, cts.Token);
             }
-            catch (TimeoutException toex)
+            catch (TaskCanceledException toex)
             {
+                if(toex.CancellationToken == cts.Token)
+                {
+                    ShowMessage(Constants.ConnectionError, "Cancelled by CancellationTokenSource");
+                    return null;
+                }
+
                 ShowMessage(Constants.ConnectionError, toex.Message);
                 return null;
             }
@@ -236,13 +266,20 @@ namespace InventorySystem.Services
 
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(ItemsEndpoint + $"/{id}"));
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+            var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15));
 
             try
             {
-                responseMessage = await _client.SendAsync(requestMessage);
+                responseMessage = await _client.SendAsync(requestMessage, cts.Token);
             }
-            catch (TimeoutException toex)
+            catch (TaskCanceledException toex)
             {
+                if(toex.CancellationToken == cts.Token)
+                {
+                    ShowMessage(Constants.ConnectionError, "Cancelled by CancellationTokenSource");
+                    return null;
+                }
+
                 ShowMessage(Constants.ConnectionError, toex.Message);
                 return null;
             }
@@ -287,13 +324,20 @@ namespace InventorySystem.Services
                 new HttpRequestMessage(HttpMethod.Put, new Uri(ItemsEndpoint + $"/{item.Id}"));
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
             requestMessage.Content = content;
+            var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15));
 
             try
             {
-                responseMessage = await _client.SendAsync(requestMessage);
+                responseMessage = await _client.SendAsync(requestMessage, cts.Token);
             }
-            catch (TimeoutException toex)
+            catch (TaskCanceledException toex)
             {
+                if(toex.CancellationToken == cts.Token)
+                {
+                    ShowMessage(Constants.ConnectionError, "Cancelled by CancellationTokenSource");
+                    return false;
+                }
+
                 ShowMessage(Constants.ConnectionError, toex.Message);
                 return false;
             }
@@ -327,13 +371,20 @@ namespace InventorySystem.Services
 
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(ItemsEndpoint));
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+            var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15));
 
             try
             {
-                responseMessage = await _client.SendAsync(requestMessage);
+                responseMessage = await _client.SendAsync(requestMessage, cts.Token);
             }
-            catch (TimeoutException toex)
+            catch (TaskCanceledException toex)
             {
+                if(toex.CancellationToken == cts.Token)
+                {
+                    ShowMessage(Constants.ConnectionError, "Cancelled by CancellationTokenSource");
+                    return null;
+                }
+
                 ShowMessage(Constants.ConnectionError, toex.Message);
                 return null;
             }
@@ -378,13 +429,20 @@ namespace InventorySystem.Services
             var requestMessage =
                 new HttpRequestMessage(HttpMethod.Delete, new Uri(ItemsEndpoint + $"/{itemId}"));
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+            var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15));
 
             try
             {
-                responseMessage = await _client.SendAsync(requestMessage);
+                responseMessage = await _client.SendAsync(requestMessage, cts.Token);
             }
-            catch (TimeoutException toex)
+            catch (TaskCanceledException toex)
             {
+                if(toex.CancellationToken == cts.Token)
+                {
+                    ShowMessage(Constants.ConnectionError, "Cancelled by CancellationTokenSource");
+                    return false;
+                }
+
                 ShowMessage(Constants.ConnectionError, toex.Message);
                 return false;
             }
@@ -425,13 +483,20 @@ namespace InventorySystem.Services
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, new Uri(ItemsEndpoint));
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
             requestMessage.Content = content;
+            var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15));
 
             try
             {
-                responseMessage = await _client.SendAsync(requestMessage);
+                responseMessage = await _client.SendAsync(requestMessage, cts.Token);
             }
-            catch (TimeoutException toex)
+            catch (TaskCanceledException toex)
             {
+                if(toex.CancellationToken == cts.Token)
+                {
+                    ShowMessage(Constants.ConnectionError, "Cancelled by CancellationTokenSource");
+                    return false;
+                }
+
                 ShowMessage(Constants.ConnectionError, toex.Message);
                 return false;
             }
@@ -482,16 +547,25 @@ namespace InventorySystem.Services
 
         private bool CheckIfTokenExpiredAndShowErrorMessage(HttpResponseMessage response)
         {
-            var headers = response.Headers.WwwAuthenticate.GetEnumerator();
-            headers.MoveNext();
-            var header = headers.Current;
-            headers.Dispose();
-            var result = header != null &&
-                         header.Scheme.Contains("Bearer") &&
-                         header.Parameter.Contains("error=\"invalid_token\", error_description=\"The token expired at");
+            var headers = response?.Headers.WwwAuthenticate.GetEnumerator();
+            if (headers != null)
+            {
+                headers.MoveNext();
+                var header = headers.Current;
+                headers.Dispose();
+                var result = header != null &&
+                             header.Scheme.Contains("Bearer") &&
+                             header.Parameter.Contains(
+                                 "error=\"invalid_token\", error_description=\"The token expired at");
 
-            ShowMessage(Constants.ExpiredTokenError, response.ToString());
-            return result;
+                ShowMessage(Constants.ExpiredTokenError, response.ToString());
+                return result;
+            }
+            else
+            {
+                ShowMessage(Connection_NoResponse, response.ToString());
+                return false;
+            }
         }
 
         private static void ShowInConsole(string message)
