@@ -57,25 +57,39 @@
                 <Label Text="Kod kreskowy:"
                    FontSize="Title"
                    HorizontalOptions="StartAndExpand" />
-                <Entry x:Name="BarcodeEntry"
-                   Keyboard="Numeric"
-                   Placeholder="Ciąg cyfr"
-                   Text="{Binding Barcode, Mode=TwoWay}"
-                   FontAttributes="Bold"
-                   IsSpellCheckEnabled="False"
-                   TextChanged="BarcodeEntry_OnTextChanged">
 
-                    <Entry.Behaviors>
+                <Grid Padding="0,10,0, 10"
+                      ColumnDefinitions="Auto">
+                    
+                    <Entry Grid.Column="0"
+                           Grid.ColumnSpan="5"
+                           HorizontalOptions="FillAndExpand"
+                           x:Name="BarcodeEntry"
+                           Keyboard="Numeric"
+                           Placeholder="Ciąg cyfr"
+                           Text="{Binding Barcode, Mode=TwoWay}"
+                           FontAttributes="Bold"
+                           IsSpellCheckEnabled="False"
+                           TextChanged="BarcodeEntry_OnTextChanged">
+                        <Entry.Behaviors>
 
-                        <xct:CharactersValidationBehavior x:Name="CharacterQuantityValidator"
+                            <xct:CharactersValidationBehavior x:Name="CharacterQuantityValidator"
                                                       CharacterType="Digit"
                                                       MinimumCharacterCount="8"
                                                       MaximumCharacterCount="14"
                                                       InvalidStyle="{StaticResource InvalidBackgroundEntry}" />
 
-                    </Entry.Behaviors>
+                        </Entry.Behaviors>
+                    </Entry>
 
-                </Entry>
+                    <ImageButton Grid.Column="5"
+                                 HorizontalOptions="Center"
+                                 Source="scanner_button50x50.png"
+                                 BackgroundColor="Transparent"
+                                 WidthRequest="50"
+                                 HeightRequest="50"
+                                 Command="{Binding GetBarcodeCommand}" />
+                </Grid>
 
                 <Label x:Name="BarcodeNotValidLabel" Text="Podany kod kreskowy jest niepoprawny."
                    IsVisible="False"
