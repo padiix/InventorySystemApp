@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using InventorySystem.Models;
 using InventorySystem.Services;
+using InventorySystem.Views;
 using MvvmHelpers;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace InventorySystem.ViewModels
@@ -38,6 +41,37 @@ namespace InventorySystem.ViewModels
                 if (result)
                     await Shell.Current.GoToAsync("..");
             });
+
+            GetBarcodeCommand = new Command(async () =>
+            {
+                var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
+                var customScannerPage = new AddBarcodeScannerPage();
+                await Shell.Current.Navigation.PushAsync(customScannerPage);
+                this.IsBusy = true;
+
+                customScannerPage.Disappearing += (sender, args) =>
+                {
+                    waitHandle.Set();
+                };
+
+                await Task.Run(() => waitHandle.WaitOne());
+
+                // After the barcode was scanned...
+                // BUG: After the PushAsync the display alerts launch
+                var scannedBarcode = Preferences.Get("ScannedBarcode", null);
+
+                if (string.IsNullOrEmpty(scannedBarcode))
+                {
+                    await Shell.Current.DisplayAlert("Niepowodzenie.", "Nie udało się zeskanować kodu kreskowego", "OK");
+                    return;
+                }
+
+                await Shell.Current.DisplayAlert("Sukces!", "Pomyślnie zeskanowano kod kreskowy", "OK");
+                Barcode = scannedBarcode;
+                Preferences.Remove("ScannedBarcode");
+                
+                this.IsBusy = false;
+            });
         }
 
         private Guid ItemId { get; } = new Guid();
@@ -54,7 +88,7 @@ namespace InventorySystem.ViewModels
             set => SetProperty(ref _description, value, nameof(Description));
         }
 
-        private DateTimeOffset DateAdded { get; } = DateTimeOffset.Now.LocalDateTime;
+        private DateTimeOffset DateAdded { get; } = new DateTimeOffset(DateTimeOffset.Now.LocalDateTime);
 
         public string Barcode
         {
@@ -70,6 +104,8 @@ namespace InventorySystem.ViewModels
         }
 
         public Command AddItemCommand { get; }
+
+        public Command GetBarcodeCommand { get; }
 
         public void ApplyQueryAttributes(IDictionary<string, string> query)
         {
