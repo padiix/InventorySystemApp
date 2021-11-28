@@ -120,10 +120,6 @@
               "target": "Package",
               "version": "[1.6.2, )"
             },
-            "System.ComponentModel.Annotations": {
-              "target": "Package",
-              "version": "[5.0.0, )"
-            },
             "Xamarin.CommunityToolkit": {
               "target": "Package",
               "version": "[1.1.0, )"
