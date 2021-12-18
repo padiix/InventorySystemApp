@@ -192,6 +192,10 @@ namespace InventorySystem.ViewModels
                 case RestService.Connection_StatusFailure:
                     HideActivityIndicatorWithMessage();
                     break;
+
+                case RestService.Connection_UnexpectedError:
+                    HideActivityIndicatorWithMessage();
+                    break;
             }
         }
 
@@ -228,6 +232,9 @@ namespace InventorySystem.ViewModels
                     break;
 
                 case RestService.Connection_StatusFailure:
+                    break;
+
+                case RestService.Connection_UnexpectedError:
                     break;
             }
         }

@@ -21,6 +21,7 @@ namespace InventorySystem.Services
         public const string Connection_NoTokenFound = "NoTokenFound";
         public const string Connection_NoResponse = "NoResponse";
         public const string Connection_ConnectionError = "ConnectionError";
+        public const string Connection_UnexpectedError = "UnexpectedError";
         public const string Connection_StatusFailure = "StatusFailure";
         public const string Connection_TokenExpired = "TokenExpired";
 
@@ -184,7 +185,7 @@ namespace InventorySystem.Services
             catch (Exception ex)
             {
                 ShowMessage(Constants.NotExpectedError, ex.Message);
-                return Connection_ConnectionError;
+                return Connection_UnexpectedError;
             }
 
             if (responseMessage != null && responseMessage.IsSuccessStatusCode) return Connection_Connected;

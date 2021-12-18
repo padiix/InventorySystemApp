@@ -55,6 +55,9 @@ namespace InventorySystem.Views
 
                 case RestService.Connection_StatusFailure:
                     break;
+
+                case RestService.Connection_UnexpectedError:
+                    break;
             }
         }
 
