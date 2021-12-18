@@ -24,14 +24,14 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout Padding="20,20">
+        <ScrollView Padding="20,5">
+            <StackLayout>
                 
                 <Label Text="Dodawanie przedmiotów"
                        HorizontalOptions="Center"
                        FontAttributes="Bold"
                        FontSize="Large"
-                       Padding="0,0,0,40"/>
+                       Padding="0,0,0,20"/>
 
                 <Label Text="Nazwa:"
                        FontSize="Title"
@@ -51,6 +51,8 @@
                     Placeholder="Opis przedmiotu"
                     FontAttributes="Bold"
                     IsSpellCheckEnabled="True"
+                    MinimumHeightRequest="50"
+                    MaxLength="250"
                     Keyboard="Text"
                     AutoSize="TextChanges"/>
 
@@ -120,7 +122,7 @@
                 </Grid>
 
                 <StackLayout Orientation="Horizontal"
-                         Padding="20,20">
+                             Padding="0,10,0,0">>
                     <Button x:Name="AddButton"
                         HorizontalOptions="FillAndExpand"
                         VerticalOptions="End"

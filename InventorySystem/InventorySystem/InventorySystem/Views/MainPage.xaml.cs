@@ -34,6 +34,7 @@ namespace InventorySystem.Views
 
                     SecureStorage.Remove(RestService.Token);
                     StaticValues.RemoveUserData();
+                    Settings.RememberMe = false;
                     await Application.Current.SavePropertiesAsync();
 
                     ReturnUserToLoginPage();
@@ -42,6 +43,7 @@ namespace InventorySystem.Views
                 case RestService.Connection_NoTokenFound:
                     SecureStorage.Remove(RestService.Token);
                     StaticValues.RemoveUserData();
+                    Settings.RememberMe = false;
                     await Application.Current.SavePropertiesAsync();
 
                     ReturnUserToLoginPage();
@@ -53,12 +55,17 @@ namespace InventorySystem.Views
 
                 case RestService.Connection_StatusFailure:
                     break;
+
+                case RestService.Connection_UnexpectedError:
+                    break;
             }
         }
 
         private async void Logout_OnClicked(object sender, EventArgs e)
         {
             StaticValues.RemoveUserData();
+
+            Settings.RememberMe = false;
 
             await Application.Current.SavePropertiesAsync();
 
@@ -74,7 +81,7 @@ namespace InventorySystem.Views
 
         private async void ReturnUserToLoginPage()
         {
-            await Task.Delay(TimeSpan.FromSeconds(0.5));
+            await Task.Delay(TimeSpan.FromSeconds(0.3));
 
             Application.Current.MainPage = new EmptyAppShell();
         }

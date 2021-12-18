@@ -4,7 +4,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InventorySystem.Views.MainPage"
              xmlns:vm="clr-namespace:InventorySystem.ViewModels"
-             xmlns:helpers="clr-namespace:InventorySystem.;assembly=InventorySystem"
              xmlns:services="clr-namespace:InventorySystem.Services;assembly=InventorySystem"
              Shell.TabBarIsVisible="True"
              Title="Strona główna">
