@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using InventorySystem.Interfaces;
 using InventorySystem.Models;
@@ -34,6 +34,7 @@ namespace InventorySystem.Views
 
                     SecureStorage.Remove(RestService.Token);
                     StaticValues.RemoveUserData();
+                    Settings.RememberMe = false;
                     await Application.Current.SavePropertiesAsync();
 
                     ReturnUserToLoginPage();
@@ -42,6 +43,7 @@ namespace InventorySystem.Views
                 case RestService.Connection_NoTokenFound:
                     SecureStorage.Remove(RestService.Token);
                     StaticValues.RemoveUserData();
+                    Settings.RememberMe = false;
                     await Application.Current.SavePropertiesAsync();
 
                     ReturnUserToLoginPage();
@@ -59,6 +61,8 @@ namespace InventorySystem.Views
         private async void Logout_OnClicked(object sender, EventArgs e)
         {
             StaticValues.RemoveUserData();
+
+            Settings.RememberMe = false;
 
             await Application.Current.SavePropertiesAsync();
 
