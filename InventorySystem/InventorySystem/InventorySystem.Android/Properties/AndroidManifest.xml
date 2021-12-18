@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1040" android:versionName="1.0.4" package="n_p.inventorysystem" android:installLocation="auto">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1050" android:versionName="1.0.5" package="n_p.inventorysystem" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="23" android:targetSdkVersion="29" />
-	<application android:label="Inventory System" android:theme="@style/MainTheme" android:usesCleartextTraffic="true" android:icon="@drawable/appicon"></application>
+	<application android:label="Inventory System" android:theme="@style/MainTheme" android:usesCleartextTraffic="true" android:icon="@drawable/icon_tools"></application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.CAMERA" />
 	<uses-permission android:name="android.permission.FLASHLIGHT" />
