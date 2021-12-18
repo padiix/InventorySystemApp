@@ -81,7 +81,7 @@ namespace InventorySystem.Views
 
         private async void ReturnUserToLoginPage()
         {
-            await Task.Delay(TimeSpan.FromSeconds(0.5));
+            await Task.Delay(TimeSpan.FromSeconds(0.3));
 
             Application.Current.MainPage = new EmptyAppShell();
         }
