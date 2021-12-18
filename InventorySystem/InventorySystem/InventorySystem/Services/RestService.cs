@@ -157,7 +157,7 @@ namespace InventorySystem.Services
                     return Connection_NoTokenFound;
                 }
 
-            HttpResponseMessage responseMessage = null;
+            HttpResponseMessage responseMessage;
 
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(AccountEndpoint));
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
@@ -181,6 +181,7 @@ namespace InventorySystem.Services
             catch (System.OperationCanceledException operationCanceledException)
             {
                 ShowMessage(Constants.ConnectionError, operationCanceledException.Message);
+                return Connection_ConnectionError;
             }
             catch (Exception ex)
             {
@@ -207,7 +208,7 @@ namespace InventorySystem.Services
                     return null;
                 }
 
-            HttpResponseMessage responseMessage = null;
+            HttpResponseMessage responseMessage;
 
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(ItemsEndpoint));
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
@@ -476,7 +477,7 @@ namespace InventorySystem.Services
                     return false;
                 }
 
-            HttpResponseMessage responseMessage = null;
+            HttpResponseMessage responseMessage;
 
             var json = JsonConvert.SerializeObject(item, Formatting.Indented);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
