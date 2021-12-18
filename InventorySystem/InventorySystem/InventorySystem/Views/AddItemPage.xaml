@@ -24,8 +24,8 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout Padding="20,20">
+        <ScrollView Padding="20,20">
+            <StackLayout>
                 
                 <Label Text="Dodawanie przedmiotów"
                        HorizontalOptions="Center"

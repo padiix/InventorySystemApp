@@ -25,109 +25,111 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <ScrollView>
-        <StackLayout Padding="20,20">
-            
-            <Label Text="Modyfikacja przedmiotów"
+        <ScrollView Padding="20,20">
+            <StackLayout>
+
+                <Label Text="Modyfikacja przedmiotów"
                    HorizontalOptions="Center"
                    FontAttributes="Bold"
                    FontSize="Large"
                    Padding="0,0,0,40"/>
 
-            <Label Text="Id:"
+                <Label Text="Id:"
                    FontSize="Title"
                    HorizontalOptions="StartAndExpand" />
-            <Entry Text="{Binding ItemId}"
+                <Entry Text="{Binding ItemId}"
                    IsReadOnly="True" />
 
-            <Label Text="Nazwa:"
+                <Label Text="Nazwa:"
                    FontSize="Title"
                    FontAttributes="Bold"
                    HorizontalOptions="StartAndExpand" />
-            <Entry Text="{Binding Name, Mode=TwoWay}"
+                <Entry Text="{Binding Name, Mode=TwoWay}"
                    ClearButtonVisibility="WhileEditing"
                    FontAttributes="Bold"
                    IsSpellCheckEnabled="True" />
 
-            <Label Text="Opis:"
-                   FontSize="Title"
-                   FontAttributes="Bold"
-                   HorizontalOptions="StartAndExpand" />
-            <Editor Text="{Binding Description, Mode=TwoWay}"
+                <Label Text="Opis:"
+                           FontSize="Title"
+                           FontAttributes="Bold"
+                           HorizontalOptions="StartAndExpand" />
+
+                <Editor Text="{Binding Description, Mode=TwoWay}"
                     IsSpellCheckEnabled="True"
                     FontAttributes="Bold"
                     AutoSize="TextChanges"
-                    Keyboard="Text"/>
+                    Keyboard="Text"
+                    />
 
-            <Label Text="Kod kreskowy:"
-                   FontSize="Title"
-                   HorizontalOptions="StartAndExpand" />
-            <Entry x:Name="BarcodeEntry"
+                <Label Text="Kod kreskowy:"
+                           FontSize="Title"
+                           HorizontalOptions="StartAndExpand" />
+                <Entry x:Name="BarcodeEntry"
                    Keyboard="Numeric"
                    Text="{Binding Barcode, Mode=TwoWay}"
                    IsSpellCheckEnabled="False"
                    FontAttributes="Bold"
                    TextChanged="BarcodeEntry_OnTextChanged">
 
-                <Entry.Behaviors>
+                    <Entry.Behaviors>
 
-                    <xct:CharactersValidationBehavior x:Name="CharacterQuantityValidator"
+                        <xct:CharactersValidationBehavior x:Name="CharacterQuantityValidator"
                                                       CharacterType="Digit"
                                                       MinimumCharacterCount="8"
                                                       MaximumCharacterCount="14"
                                                       InvalidStyle="{StaticResource InvalidBackgroundEntry}" />
 
-                </Entry.Behaviors>
+                    </Entry.Behaviors>
 
-            </Entry>
-            <Label x:Name="BarcodeNotValidLabel" Text="Podany kod kreskowy jest niepoprawny."
+                </Entry>
+                <Label x:Name="BarcodeNotValidLabel" Text="Podany kod kreskowy jest niepoprawny."
                    IsVisible="False"
                    TextColor="Red"
                    FontSize="Caption"
                    FontAttributes="Bold" />
 
 
-            <Label Text="Data dodania:"
+                <Label Text="Data dodania:"
                    FontSize="Title"
                    HorizontalOptions="StartAndExpand" />
-            <Entry Text="{Binding DateAdded}"
+                <Entry Text="{Binding DateAdded}"
                    IsReadOnly="True" />
 
-            <Grid Padding="0,20,0 ,0"
+                <Grid Padding="0,20,0 ,0"
                   HorizontalOptions="Center"
                   IsVisible="{Binding IsVisibleMessageAndActivityIndicator}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                <Label Text="Aktualizacja danych w API"
+                    <Label Text="Aktualizacja danych w API"
                        FontSize="Subtitle"
                        IsVisible="true"
                        VerticalOptions="Center" />
-                <ActivityIndicator Grid.Column="1"
+                    <ActivityIndicator Grid.Column="1"
                                    IsRunning="true"
                                    Scale="0.7" />
 
-            </Grid>
+                </Grid>
 
-            <StackLayout Orientation="Horizontal"
+                <StackLayout Orientation="Horizontal"
                          Padding="20,20">
-                <Button x:Name="UpdateButton"
+                    <Button x:Name="UpdateButton"
                         HorizontalOptions="FillAndExpand"
                         Text="Modyfikuj"
                         Command="{Binding UpdateItemCommand}" />
 
-                <Button HorizontalOptions="FillAndExpand"
+                    <Button HorizontalOptions="FillAndExpand"
                         Text="Powrót"
                         Clicked="Return_OnClicked" />
+                </StackLayout>
+
+
             </StackLayout>
-
-
-        </StackLayout>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>
