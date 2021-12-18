@@ -12,7 +12,6 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="Xamarin.CommunityToolkit" Version="1.1.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />  
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />  
@@ -21,6 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\AddBarcodeScannerPage.xaml.cs">
+      <DependentUpon>AddBarcodeScannerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SearchForScannerPage.xaml.cs">
+      <DependentUpon>SearchForScannerPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -39,7 +44,7 @@
     <EmbeddedResource Update="Views\AddItemPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\CustomScannerPage.xaml">
+    <EmbeddedResource Update="Views\SearchForScannerPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ModifyItemPage.xaml">

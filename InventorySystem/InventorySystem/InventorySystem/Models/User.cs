@@ -12,5 +12,10 @@ namespace InventorySystem.Models
         [JsonProperty("lastName")] public string LastName { get; set; }
 
         [JsonProperty("email")] public string Email { get; set; }
+
+        public string FirstAndLastName
+        {
+            get => FirstName + " " + LastName;
+        }
     }
 }

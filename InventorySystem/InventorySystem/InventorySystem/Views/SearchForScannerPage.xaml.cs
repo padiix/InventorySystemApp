@@ -10,11 +10,11 @@ using ZXing.Mobile;
 namespace InventorySystem.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class CustomScannerPage : ContentPage
+    public partial class SearchForScannerPage : ContentPage
     {
         private static readonly RestService RestClient = new RestService();
 
-        public CustomScannerPage()
+        public SearchForScannerPage()
         {
             InitializeComponent();
 
@@ -24,9 +24,8 @@ namespace InventorySystem.Views
             zxing.Options = new MobileBarcodeScanningOptions
             {
                 DelayBetweenContinuousScans = 2000,
-                AutoRotate = false,
+                AutoRotate = true,
                 UseFrontCameraIfAvailable = false,
-                TryHarder = true,
                 PossibleFormats = new List<BarcodeFormat>
                 {
                     BarcodeFormat.EAN_8, BarcodeFormat.EAN_13, BarcodeFormat.UPC_A
@@ -41,7 +40,7 @@ namespace InventorySystem.Views
             zxing.IsTorchOn = !zxing.IsTorchOn;
         }
 
-        private void Zxing_OnOnScanResult(Result result)
+        private void Zxing_OnScanResult(Result result)
         {
             //Stop scanning
             zxing.IsAnalyzing = false;

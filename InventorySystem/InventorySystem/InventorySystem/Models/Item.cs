@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.Design;
 using Newtonsoft.Json;
 
 namespace InventorySystem.Models
@@ -9,7 +10,7 @@ namespace InventorySystem.Models
         {
             Id = id;
             Name = name;
-            Description = description;
+            Description = string.IsNullOrEmpty(description) ? "Brak" : description;
             Barcode = barcode;
             DateAdded = dateAdded;
         }
@@ -25,5 +26,27 @@ namespace InventorySystem.Models
         [JsonProperty("barcode")] public string Barcode { get; set; }
 
         [JsonProperty("user")] public User User { get; set; }
+
+        public string FormattedBarcode
+        {
+            get
+            {
+                var output = Barcode[0] + " ";
+                for (var i = 1; i < Barcode.Length; i++)
+                {
+                    var modulo = i % 6;
+                    if (modulo == 0)
+                    {
+                        output += Barcode[i] + " ";
+                    }
+                    else
+                    {
+                        output += Barcode[i];
+                    }
+                }
+
+                return output;
+            }
+        }
     }
 }

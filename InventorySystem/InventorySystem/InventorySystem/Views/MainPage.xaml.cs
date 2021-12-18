@@ -33,7 +33,7 @@ namespace InventorySystem.Views
                     DependencyService.Get<IMessage>().LongAlert(Constants.ExpiredTokenError);
 
                     SecureStorage.Remove(RestService.Token);
-                    DeleteUserDetails();
+                    StaticValues.RemoveUserData();
                     await Application.Current.SavePropertiesAsync();
 
                     ReturnUserToLoginPage();
@@ -41,7 +41,7 @@ namespace InventorySystem.Views
 
                 case RestService.Connection_NoTokenFound:
                     SecureStorage.Remove(RestService.Token);
-                    DeleteUserDetails();
+                    StaticValues.RemoveUserData();
                     await Application.Current.SavePropertiesAsync();
 
                     ReturnUserToLoginPage();
@@ -58,7 +58,7 @@ namespace InventorySystem.Views
 
         private async void Logout_OnClicked(object sender, EventArgs e)
         {
-            DeleteUserDetails();
+            StaticValues.RemoveUserData();
 
             await Application.Current.SavePropertiesAsync();
 
@@ -70,17 +70,6 @@ namespace InventorySystem.Views
         private void Account_OnClicked(object sender, EventArgs e)
         {
             Shell.Current.GoToAsync("account/details");
-        }
-
-        private static void DeleteUserDetails()
-        {
-            Settings.RememberMe = false;
-            StaticValues.UserId = string.Empty;
-            StaticValues.FirstName = string.Empty;
-            StaticValues.LastName = string.Empty;
-            StaticValues.Username = string.Empty;
-            StaticValues.Email = string.Empty;
-            StaticValues.IsAdmin = false;
         }
 
         private async void ReturnUserToLoginPage()
