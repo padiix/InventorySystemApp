@@ -122,7 +122,7 @@
                 </Grid>
 
                 <StackLayout Orientation="Horizontal"
-                             Padding="0,10,0,0">>
+                             Padding="0,10,0,0">
                     <Button x:Name="AddButton"
                         HorizontalOptions="FillAndExpand"
                         VerticalOptions="End"
